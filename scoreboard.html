@@ -417,7 +417,7 @@
   </div>
 
   <script>
-    const LAST_UPDATED = "Before kickoff";
+    const LAST_UPDATED = "Demo — replace with real results";
     const BUDGET = 400;
 
     const MATCHES = [
@@ -428,12 +428,26 @@
     ];
 
     /*
-      Paste locked submissions here.
-      Keep the structure; replace/add player entries after each person submits.
+      TEST PLAYER DATA
+
+      This block controls who appears on the scoreboard.
+
+      For the demo:
+      - Four test players are included.
+      - These are fake locked submissions so you can preview the full scoreboard.
+
+      For real use:
+      1. Replace these four entries with your four real submissions.
+      2. Keep the same structure.
+      3. Team names must match MATCHES exactly.
+      4. Wagers should match the copied submission text.
+
+      To clear the scoreboard before real picks are locked:
+      const PLAYERS = [];
     */
     const PLAYERS = [
       {
-        name:"test example",
+        name:"Boris The Blade",
         picks:{
           QF1:{ pick:"France", aScore:1, bScore:0, wager:100 },
           QF2:{ pick:"Spain", aScore:2, bScore:0, wager:100 },
@@ -445,39 +459,144 @@
           teamGoals:"France",
           shootouts:1
         }
-      }
-
-      /*
-      ,{
-        name:"Player 2",
+      },
+      {
+        name:"Brick Top",
         picks:{
-          QF1:{ pick:"", aScore:0, bScore:0, wager:25 },
-          QF2:{ pick:"", aScore:0, bScore:0, wager:25 },
-          QF3:{ pick:"", aScore:0, bScore:0, wager:25 },
-          QF4:{ pick:"", aScore:0, bScore:0, wager:25 }
+          QF1:{ pick:"Morocco", aScore:1, bScore:1, wager:125 },
+          QF2:{ pick:"Belgium", aScore:2, bScore:1, wager:75 },
+          QF3:{ pick:"England", aScore:1, bScore:2, wager:150 },
+          QF4:{ pick:"Argentina", aScore:3, bScore:1, wager:50 }
         },
-        props:{ topScorer:"", teamGoals:"", shootouts:0 }
+        props:{
+          topScorer:"Harry Kane — England",
+          teamGoals:"England",
+          shootouts:1
+        }
+      },
+      {
+        name:"Turkish",
+        picks:{
+          QF1:{ pick:"France", aScore:2, bScore:0, wager:150 },
+          QF2:{ pick:"Spain", aScore:1, bScore:0, wager:75 },
+          QF3:{ pick:"England", aScore:0, bScore:1, wager:100 },
+          QF4:{ pick:"Colombia", aScore:2, bScore:2, wager:75 }
+        },
+        props:{
+          topScorer:"Kylian Mbappé — France",
+          teamGoals:"France",
+          shootouts:2
+        }
+      },
+      {
+        name:"Bullet Tooth",
+        picks:{
+          QF1:{ pick:"France", aScore:1, bScore:0, wager:75 },
+          QF2:{ pick:"Belgium", aScore:1, bScore:2, wager:100 },
+          QF3:{ pick:"Norway", aScore:2, bScore:1, wager:100 },
+          QF4:{ pick:"Argentina", aScore:2, bScore:0, wager:75 }
+        },
+        props:{
+          topScorer:"Lionel Messi — Argentina",
+          teamGoals:"Argentina",
+          shootouts:0
+        }
       }
-      */
     ];
 
     /*
-      Update these after games finish.
-      Use match score after extra time, before penalty shootout goals.
-      If penalties decide it, keep score tied and set winner to advancing team.
+      PROJECTED / DEMO MATCH RESULTS
+
+      This block controls whether the scoreboard calculates wins, losses,
+      score bonuses, and updated Cup Bucks totals.
+
+      complete:
+        false = match is pending and no scoring is applied yet
+        true  = scoreboard calculates match profit/loss and score bonus
+
+      aScore / bScore:
+        Final match score after extra time, BEFORE penalty shootout goals.
+        If the game goes to penalties, keep the tied match score here.
+
+      winner:
+        Team that advances. Must exactly match the team name in MATCHES.
+
+      topScorers:
+        Optional per-match recordkeeping. Proper Stars scoring is controlled
+        by FINAL_PROPS below.
+
+      To return this to pre-game/pending mode, replace with:
+      const RESULTS = {
+        QF1:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
+        QF2:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
+        QF3:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
+        QF4:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] }
+      };
     */
     const RESULTS = {
-      QF1:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
-      QF2:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
-      QF3:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
-      QF4:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] }
+      QF1:{
+        complete:true,
+        aScore:1,
+        bScore:0,
+        winner:"France",
+        topScorers:["Kylian Mbappé — France"]
+      },
+      QF2:{
+        complete:true,
+        aScore:1,
+        bScore:2,
+        winner:"Belgium",
+        topScorers:["Romelu Lukaku — Belgium"]
+      },
+      QF3:{
+        complete:true,
+        aScore:1,
+        bScore:2,
+        winner:"England",
+        topScorers:["Harry Kane — England"]
+      },
+      QF4:{
+        complete:true,
+        aScore:2,
+        bScore:0,
+        winner:"Argentina",
+        topScorers:["Lionel Messi — Argentina"]
+      }
     };
 
+    /*
+      PROJECTED / DEMO PROPER STARS RESULTS
+
+      complete:
+        false = props are still pending and no prop points are applied
+        true  = scoreboard applies Proper Stars prop points
+
+      topScorers:
+        Use one player for a solo top scorer.
+        Use multiple players for a tied top scorer.
+        The scoring function awards:
+          solo correct top scorer = +75
+          tied correct top scorer = +50
+
+      teamMostGoals:
+        Team with the most quarterfinal goals.
+
+      shootouts:
+        Total number of quarterfinal penalty shootouts.
+
+      To return this to pre-game/pending mode, replace with:
+      const FINAL_PROPS = {
+        complete:false,
+        topScorers:[],
+        teamMostGoals:"",
+        shootouts:null
+      };
+    */
     const FINAL_PROPS = {
-      complete:false,
-      topScorers:[],      // example: ["Kylian Mbappé — France"]
-      teamMostGoals:"",   // example: "France"
-      shootouts:null      // example: 1
+      complete:true,
+      topScorers:["Harry Kane — England"],
+      teamMostGoals:"Argentina",
+      shootouts:0
     };
 
     const $ = (id) => document.getElementById(id);
