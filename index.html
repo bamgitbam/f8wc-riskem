@@ -1135,6 +1135,44 @@
           padding-right: 30px;
         }
       }
+    
+      .hero-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .scoreboard-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 11px 16px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #fff4c7, #ffe6a8);
+        color: #061b33;
+        text-decoration: none;
+        font-weight: 1000;
+        border: 1px solid rgba(255,255,255,.45);
+        box-shadow: 0 10px 22px rgba(0,0,0,.12);
+      }
+
+      .scoreboard-link:hover {
+        transform: translateY(-1px);
+      }
+
+      @media (max-width: 520px) {
+        .hero-links {
+          margin-top: 16px;
+        }
+
+        .scoreboard-link {
+          width: 100%;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1148,8 +1186,11 @@
               $400 budget. Pick who advances, predict the score, and risk your
               Cup Bucks.
             </p>
+            <div class="hero-links">
+              <a class="scoreboard-link" href="scoreboard.html">View Scoreboard</a>
+            </div>
           </div>
-          <div class="brand-mark" aria-hidden="true">
+          <div class="brand-mark aria-hidden="true">
             <svg viewBox="0 0 180 220" role="img" aria-label="F8WC shield mark">
               <defs>
                 <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
@@ -2095,3 +2136,4 @@
     </script>
   </body>
 </html>
+
