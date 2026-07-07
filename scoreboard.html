@@ -355,7 +355,6 @@
       <div class="top-actions">
         <a class="mini-link" href="./">Submit picks</a>
         <a class="mini-link" href="#locked">Locked picks</a>
-        <a class="mini-link" href="#admin">Commissioner update guide</a>
       </div>
     </header>
 
@@ -363,7 +362,7 @@
       <div class="section-head">
         <div>
           <h2>Standings</h2>
-          <div class="hint">Cup Bucks update when the commissioner enters final match results below.</div>
+          <div class="hint">Cup Bucks update results below.</div>
         </div>
         <div class="updated" id="updatedText"></div>
       </div>
@@ -415,21 +414,6 @@
       <div class="mobile-list" id="detailCards"></div>
     </section>
 
-    <section class="panel" id="admin">
-      <details>
-        <summary>Commissioner update guide</summary>
-        <p class="fine">
-          Edit only the PLAYERS and RESULTS constants near the bottom of this file. Then run:
-        </p>
-        <pre class="admin-code">git add scoreboard.html
-git commit -m "Update F8WC scoreboard"
-git push</pre>
-        <p class="fine">
-          For player submissions, convert each copied text into one PLAYERS entry. For match results, set complete to true after the final whistle.
-          Score is after extra time, before penalty shootout goals. If a match is decided on penalties, use the tied match score and set winner to the advancing team.
-        </p>
-      </details>
-    </section>
   </div>
 
   <script>
@@ -449,7 +433,7 @@ git push</pre>
     */
     const PLAYERS = [
       {
-        name:"test",
+        name:"test example",
         picks:{
           QF1:{ pick:"France", aScore:1, bScore:0, wager:100 },
           QF2:{ pick:"Spain", aScore:2, bScore:0, wager:100 },
