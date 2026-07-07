@@ -232,6 +232,118 @@
       .stat strong{font-size:26px}
       table{min-width:680px}
     }
+
+    .mobile-list{display:none}
+    .locked-card,.detail-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:14px;
+      box-shadow:0 8px 20px rgba(6,27,51,.06);
+    }
+    .locked-card + .locked-card,
+    .detail-card + .detail-card{margin-top:12px}
+    .mobile-card-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      margin-bottom:12px;
+    }
+    .mobile-card-name{
+      font-size:20px;
+      line-height:1.1;
+      font-weight:1000;
+      letter-spacing:-.03em;
+    }
+    .mobile-card-total{
+      font-size:24px;
+      line-height:1;
+      font-weight:1000;
+      color:#062f55;
+      text-align:right;
+    }
+    .mobile-card-total span{
+      display:block;
+      margin-top:4px;
+      font-size:10.5px;
+      color:#5c6c80;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .pick-list,.score-list{display:grid;gap:10px}
+    .pick-item,.score-item{
+      border:1px solid #edf2f7;
+      background:#f8fbfe;
+      border-radius:14px;
+      padding:10px 11px;
+    }
+    .pick-item-top,.score-item-top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      font-size:13px;
+      font-weight:1000;
+      color:#415168;
+      margin-bottom:6px;
+    }
+    .pick-main{
+      font-weight:1000;
+      font-size:16px;
+      color:#061b33;
+    }
+    .pick-sub,.score-sub{
+      margin-top:3px;
+      color:#5c6c80;
+      font-size:12.5px;
+      font-weight:750;
+      line-height:1.35;
+    }
+    .props-line{
+      margin-top:12px;
+      padding-top:12px;
+      border-top:1px solid #edf2f7;
+      color:#5c6c80;
+      font-size:12.75px;
+      font-weight:750;
+      line-height:1.4;
+    }
+    .summary-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    .summary-mini{
+      border:1px solid #edf2f7;
+      background:#f8fbfe;
+      border-radius:14px;
+      padding:10px 11px;
+    }
+    .summary-mini small{
+      display:block;
+      color:#5c6c80;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      font-size:10.5px;
+    }
+    .summary-mini strong{
+      display:block;
+      margin-top:4px;
+      font-size:18px;
+      line-height:1;
+      font-weight:1000;
+    }
+    @media(max-width:860px){
+      .desktop-table{display:none}
+      .mobile-list{display:block}
+      .top-actions{gap:9px}
+      .mini-link{padding:9px 12px;font-size:13px}
+      .match-grid .match{padding:13px}
+    }
+
   </style>
 </head>
 <body>
@@ -284,9 +396,10 @@
           <div class="hint">Use this as the official public record once all four submissions are in.</div>
         </div>
       </div>
-      <div class="table-wrap">
+      <div class="table-wrap desktop-table">
         <table id="lockedTable"></table>
       </div>
+      <div class="mobile-list" id="lockedCards"></div>
     </section>
 
     <section class="panel">
@@ -296,9 +409,10 @@
           <div class="hint">Shows match profit/loss, score bonus, props, and final Cup Bucks total.</div>
         </div>
       </div>
-      <div class="table-wrap">
+      <div class="table-wrap desktop-table">
         <table id="detailTable"></table>
       </div>
+      <div class="mobile-list" id="detailCards"></div>
     </section>
 
     <section class="panel" id="admin">
@@ -508,6 +622,32 @@ git push</pre>
             </tr>
           `).join("")}
         </tbody>`;
+
+      $("lockedCards").innerHTML = PLAYERS.map(p=>`
+        <article class="locked-card">
+          <div class="mobile-card-head">
+            <div>
+              <div class="mobile-card-name">${p.name}</div>
+              <div class="pick-sub">Wagered ${money(totalWagered(p))}</div>
+            </div>
+            <div class="mobile-card-total">${MATCHES.reduce((sum,m)=>sum + predictedTotal(p.picks[m.id]),0)}<span>Total goals</span></div>
+          </div>
+          <div class="pick-list">
+            ${MATCHES.map(m=>{
+              const pick = p.picks[m.id];
+              return `<div class="pick-item">
+                <div class="pick-item-top"><span>${m.label}</span><span>${money(pick.wager)}</span></div>
+                <div class="pick-main">${pick.pick}</div>
+                <div class="pick-sub">${m.a} ${pick.aScore} - ${pick.bScore} ${m.b}</div>
+              </div>`;
+            }).join("")}
+          </div>
+          <div class="props-line">
+            <strong>Proper Stars:</strong> ${p.props.topScorer || "—"}<br>
+            <strong>Team goals:</strong> ${p.props.teamGoals || "—"} · <strong>Shootouts:</strong> ${p.props.shootouts ?? "—"}
+          </div>
+        </article>
+      `).join("");
     }
 
     function renderDetail(){
@@ -535,6 +675,35 @@ git push</pre>
             </tr>`;
           }).join("")}
         </tbody>`;
+
+      $("detailCards").innerHTML = PLAYERS.map(p=>{
+        const bonus = MATCHES.reduce((sum,m)=>sum + matchScore(p,m).bonus,0);
+        const props = propsScore(p);
+        return `<article class="detail-card">
+          <div class="mobile-card-head">
+            <div>
+              <div class="mobile-card-name">${p.name}</div>
+              <div class="pick-sub">Scoring detail</div>
+            </div>
+            <div class="mobile-card-total">${money(totalFor(p))}<span>Cup Bucks</span></div>
+          </div>
+          <div class="score-list">
+            ${MATCHES.map(m=>{
+              const s = matchScore(p,m);
+              const cls = s.status === "Win" ? "win" : s.status === "Loss" ? "loss" : "";
+              return `<div class="score-item">
+                <div class="score-item-top"><span>${m.label}</span><span class="pill ${cls}">${s.status}</span></div>
+                <div class="pick-main">${profitLabel(s.profit)} net</div>
+                <div class="score-sub">Score bonus ${profitLabel(s.bonus)}</div>
+              </div>`;
+            }).join("")}
+          </div>
+          <div class="summary-row">
+            <div class="summary-mini"><small>Score bonus</small><strong>${profitLabel(bonus)}</strong></div>
+            <div class="summary-mini"><small>Props</small><strong>${profitLabel(props)}</strong></div>
+          </div>
+        </article>`;
+      }).join("");
     }
 
     renderResults();
