@@ -208,6 +208,21 @@
         background: center/contain no-repeat
           url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop stop-color='%23ffe6a8'/><stop offset='.45' stop-color='%23f4bd49'/><stop offset='1' stop-color='%23e49a10'/></linearGradient></defs><circle cx='32' cy='18' r='12' fill='url(%23g)' stroke='%23c88408' stroke-width='2.6'/><path d='M24 34h16v6H24z' fill='%23333'/><path d='M20 42h24v6H20z' rx='2' fill='%23444'/><path d='M32 6a12 12 0 0 1 0 24a12 12 0 0 1 0-24' fill='none' stroke='%23061b33' stroke-width='1.5'/><path d='M32 6v24M20 18h24M24 10l16 16M24 26l16-16' stroke='%23061b33' stroke-width='1.1' opacity='.55'/><rect x='27' y='44' width='10' height='2.5' fill='%23f4bd49'/></svg>");
       }
+      .proper-stars-bonus {
+        margin-top: 10px;
+        background: linear-gradient(90deg, #eef7ff, #f7fbff);
+        border: 1px solid rgba(216, 226, 238, 0.92);
+        color: #061b33;
+      }
+
+      .proper-stars-bonus:before {
+        opacity: 0.78;
+      }
+
+      .proper-stars-bonus:after {
+        display: none;
+      }
+
       .bonus:after {
         content: "";
         position: absolute;
@@ -1282,6 +1297,13 @@
           ><span class="bonus-item">| Total Goals +$15</span
           ><span class="bonus-item">| Team Score Exact +$10</span>
         </div>
+        <div class="bonus proper-stars-bonus">
+          <span class="bonus-title">Proper Stars bonus:</span>
+          <span class="bonus-item">Top scorer +$75</span>
+          <span class="bonus-item">| Tied top scorer +$50</span>
+          <span class="bonus-item">| Team most goals +$50</span>
+          <span class="bonus-item">| Exact shootouts +$50</span>
+        </div>
       </header>
 
       <section class="panel">
@@ -1344,8 +1366,7 @@
         <div class="props-copy">
           <h2>Proper Stars</h2>
           <div class="hint">
-            Top goal scorer is the star prop. If tied for top scorer, use the
-            tied-player payout.
+            Proper Stars bonus scoring: top scorer +$75, tied top scorer +$50, team with most goals +$50, exact penalty shootouts +$50.
           </div>
         </div>
       </div>
@@ -1446,8 +1467,10 @@
           code: "ES",
           colors: ["#c80e1f", "#ffd231", "#7b0015"],
           avatar: "S",
-          starNo: "19",
-          starName: "YAMAL",
+          jerseyNumber: "19",
+          jerseyName: "YAMAL",
+          starNo: "7",
+          starName: "MORATA",
           textColor: "#ffd231",
           textStroke: "rgba(6,27,51,.45)",
         },
@@ -1527,7 +1550,7 @@
           date: "July 10",
           a: "Spain",
           b: "Belgium",
-          aOdds: -320,
+          aOdds: -340,
           bOdds: 230,
         },
         {
@@ -1535,16 +1558,16 @@
           date: "July 11",
           a: "Norway",
           b: "England",
-          aOdds: 170,
-          bOdds: -200,
+          aOdds: 165,
+          bOdds: -230,
         },
         {
           id: "QF4",
           date: "July 11",
           a: "Argentina",
           b: "Switzerland",
-          aOdds: -150,
-          bOdds: 300,
+          aOdds: -180,
+          bOdds: 280,
         },
       ];
 
