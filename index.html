@@ -859,8 +859,8 @@
       }
 
       .jersey {
-        width: 86px;
-        height: 86px;
+        width: 90px;
+        height: 90px;
         transform: translateY(-2px);
         position: relative;
         z-index: 1;
@@ -912,8 +912,8 @@
         }
 
         .jersey {
-          width: 80px;
-          height: 80px;
+          width: 84px;
+          height: 84px;
         }
 
         .visual .avatar {
@@ -1428,65 +1428,87 @@
           code: "FR",
           colors: ["#092f68", "#ffffff", "#e83b4b"],
           avatar: "F",
+          starNo: "10",
+          starName: "MBAPPÉ",
+          textColor: "#ffffff",
+          textStroke: "rgba(6,27,51,.45)",
         },
         Morocco: {
           code: "MA",
           colors: ["#c9162b", "#0e8f50", "#ffffff"],
           avatar: "M",
+          starNo: "2",
+          starName: "HAKIMI",
+          textColor: "#ffffff",
+          textStroke: "rgba(6,27,51,.35)",
         },
         Spain: {
           code: "ES",
           colors: ["#c80e1f", "#ffd231", "#7b0015"],
           avatar: "S",
+          starNo: "19",
+          starName: "YAMAL",
+          textColor: "#ffd231",
+          textStroke: "rgba(6,27,51,.45)",
         },
         Belgium: {
           code: "BE",
           colors: ["#111111", "#e22b2f", "#f4d13d"],
           avatar: "B",
+          starNo: "9",
+          starName: "LUKAKU",
+          textColor: "#f4d13d",
+          textStroke: "rgba(0,0,0,.45)",
         },
         Norway: {
           code: "NO",
           colors: ["#c61b2b", "#0d3973", "#ffffff"],
           avatar: "N",
+          starNo: "9",
+          starName: "HAALAND",
+          textColor: "#ffffff",
+          textStroke: "rgba(6,27,51,.42)",
         },
         England: {
           code: "GB-ENG",
           colors: ["#ffffff", "#08264f", "#df2c3a"],
           avatar: "E",
+          starNo: "9",
+          starName: "KANE",
+          textColor: "#08264f",
+          textStroke: "rgba(255,255,255,.65)",
         },
         Argentina: {
           code: "ARG",
           colors: ["#8cc7ee", "#ffffff", "#f6b40e"],
           avatar: "A",
-        },
-        Colombia: {
-          code: "COL",
-          colors: ["#fcd116", "#003893", "#ce1126"],
-          avatar: "C",
-        },
-        Egypt: {
-          code: "EGY",
-          colors: ["#ce1126", "#ffffff", "#111111"],
-          avatar: "E",
+          starNo: "10",
+          starName: "MESSI",
+          textColor: "#ffffff",
+          textStroke: "rgba(6,27,51,.35)",
         },
         Switzerland: {
           code: "SUI",
           colors: ["#d52b1e", "#ffffff", "#d52b1e"],
           avatar: "S",
+          starNo: "10",
+          starName: "XHAKA",
+          textColor: "#ffffff",
+          textStroke: "rgba(6,27,51,.35)",
         },
       };
 
       const TOP_SCORER_OPTIONS = [
         "Kylian Mbappé — France",
+        "Ousmane Dembélé — France",
         "Erling Haaland — Norway",
         "Harry Kane — England",
+        "Jude Bellingham — England",
         "Lionel Messi — Argentina",
         "Romelu Lukaku — Belgium",
-        "Lautaro Martínez — Argentina",
-        "Julián Álvarez — Argentina",
-        "Álvaro Morata — Spain",
-        "Luis Díaz — Colombia",
-        "Youssef En-Nesyri — Morocco",
+        "Mikel Oyarzabal — Spain",
+        "Lamine Yamal — Spain",
+        "Breel Embolo — Switzerland",
         "Other / write-in",
       ];
 
@@ -1505,7 +1527,7 @@
           date: "July 10",
           a: "Spain",
           b: "Belgium",
-          aOdds: -340,
+          aOdds: -320,
           bOdds: 230,
         },
         {
@@ -1513,16 +1535,16 @@
           date: "July 11",
           a: "Norway",
           b: "England",
-          aOdds: 165,
-          bOdds: -230,
+          aOdds: 170,
+          bOdds: -200,
         },
         {
           id: "QF4",
           date: "July 11",
           a: "Argentina",
-          b: "Colombia",
-          aOdds: -180,
-          bOdds: 280,
+          b: "Switzerland",
+          aOdds: -150,
+          bOdds: 300,
         },
       ];
 
@@ -1603,13 +1625,18 @@
           "#ffffff",
           "#34495e",
         ];
+        const no = team.starNo || "";
+        const star = team.starName || "";
+        const textColor = team.textColor || accent || "#ffffff";
+        const textStroke = team.textStroke || "rgba(6,27,51,.35)";
         return `<svg class="jersey" viewBox="0 0 100 100" aria-hidden="true">
     <path d="M31 12h38l12 8 12 22-15 8-5-12v48c0 5-4 8-9 8H36c-5 0-9-3-9-8V38l-5 12-15-8 12-22 12-8z" fill="${base}" stroke="#061b33" stroke-opacity=".22" stroke-width="2"/>
     <path d="M39 13c3 8 19 8 22 0" fill="none" stroke="${accent}" stroke-width="5" stroke-linecap="round"/>
-    <path d="M23 35l-9 5M77 35l9 5M32 88h36" stroke="${trim}" stroke-width="4" stroke-linecap="round" opacity=".85"/>
-    <path d="M36 26h28" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
-    <path d="M50 18v66" stroke="${accent}" stroke-width="3" opacity=".35"/>
-    <path d="M64 29h10v12H64z" fill="none" stroke="${accent}" stroke-width="2" opacity=".85"/>
+    <path d="M23 35l-9 5M77 35l9 5M32 88h36" stroke="${trim}" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+    <path d="M36 22h28" stroke="rgba(255,255,255,.28)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M29 83h42" stroke="rgba(0,0,0,.18)" stroke-width="2" stroke-linecap="round"/>
+    <text x="50" y="38" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8.5" font-weight="1000" letter-spacing=".9" fill="${textColor}" stroke="${textStroke}" stroke-width="1.25" paint-order="stroke">${esc(star)}</text>
+    <text x="50" y="66" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="29" font-weight="1000" fill="${textColor}" stroke="${textStroke}" stroke-width="1.7" paint-order="stroke">${esc(no)}</text>
   </svg>`;
       }
 
@@ -2003,12 +2030,12 @@
             shootouts: $("shootouts").value,
           },
         };
-        localStorage.setItem("f8wc-cup-bucks-draft", JSON.stringify(data));
+        localStorage.setItem("f8wc-riskem-draft-swiss-v1", JSON.stringify(data));
       }
       function loadDraft() {
         try {
           const d = JSON.parse(
-            localStorage.getItem("f8wc-cup-bucks-draft") || "{}",
+            localStorage.getItem("f8wc-riskem-draft-swiss-v1") || "{}",
           );
           if (d.player) $("playerName").value = d.player;
           if (d.contact) $("commissionerContact").value = d.contact;
