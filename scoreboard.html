@@ -613,7 +613,7 @@
           <div>
             <h2>Unofficial Live Scores</h2>
             <div class="hint">
-              Reference only. Official F8WC Risk'em scoring is updated manually
+              Official F8WC Risk'em scoring is updated manually
               by the commissioner.
             </div>
             <div class="hint" id="liveScoresUpdated">Last refreshed: — PT</div>
@@ -633,54 +633,43 @@
           <div class="entry-read-card">
             <small>Highest Ceiling</small>
             <strong>Bam Bam HT</strong>
-            <span
-              >Big Morocco and England leverage gives this entry the top
-              single-entry upside.</span
-            >
+            <span>Big Morocco and England leverage gives this entry the top single-entry upside.</span>
           </div>
 
           <div class="entry-read-card">
             <small>Red Devil Swing</small>
             <strong>Mongoose</strong>
-            <span
-              >The only Belgium picker. If Belgium hits, this entry changes the
-              whole table.</span
-            >
+            <span>Belgium and Norway both live here, with France as the anchor.</span>
           </div>
 
           <div class="entry-read-card">
             <small>Chaos Upside</small>
             <strong>Doug the Head</strong>
-            <span
-              >Morocco plus England plus Messi/Argentina props creates a
-              boom-or-bust path.</span
-            >
+            <span>Morocco plus England plus Messi/Argentina props creates a boom-or-bust path.</span>
           </div>
 
           <div class="entry-read-card">
             <small>Best Chalk Path</small>
             <strong>Bam Bam</strong>
-            <span
-              >The cleanest favorite-heavy card if France, Spain, and Argentina
-              hold.</span
-            >
+            <span>The cleanest favorite-heavy card if France, Spain, and Argentina hold.</span>
           </div>
 
           <div class="entry-read-card">
             <small>Norway Hammer</small>
             <strong>Rob Ingham 1</strong>
-            <span
-              >Heavy Norway position. If Norway wins, this entry gets dangerous
-              fast.</span
-            >
+            <span>Heavy Norway position. If Norway wins, this entry gets dangerous fast.</span>
           </div>
 
           <div class="entry-read-card">
             <small>Balanced High-Upside</small>
             <strong>Raaab</strong>
-            <span
-              >Morocco upside with Spain support and England protection.</span
-            >
+            <span>Morocco upside with Spain support and England protection.</span>
+          </div>
+
+          <div class="entry-read-card">
+            <small>Red Devil Hammer</small>
+            <strong>Livinfree</strong>
+            <span>Belgium plus Norway at $100 each. If both underdogs hit, this card jumps hard.</span>
           </div>
         </div>
       </section>
@@ -777,7 +766,6 @@
                   <div class="result">
                     ${awayAbbr} ${awayScore} - ${homeScore} ${homeAbbr}
                   </div>
-                  <div class="match-meta">Reference only</div>
                 </div>
               `;
                   })
@@ -870,7 +858,7 @@
     </div>
 
     <script>
-      const LAST_UPDATED = "6 locked submissions imported — before kickoff";
+      const LAST_UPDATED = "7 locked submissions imported — before kickoff";
       const BUDGET = 400;
 
       // Privacy toggle:
@@ -1156,6 +1144,45 @@
             shootouts: 1,
           },
         },
+        {
+          name: "Livinfree",
+          submittedAt: "2026-07-08T22:38:52.000Z",
+          picks: {
+            QF1: {
+              pick: "France",
+              aScore: 3,
+              bScore: 2,
+              wager: 100,
+              odds: -390,
+            },
+            QF2: {
+              pick: "Belgium",
+              aScore: 1,
+              bScore: 3,
+              wager: 100,
+              odds: 230,
+            },
+            QF3: {
+              pick: "Norway",
+              aScore: 4,
+              bScore: 1,
+              wager: 100,
+              odds: 165,
+            },
+            QF4: {
+              pick: "Argentina",
+              aScore: 2,
+              bScore: 1,
+              wager: 100,
+              odds: -180,
+            },
+          },
+          props: {
+            topScorer: "Erling Haaland — Norway",
+            teamGoals: "Norway",
+            shootouts: 0,
+          },
+        }
       ];
 
       /*
