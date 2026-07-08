@@ -417,95 +417,71 @@
   </div>
 
   <script>
-    const LAST_UPDATED = "Demo — Switzerland update / replace with real results";
+    const LAST_UPDATED = "2 locked submissions imported — before kickoff";
     const BUDGET = 400;
 
     const MATCHES = [
       { id:"QF1", label:"QF1", a:"France", b:"Morocco", aOdds:-390, bOdds:300 },
-      { id:"QF2", label:"QF2", a:"Spain", b:"Belgium", aOdds:-340, bOdds:230 },
-      { id:"QF3", label:"QF3", a:"Norway", b:"England", aOdds:165, bOdds:-230 },
-      { id:"QF4", label:"QF4", a:"Argentina", b:"Switzerland", aOdds:-180, bOdds:280 }
+      { id:"QF2", label:"QF2", a:"Spain", b:"Belgium", aOdds:-320, bOdds:230 },
+      { id:"QF3", label:"QF3", a:"Norway", b:"England", aOdds:170, bOdds:-200 },
+      { id:"QF4", label:"QF4", a:"Argentina", b:"Switzerland", aOdds:-150, bOdds:280 }
     ];
 
     /*
-      TEST PLAYER DATA
+      LOCKED PLAYER SUBMISSIONS
 
       This block controls who appears on the scoreboard.
 
-      For the demo:
-      - Four test players are included.
-      - These are fake locked submissions so you can preview the full scoreboard.
+      Current state:
+      - These entries were imported from the uploaded CSV submissions.
+      - Each pick includes its own locked odds from the player's submission.
+      - The scoreboard calculates profit/loss using the locked odds on that pick,
+        not only the display odds in MATCHES.
 
-      For real use:
-      1. Replace these four entries with your four real submissions.
-      2. Keep the same structure.
-      3. Team names must match MATCHES exactly.
-      4. Wagers should match the copied submission text.
+      For more submissions:
+      1. Add another player object below.
+      2. Keep team names exactly the same as MATCHES.
+      3. Keep QF1-QF4 keys exactly the same.
+      4. Use the odds from the player's copied/CSV submission.
 
       To clear the scoreboard before real picks are locked:
       const PLAYERS = [];
     */
     const PLAYERS = [
       {
-        name:"Boris The Blade",
+        name:"Bam Bam HT",
+        submittedAt:"2026-07-08T00:30:46.799Z",
         picks:{
-          QF1:{ pick:"France", aScore:1, bScore:0, wager:100 },
-          QF2:{ pick:"Spain", aScore:2, bScore:0, wager:100 },
-          QF3:{ pick:"Norway", aScore:2, bScore:1, wager:75 },
-          QF4:{ pick:"Argentina", aScore:2, bScore:1, wager:50 }
+          QF1:{ pick:"Morocco", aScore:2, bScore:3, wager:150, odds:300 },
+          QF2:{ pick:"Spain", aScore:2, bScore:1, wager:50, odds:-320 },
+          QF3:{ pick:"England", aScore:1, bScore:2, wager:150, odds:-200 },
+          QF4:{ pick:"Argentina", aScore:2, bScore:0, wager:50, odds:-150 }
         },
         props:{
-          topScorer:"Kylian Mbappé — France",
-          teamGoals:"France",
-          shootouts:1
-        }
-      },
-      {
-        name:"Brick Top",
-        picks:{
-          QF1:{ pick:"Morocco", aScore:1, bScore:1, wager:125 },
-          QF2:{ pick:"Belgium", aScore:2, bScore:1, wager:75 },
-          QF3:{ pick:"England", aScore:1, bScore:2, wager:150 },
-          QF4:{ pick:"Argentina", aScore:3, bScore:1, wager:50 }
-        },
-        props:{
-          topScorer:"Harry Kane — England",
+          topScorer:"Jude Bellingham — England",
           teamGoals:"England",
-          shootouts:1
+          shootouts:0
         }
       },
       {
-        name:"Turkish",
+        name:"Bam Bam",
+        submittedAt:"2026-07-08T00:34:19.403Z",
         picks:{
-          QF1:{ pick:"France", aScore:2, bScore:0, wager:150 },
-          QF2:{ pick:"Spain", aScore:1, bScore:0, wager:75 },
-          QF3:{ pick:"England", aScore:0, bScore:1, wager:100 },
-          QF4:{ pick:"Switzerland", aScore:1, bScore:1, wager:75 }
+          QF1:{ pick:"France", aScore:3, bScore:1, wager:150, odds:-390 },
+          QF2:{ pick:"Spain", aScore:2, bScore:1, wager:150, odds:-320 },
+          QF3:{ pick:"Norway", aScore:2, bScore:1, wager:50, odds:170 },
+          QF4:{ pick:"Argentina", aScore:2, bScore:1, wager:50, odds:-150 }
         },
         props:{
           topScorer:"Kylian Mbappé — France",
           teamGoals:"France",
-          shootouts:2
-        }
-      },
-      {
-        name:"Bullet Tooth",
-        picks:{
-          QF1:{ pick:"France", aScore:1, bScore:0, wager:75 },
-          QF2:{ pick:"Belgium", aScore:1, bScore:2, wager:100 },
-          QF3:{ pick:"Norway", aScore:2, bScore:1, wager:100 },
-          QF4:{ pick:"Argentina", aScore:2, bScore:0, wager:75 }
-        },
-        props:{
-          topScorer:"Lionel Messi — Argentina",
-          teamGoals:"Argentina",
-          shootouts:0
+          shootouts:1
         }
       }
     ];
 
     /*
-      PROJECTED / DEMO MATCH RESULTS
+      MATCH RESULTS
 
       This block controls whether the scoreboard calculates wins, losses,
       score bonuses, and updated Cup Bucks totals.
@@ -524,57 +500,25 @@
       topScorers:
         Optional per-match recordkeeping. Proper Stars scoring is controlled
         by FINAL_PROPS below.
-
-      To return this to pre-game/pending mode, replace with:
-      const RESULTS = {
-        QF1:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
-        QF2:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
-        QF3:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
-        QF4:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] }
-      };
     */
     const RESULTS = {
-      QF1:{
-        complete:true,
-        aScore:1,
-        bScore:0,
-        winner:"France",
-        topScorers:["Kylian Mbappé — France"]
-      },
-      QF2:{
-        complete:true,
-        aScore:1,
-        bScore:2,
-        winner:"Belgium",
-        topScorers:["Romelu Lukaku — Belgium"]
-      },
-      QF3:{
-        complete:true,
-        aScore:1,
-        bScore:2,
-        winner:"England",
-        topScorers:["Harry Kane — England"]
-      },
-      QF4:{
-        complete:true,
-        aScore:2,
-        bScore:0,
-        winner:"Argentina",
-        topScorers:["Lionel Messi — Argentina"]
-      }
+      QF1:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
+      QF2:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
+      QF3:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
+      QF4:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] }
     };
 
     /*
-      PROJECTED / DEMO PROPER STARS RESULTS
+      FINAL PROPER STARS RESULTS
 
       complete:
-        false = props are still pending and no prop points are applied
+        false = props are pending and no prop points are applied
         true  = scoreboard applies Proper Stars prop points
 
       topScorers:
         Use one player for a solo top scorer.
         Use multiple players for a tied top scorer.
-        The scoring function awards:
+        Scoring:
           solo correct top scorer = +75
           tied correct top scorer = +50
 
@@ -583,20 +527,12 @@
 
       shootouts:
         Total number of quarterfinal penalty shootouts.
-
-      To return this to pre-game/pending mode, replace with:
-      const FINAL_PROPS = {
-        complete:false,
-        topScorers:[],
-        teamMostGoals:"",
-        shootouts:null
-      };
     */
     const FINAL_PROPS = {
-      complete:true,
-      topScorers:["Harry Kane — England"],
-      teamMostGoals:"Argentina",
-      shootouts:0
+      complete:false,
+      topScorers:[],
+      teamMostGoals:"",
+      shootouts:null
     };
 
     const $ = (id) => document.getElementById(id);
@@ -611,6 +547,9 @@
     }
     function getMatch(id){ return MATCHES.find(m => m.id === id); }
     function getOdds(match, team){ return team === match.a ? match.aOdds : match.bOdds; }
+    function lockedOdds(match, pick){
+      return Number(pick?.odds ?? getOdds(match, pick?.pick));
+    }
     function predictedMargin(p, m){ return p.aScore - p.bScore; }
     function actualMargin(r){ return r.aScore - r.bScore; }
     function predictedTotal(p){ return Number(p.aScore||0) + Number(p.bScore||0); }
@@ -630,7 +569,7 @@
       const p = player.picks[match.id];
       const r = RESULTS[match.id];
       if(!p || !r.complete) return { profit:0, bonus:0, total:0, status:"Pending" };
-      const odds = getOdds(match, p.pick);
+      const odds = lockedOdds(match, p);
       const win = p.pick === r.winner;
       const profit = win ? profitFor(p.wager, odds) : -Number(p.wager||0);
       const bonus = scoreBonus(p, r, match);
@@ -718,7 +657,7 @@
               <td><strong>${p.name}</strong><br><span class="fine">Wagered ${money(totalWagered(p))}</span></td>
               ${MATCHES.map(m=>{
                 const pick = p.picks[m.id];
-                return `<td><span class="pill">${pick.pick}</span><br>${m.a} ${pick.aScore} - ${pick.bScore} ${m.b}<br><span class="fine">${money(pick.wager)} wager</span></td>`;
+                return `<td><span class="pill">${pick.pick}</span><br>${m.a} ${pick.aScore} - ${pick.bScore} ${m.b}<br><span class="fine">${money(pick.wager)} at ${fmtOdds(lockedOdds(m, pick))}</span></td>`;
               }).join("")}
               <td>${p.props.topScorer || "—"}<br><span class="fine">${p.props.teamGoals || "—"} · Shootouts ${p.props.shootouts ?? "—"}</span></td>
               <td>${MATCHES.reduce((sum,m)=>sum + predictedTotal(p.picks[m.id]),0)} goals</td>
@@ -739,7 +678,7 @@
             ${MATCHES.map(m=>{
               const pick = p.picks[m.id];
               return `<div class="pick-item">
-                <div class="pick-item-top"><span>${m.label}</span><span>${money(pick.wager)}</span></div>
+                <div class="pick-item-top"><span>${m.label}</span><span>${money(pick.wager)} @ ${fmtOdds(lockedOdds(m, pick))}</span></div>
                 <div class="pick-main">${pick.pick}</div>
                 <div class="pick-sub">${m.a} ${pick.aScore} - ${pick.bScore} ${m.b}</div>
               </div>`;
