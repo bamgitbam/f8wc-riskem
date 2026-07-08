@@ -1,456 +1,808 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="robots" content="noindex,nofollow" />
-  <title>F8WC Risk'em Scoreboard</title>
-  <style>
-    :root {
-      --navy:#061b33;
-      --navy2:#0b2e53;
-      --gold:#f4bd49;
-      --gold2:#ff9f1c;
-      --paper:#f7f9fc;
-      --card:#ffffff;
-      --line:#d8e2ee;
-      --text:#061b33;
-      --muted:#5c6c80;
-      --green:#0f8f62;
-      --red:#b42318;
-      --shadow:0 18px 45px rgba(0,0,0,.14);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      background:linear-gradient(135deg,#f4efe4 0%,#eef6fb 38%,#f7f9fc 100%);
-      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-      color:var(--text);
-    }
-    .wrap{max-width:1120px;margin:0 auto;padding:22px 16px 40px}
-    .hero{
-      position:relative;
-      overflow:hidden;
-      background:linear-gradient(135deg,var(--navy),#063d66 66%,#05243e);
-      color:white;
-      border-radius:28px;
-      padding:30px 28px 24px;
-      box-shadow:var(--shadow);
-    }
-    .hero:after{
-      content:"";
-      position:absolute;
-      right:24px;
-      bottom:-28px;
-      width:130px;
-      height:130px;
-      opacity:.08;
-      background:center/contain no-repeat url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop stop-color='%23ffe6a8'/><stop offset='.45' stop-color='%23f4bd49'/><stop offset='1' stop-color='%23e49a10'/></linearGradient></defs><circle cx='32' cy='18' r='12' fill='url(%23g)' stroke='%23c88408' stroke-width='2.6'/><path d='M24 34h16v6H24z' fill='%23333'/><path d='M20 42h24v6H20z' rx='2' fill='%23444'/><path d='M32 6a12 12 0 0 1 0 24a12 12 0 0 1 0-24' fill='none' stroke='%23061b33' stroke-width='1.5'/><path d='M32 6v24M20 18h24M24 10l16 16M24 26l16-16' stroke='%23061b33' stroke-width='1.1' opacity='.55'/><rect x='27' y='44' width='10' height='2.5' fill='%23f4bd49'/></svg>");
-    }
-    .kicker{
-      display:inline-flex;
-      color:#ffe6a8;
-      font-weight:1000;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size:13px;
-      margin-bottom:14px;
-      position:relative;
-      z-index:1;
-    }
-    h1{
-      margin:0;
-      font-size:clamp(34px,7vw,64px);
-      line-height:.95;
-      font-weight:1000;
-      letter-spacing:-.05em;
-      text-transform:uppercase;
-      position:relative;
-      z-index:1;
-    }
-    .gold{color:var(--gold)}
-    .sub{
-      margin:12px 0 0;
-      max-width:780px;
-      font-size:clamp(15px,2.3vw,20px);
-      line-height:1.35;
-      color:#f5fbff;
-      font-weight:750;
-      position:relative;
-      z-index:1;
-    }
-    .top-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;position:relative;z-index:1}
-    .mini-link{
-      color:#061b33;
-      background:#fff4c7;
-      border:1px solid rgba(255,255,255,.35);
-      border-radius:999px;
-      text-decoration:none;
-      padding:10px 14px;
-      font-weight:1000;
-      font-size:14px;
-    }
-    .panel{
-      background:rgba(255,255,255,.92);
-      border:1px solid var(--line);
-      border-radius:24px;
-      box-shadow:0 12px 30px rgba(6,27,51,.08);
-      padding:18px;
-      margin-top:18px;
-    }
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      gap:14px;
-      align-items:flex-end;
-      margin:0 0 14px;
-    }
-    h2{
-      margin:0;
-      font-size:28px;
-      line-height:1;
-      font-weight:1000;
-      letter-spacing:-.03em;
-    }
-    .hint{
-      color:var(--muted);
-      font-size:13.25px;
-      font-weight:650;
-      line-height:1.4;
-      margin-top:8px;
-      max-width:680px;
-    }
-    .updated{
-      color:#415168;
-      font-weight:900;
-      font-size:13px;
-      text-align:right;
-      line-height:1.35;
-    }
-    .cards{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:14px;
-    }
-    .stat{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:16px;
-      box-shadow:0 8px 20px rgba(6,27,51,.06);
-    }
-    .stat small{
-      display:block;
-      color:#5c6c80;
-      font-weight:850;
-      text-transform:uppercase;
-      letter-spacing:.06em;
-      font-size:11px;
-    }
-    .stat strong{
-      display:block;
-      margin-top:5px;
-      font-size:28px;
-      line-height:1;
-      letter-spacing:-.04em;
-    }
-    .rankings{display:grid;gap:12px}
-    .rank-card{
-      display:grid;
-      grid-template-columns:48px minmax(0,1fr) auto;
-      gap:12px;
-      align-items:center;
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:14px;
-      box-shadow:0 8px 20px rgba(6,27,51,.06);
-    }
-    .rank{
-      width:42px;height:42px;border-radius:50%;
-      background:#eef7ff;border:1px solid #c9e1f3;
-      display:flex;align-items:center;justify-content:center;
-      font-weight:1000;color:#062f55;
-    }
-    .player-name{font-weight:1000;font-size:20px;line-height:1.1;letter-spacing:-.03em}
-    .player-sub{margin-top:5px;color:#5c6c80;font-size:12.5px;font-weight:750;line-height:1.35}
-    .score{text-align:right;font-weight:1000;font-size:26px;line-height:1;color:#062f55}
-    .score span{display:block;margin-top:5px;font-size:11px;color:#5c6c80;text-transform:uppercase;letter-spacing:.06em}
-    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:18px;background:#fff}
-    table{width:100%;border-collapse:separate;border-spacing:0;min-width:760px}
-    th,td{padding:12px 12px;border-bottom:1px solid #edf2f7;text-align:left;font-size:13px;vertical-align:top}
-    th{background:#f6fbff;color:#415168;text-transform:uppercase;letter-spacing:.05em;font-size:11px;font-weight:1000;position:sticky;top:0}
-    tr:last-child td{border-bottom:0}
-    td strong{font-weight:1000}
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:999px;
-      padding:6px 9px;
-      background:#f2f6fa;
-      font-weight:1000;
-      color:#061b33;
-      white-space:nowrap;
-    }
-    .pill.win{background:#e7fff4;color:#0f6b49}
-    .pill.loss{background:#fff0ee;color:#b42318}
-    .match-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-    .match{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:14px;
-      box-shadow:0 8px 20px rgba(6,27,51,.06);
-    }
-    .match-title{font-weight:1000;font-size:16px;line-height:1.15}
-    .match-meta{color:#5c6c80;font-weight:800;font-size:12.5px;margin-top:5px}
-    .result{margin-top:10px;font-weight:1000;color:#062f55}
-    .fine{font-size:13px;color:#5c6c80;font-weight:650;line-height:1.5}
-    .admin-code{
-      background:#0b1727;
-      color:#e9f5ff;
-      border-radius:18px;
-      padding:14px;
-      overflow:auto;
-      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-      font-size:12px;
-      line-height:1.45;
-    }
-    details summary{cursor:pointer;font-weight:1000;color:#415168}
-    @media(max-width:860px){
-      .wrap{padding:14px 12px 28px}
-      .hero{padding:26px 20px 22px;border-radius:24px}
-      .section-head{align-items:flex-start;flex-direction:column}
-      .updated{text-align:left}
-      .cards,.match-grid{grid-template-columns:1fr}
-      .rank-card{grid-template-columns:42px minmax(0,1fr);align-items:start}
-      .score{grid-column:2;text-align:left;font-size:24px;margin-top:2px}
-      .panel{padding:16px;border-radius:22px}
-      h2{font-size:26px}
-      .hint{font-size:13px;line-height:1.42;margin-top:9px}
-      .stat strong{font-size:26px}
-      table{min-width:680px}
-    }
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>F8WC Risk'em Scoreboard</title>
+    <style>
+      :root {
+        --navy: #061b33;
+        --navy2: #0b2e53;
+        --gold: #f4bd49;
+        --gold2: #ff9f1c;
+        --paper: #f7f9fc;
+        --card: #ffffff;
+        --line: #d8e2ee;
+        --text: #061b33;
+        --muted: #5c6c80;
+        --green: #0f8f62;
+        --red: #b42318;
+        --shadow: 0 18px 45px rgba(0, 0, 0, 0.14);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: linear-gradient(
+          135deg,
+          #f4efe4 0%,
+          #eef6fb 38%,
+          #f7f9fc 100%
+        );
+        font-family:
+          Inter,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Arial,
+          sans-serif;
+        color: var(--text);
+      }
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 22px 16px 40px;
+      }
+      .hero {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--navy), #063d66 66%, #05243e);
+        color: white;
+        border-radius: 28px;
+        padding: 30px 28px 24px;
+        box-shadow: var(--shadow);
+      }
+      .hero:after {
+        content: "";
+        position: absolute;
+        right: 24px;
+        bottom: -28px;
+        width: 130px;
+        height: 130px;
+        opacity: 0.08;
+        background: center/contain no-repeat
+          url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop stop-color='%23ffe6a8'/><stop offset='.45' stop-color='%23f4bd49'/><stop offset='1' stop-color='%23e49a10'/></linearGradient></defs><circle cx='32' cy='18' r='12' fill='url(%23g)' stroke='%23c88408' stroke-width='2.6'/><path d='M24 34h16v6H24z' fill='%23333'/><path d='M20 42h24v6H20z' rx='2' fill='%23444'/><path d='M32 6a12 12 0 0 1 0 24a12 12 0 0 1 0-24' fill='none' stroke='%23061b33' stroke-width='1.5'/><path d='M32 6v24M20 18h24M24 10l16 16M24 26l16-16' stroke='%23061b33' stroke-width='1.1' opacity='.55'/><rect x='27' y='44' width='10' height='2.5' fill='%23f4bd49'/></svg>");
+      }
+      .kicker {
+        display: inline-flex;
+        color: #ffe6a8;
+        font-weight: 1000;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-size: 13px;
+        margin-bottom: 14px;
+        position: relative;
+        z-index: 1;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(34px, 7vw, 64px);
+        line-height: 0.95;
+        font-weight: 1000;
+        letter-spacing: -0.05em;
+        text-transform: uppercase;
+        position: relative;
+        z-index: 1;
+      }
+      .gold {
+        color: var(--gold);
+      }
+      .sub {
+        margin: 12px 0 0;
+        max-width: 780px;
+        font-size: clamp(15px, 2.3vw, 20px);
+        line-height: 1.35;
+        color: #f5fbff;
+        font-weight: 750;
+        position: relative;
+        z-index: 1;
+      }
+      .top-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+        position: relative;
+        z-index: 1;
+      }
+      .mini-link {
+        color: #061b33;
+        background: #fff4c7;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 999px;
+        text-decoration: none;
+        padding: 10px 14px;
+        font-weight: 1000;
+        font-size: 14px;
+      }
+      .panel {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        box-shadow: 0 12px 30px rgba(6, 27, 51, 0.08);
+        padding: 18px;
+        margin-top: 18px;
+      }
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: flex-end;
+        margin: 0 0 14px;
+      }
+      h2 {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1;
+        font-weight: 1000;
+        letter-spacing: -0.03em;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 13.25px;
+        font-weight: 650;
+        line-height: 1.4;
+        margin-top: 8px;
+        max-width: 680px;
+      }
+      .updated {
+        color: #415168;
+        font-weight: 900;
+        font-size: 13px;
+        text-align: right;
+        line-height: 1.35;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+      .stat {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 16px;
+        box-shadow: 0 8px 20px rgba(6, 27, 51, 0.06);
+      }
+      .stat small {
+        display: block;
+        color: #5c6c80;
+        font-weight: 850;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-size: 11px;
+      }
+      .stat strong {
+        display: block;
+        margin-top: 5px;
+        font-size: 28px;
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
+      .rankings {
+        display: grid;
+        gap: 12px;
+      }
+      .rank-card {
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: center;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 14px;
+        box-shadow: 0 8px 20px rgba(6, 27, 51, 0.06);
+      }
+      .rank {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #eef7ff;
+        border: 1px solid #c9e1f3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 1000;
+        color: #062f55;
+      }
+      .player-name {
+        font-weight: 1000;
+        font-size: 20px;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
+      .player-sub {
+        margin-top: 5px;
+        color: #5c6c80;
+        font-size: 12.5px;
+        font-weight: 750;
+        line-height: 1.35;
+      }
+      .score {
+        text-align: right;
+        font-weight: 1000;
+        font-size: 26px;
+        line-height: 1;
+        color: #062f55;
+      }
+      .score span {
+        display: block;
+        margin-top: 5px;
+        font-size: 11px;
+        color: #5c6c80;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .table-wrap {
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: #fff;
+      }
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        min-width: 760px;
+      }
+      th,
+      td {
+        padding: 12px 12px;
+        border-bottom: 1px solid #edf2f7;
+        text-align: left;
+        font-size: 13px;
+        vertical-align: top;
+      }
+      th {
+        background: #f6fbff;
+        color: #415168;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 11px;
+        font-weight: 1000;
+        position: sticky;
+        top: 0;
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      td strong {
+        font-weight: 1000;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 6px 9px;
+        background: #f2f6fa;
+        font-weight: 1000;
+        color: #061b33;
+        white-space: nowrap;
+      }
+      .pill.win {
+        background: #e7fff4;
+        color: #0f6b49;
+      }
+      .pill.loss {
+        background: #fff0ee;
+        color: #b42318;
+      }
+      .match-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+      .match {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 14px;
+        box-shadow: 0 8px 20px rgba(6, 27, 51, 0.06);
+      }
+      .match-title {
+        font-weight: 1000;
+        font-size: 16px;
+        line-height: 1.15;
+      }
+      .match-meta {
+        color: #5c6c80;
+        font-weight: 800;
+        font-size: 12.5px;
+        margin-top: 5px;
+      }
+      .result {
+        margin-top: 10px;
+        font-weight: 1000;
+        color: #062f55;
+      }
+      .fine {
+        font-size: 13px;
+        color: #5c6c80;
+        font-weight: 650;
+        line-height: 1.5;
+      }
+      .admin-code {
+        background: #0b1727;
+        color: #e9f5ff;
+        border-radius: 18px;
+        padding: 14px;
+        overflow: auto;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      details summary {
+        cursor: pointer;
+        font-weight: 1000;
+        color: #415168;
+      }
+      @media (max-width: 860px) {
+        .wrap {
+          padding: 14px 12px 28px;
+        }
+        .hero {
+          padding: 26px 20px 22px;
+          border-radius: 24px;
+        }
+        .section-head {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .updated {
+          text-align: left;
+        }
+        .cards,
+        .match-grid {
+          grid-template-columns: 1fr;
+        }
+        .rank-card {
+          grid-template-columns: 42px minmax(0, 1fr);
+          align-items: start;
+        }
+        .score {
+          grid-column: 2;
+          text-align: left;
+          font-size: 24px;
+          margin-top: 2px;
+        }
+        .panel {
+          padding: 16px;
+          border-radius: 22px;
+        }
+        h2 {
+          font-size: 26px;
+        }
+        .hint {
+          font-size: 13px;
+          line-height: 1.42;
+          margin-top: 9px;
+        }
+        .stat strong {
+          font-size: 26px;
+        }
+        table {
+          min-width: 680px;
+        }
+      }
 
-    .mobile-list{display:none}
-    .locked-card,.detail-card{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:14px;
-      box-shadow:0 8px 20px rgba(6,27,51,.06);
-    }
-    .locked-card + .locked-card,
-    .detail-card + .detail-card{margin-top:12px}
-    .mobile-card-head{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:flex-start;
-      margin-bottom:12px;
-    }
-    .mobile-card-name{
-      font-size:20px;
-      line-height:1.1;
-      font-weight:1000;
-      letter-spacing:-.03em;
-    }
-    .mobile-card-total{
-      font-size:24px;
-      line-height:1;
-      font-weight:1000;
-      color:#062f55;
-      text-align:right;
-    }
-    .mobile-card-total span{
-      display:block;
-      margin-top:4px;
-      font-size:10.5px;
-      color:#5c6c80;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-    }
-    .pick-list,.score-list{display:grid;gap:10px}
-    .pick-item,.score-item{
-      border:1px solid #edf2f7;
-      background:#f8fbfe;
-      border-radius:14px;
-      padding:10px 11px;
-    }
-    .pick-item-top,.score-item-top{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-      font-size:13px;
-      font-weight:1000;
-      color:#415168;
-      margin-bottom:6px;
-    }
-    .pick-main{
-      font-weight:1000;
-      font-size:16px;
-      color:#061b33;
-    }
-    .pick-sub,.score-sub{
-      margin-top:3px;
-      color:#5c6c80;
-      font-size:12.5px;
-      font-weight:750;
-      line-height:1.35;
-    }
-    .props-line{
-      margin-top:12px;
-      padding-top:12px;
-      border-top:1px solid #edf2f7;
-      color:#5c6c80;
-      font-size:12.75px;
-      font-weight:750;
-      line-height:1.4;
-    }
-    .summary-row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:12px;
-    }
-    .summary-mini{
-      border:1px solid #edf2f7;
-      background:#f8fbfe;
-      border-radius:14px;
-      padding:10px 11px;
-    }
-    .summary-mini small{
-      display:block;
-      color:#5c6c80;
-      font-weight:900;
-      text-transform:uppercase;
-      letter-spacing:.05em;
-      font-size:10.5px;
-    }
-    .summary-mini strong{
-      display:block;
-      margin-top:4px;
-      font-size:18px;
-      line-height:1;
-      font-weight:1000;
-    }
-    @media(max-width:860px){
-      .desktop-table{display:none}
-      .mobile-list{display:block}
-      .top-actions{gap:9px}
-      .mini-link{padding:9px 12px;font-size:13px}
-      .match-grid .match{padding:13px}
-    }
+      .mobile-list {
+        display: none;
+      }
+      .locked-card,
+      .detail-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 14px;
+        box-shadow: 0 8px 20px rgba(6, 27, 51, 0.06);
+      }
+      .locked-card + .locked-card,
+      .detail-card + .detail-card {
+        margin-top: 12px;
+      }
+      .mobile-card-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+        margin-bottom: 12px;
+      }
+      .mobile-card-name {
+        font-size: 20px;
+        line-height: 1.1;
+        font-weight: 1000;
+        letter-spacing: -0.03em;
+      }
+      .mobile-card-total {
+        font-size: 24px;
+        line-height: 1;
+        font-weight: 1000;
+        color: #062f55;
+        text-align: right;
+      }
+      .mobile-card-total span {
+        display: block;
+        margin-top: 4px;
+        font-size: 10.5px;
+        color: #5c6c80;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .pick-list,
+      .score-list {
+        display: grid;
+        gap: 10px;
+      }
+      .pick-item,
+      .score-item {
+        border: 1px solid #edf2f7;
+        background: #f8fbfe;
+        border-radius: 14px;
+        padding: 10px 11px;
+      }
+      .pick-item-top,
+      .score-item-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        font-size: 13px;
+        font-weight: 1000;
+        color: #415168;
+        margin-bottom: 6px;
+      }
+      .pick-main {
+        font-weight: 1000;
+        font-size: 16px;
+        color: #061b33;
+      }
+      .pick-sub,
+      .score-sub {
+        margin-top: 3px;
+        color: #5c6c80;
+        font-size: 12.5px;
+        font-weight: 750;
+        line-height: 1.35;
+      }
+      .props-line {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #edf2f7;
+        color: #5c6c80;
+        font-size: 12.75px;
+        font-weight: 750;
+        line-height: 1.4;
+      }
+      .summary-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .summary-mini {
+        border: 1px solid #edf2f7;
+        background: #f8fbfe;
+        border-radius: 14px;
+        padding: 10px 11px;
+      }
+      .summary-mini small {
+        display: block;
+        color: #5c6c80;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 10.5px;
+      }
+      .summary-mini strong {
+        display: block;
+        margin-top: 4px;
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 1000;
+      }
+      @media (max-width: 860px) {
+        .desktop-table {
+          display: none;
+        }
+        .mobile-list {
+          display: block;
+        }
+        .top-actions {
+          gap: 9px;
+        }
+        .mini-link {
+          padding: 9px 12px;
+          font-size: 13px;
+        }
+        .match-grid .match {
+          padding: 13px;
+        }
+      }
 
-  
-    .locked-hidden-card{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:18px;
-      box-shadow:0 8px 20px rgba(6,27,51,.06);
-    }
-    .locked-hidden-card strong{
-      display:block;
-      font-size:20px;
-      line-height:1.15;
-      font-weight:1000;
-      letter-spacing:-.03em;
-      color:#061b33;
-      margin-bottom:7px;
-    }
-
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header class="hero">
-      <div class="kicker">Quarterfinal Scoreboard</div>
-      <h1>F8WC <span class="gold">Risk'em</span></h1>
-      <p class="sub">Locked picks, Cup Bucks standings, Proper Stars, and live commissioner updates.</p>
-      <div class="top-actions">
-        <a class="mini-link" href="./">Submit picks</a>
-        <a class="mini-link" href="#locked">Locked picks</a>
-      </div>
-    </header>
-
-    <section class="panel">
-      <div class="section-head">
-        <div>
-          <h2>Standings</h2>
-          <div class="hint">Cup Bucks update results below.</div>
+      .locked-hidden-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 8px 20px rgba(6, 27, 51, 0.06);
+      }
+      .locked-hidden-card strong {
+        display: block;
+        font-size: 20px;
+        line-height: 1.15;
+        font-weight: 1000;
+        letter-spacing: -0.03em;
+        color: #061b33;
+        margin-bottom: 7px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <div class="kicker">Quarterfinal Scoreboard</div>
+        <h1>F8WC <span class="gold">Risk'em</span></h1>
+        <p class="sub">
+          Locked picks, Cup Bucks standings, Proper Stars, and live commissioner
+          updates.
+        </p>
+        <div class="top-actions">
+          <a class="mini-link" href="./">Submit picks</a>
+          <a class="mini-link" href="#locked">Locked picks</a>
         </div>
-        <div class="updated" id="updatedText"></div>
-      </div>
-      <div class="rankings" id="standings"></div>
-    </section>
+      </header>
 
-    <section class="panel">
-      <div class="cards">
-        <div class="stat"><small>Players</small><strong id="playerCount">0</strong></div>
-        <div class="stat"><small>Matches Complete</small><strong id="matchCount">0 / 4</strong></div>
-        <div class="stat"><small>Leader</small><strong id="leaderName">—</strong></div>
-        <div class="stat"><small>Proper Stars</small><strong id="properStarsCount">0</strong></div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="section-head">
-        <div>
-          <h2>Match Results</h2>
-          <div class="hint">After each game, edit RESULTS in this file, then commit and push.</div>
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <h2>Unofficial Live Scores</h2>
+            <div class="hint">
+              Reference only. Official F8WC Risk'em scoring is updated manually by the commissioner.
+            </div>
+            <div class="hint" id="liveScoresUpdated">Last refreshed: —</div>
+          </div>
         </div>
-      </div>
-      <div class="match-grid" id="resultsGrid"></div>
-    </section>
+        <div id="liveScores" class="match-grid"></div>
+      </section>
 
-    <section class="panel" id="locked">
-      <div class="section-head">
-        <div>
-          <h2>Locked Picks</h2>
-          <div class="hint">Hidden until all submissions are in. This becomes the official public record after the deadline.</div>
+      <script>
+        const LIVE_SCORE_MATCHUPS = [
+          ["France", "Morocco"],
+          ["Spain", "Belgium"],
+          ["Norway", "England"],
+          ["Argentina", "Switzerland"],
+        ];
+
+        function normalizeTeamName(name) {
+          return String(name || "")
+            .toLowerCase()
+            .replace(/[^a-z]/g, "");
+        }
+
+        function isPoolMatch(teamA, teamB) {
+          const a = normalizeTeamName(teamA);
+          const b = normalizeTeamName(teamB);
+
+          return LIVE_SCORE_MATCHUPS.some(([x, y]) => {
+            const xNorm = normalizeTeamName(x);
+            const yNorm = normalizeTeamName(y);
+
+            return (a === xNorm && b === yNorm) || (a === yNorm && b === xNorm);
+          });
+        }
+
+        function updateLiveScoresTimestamp() {
+          const stamp = document.getElementById("liveScoresUpdated");
+          if (!stamp) return;
+
+          stamp.textContent = `Last refreshed: ${new Date().toLocaleTimeString(
+            [],
+            {
+              hour: "numeric",
+              minute: "2-digit",
+              second: "2-digit",
+            },
+          )}`;
+        }
+
+        async function loadLiveScores() {
+          const box = document.getElementById("liveScores");
+          if (!box) return;
+
+          try {
+            const res = await fetch(
+              "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard",
+              { cache: "no-store" },
+            );
+
+            const data = await res.json();
+            const events = data.events || [];
+
+            const poolEvents = events.filter((event) => {
+              const comp = event.competitions?.[0];
+              const teams = comp?.competitors || [];
+
+              const home = teams.find((t) => t.homeAway === "home") || teams[0];
+              const away = teams.find((t) => t.homeAway === "away") || teams[1];
+
+              const homeName = home?.team?.displayName || "";
+              const awayName = away?.team?.displayName || "";
+
+              return isPoolMatch(homeName, awayName);
+            });
+
+            box.innerHTML = poolEvents.length
+              ? poolEvents
+                  .map((event) => {
+                    const comp = event.competitions?.[0];
+                    const status = comp?.status?.type?.shortDetail || "—";
+                    const teams = comp?.competitors || [];
+
+                    const home =
+                      teams.find((t) => t.homeAway === "home") || teams[0];
+                    const away =
+                      teams.find((t) => t.homeAway === "away") || teams[1];
+
+                    const homeName = home?.team?.displayName || "TBD";
+                    const awayName = away?.team?.displayName || "TBD";
+                    const homeAbbr = home?.team?.abbreviation || "—";
+                    const awayAbbr = away?.team?.abbreviation || "—";
+                    const homeScore = home?.score ?? "—";
+                    const awayScore = away?.score ?? "—";
+
+                    return `
+                <div class="match">
+                  <div class="match-title">${awayName} vs ${homeName}</div>
+                  <div class="match-meta">${status}</div>
+                  <div class="result">
+                    ${awayAbbr} ${awayScore} - ${homeScore} ${homeAbbr}
+                  </div>
+                  <div class="match-meta">Reference only</div>
+                </div>
+              `;
+                  })
+                  .join("")
+              : `<div class="fine">No F8WC quarterfinal matches live right now. Scores will appear here when the matches start.</div>`;
+
+            updateLiveScoresTimestamp();
+          } catch (err) {
+            box.innerHTML = `<div class="fine">Live scores unavailable. Official F8WC Risk'em scoring is still commissioner-controlled.</div>`;
+            updateLiveScoresTimestamp();
+          }
+        }
+
+        loadLiveScores();
+        setInterval(loadLiveScores, 60000);
+      </script>
+
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <h2>Standings</h2>
+            <div class="hint">Cup Bucks update results below.</div>
+          </div>
+          <div class="updated" id="updatedText"></div>
         </div>
-      </div>
-      <div class="table-wrap desktop-table">
-        <table id="lockedTable"></table>
-      </div>
-      <div class="mobile-list" id="lockedCards"></div>
-    </section>
+        <div class="rankings" id="standings"></div>
+      </section>
 
-    <section class="panel">
-      <div class="section-head">
-        <div>
-          <h2>Scoring Detail</h2>
-          <div class="hint">Shows match profit/loss, score bonus, props, and final Cup Bucks total.</div>
+      <section class="panel">
+        <div class="cards">
+          <div class="stat">
+            <small>Players</small><strong id="playerCount">0</strong>
+          </div>
+          <div class="stat">
+            <small>Matches Complete</small
+            ><strong id="matchCount">0 / 4</strong>
+          </div>
+          <div class="stat">
+            <small>Leader</small><strong id="leaderName">—</strong>
+          </div>
+          <div class="stat">
+            <small>Proper Stars</small><strong id="properStarsCount">0</strong>
+          </div>
         </div>
-      </div>
-      <div class="table-wrap desktop-table">
-        <table id="detailTable"></table>
-      </div>
-      <div class="mobile-list" id="detailCards"></div>
-    </section>
+      </section>
 
-  </div>
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <h2>Match Results</h2>
+            <div class="hint">
+              After each game, edit RESULTS in this file, then commit and push.
+            </div>
+          </div>
+        </div>
+        <div class="match-grid" id="resultsGrid"></div>
+      </section>
 
-  <script>
-    const LAST_UPDATED = "3 locked submissions imported — before kickoff";
-    const BUDGET = 400;
+      <section class="panel" id="locked">
+        <div class="section-head">
+          <div>
+            <h2>Locked Picks</h2>
+            <div class="hint">
+              Hidden until all submissions are in. This becomes the official
+              public record after the deadline.
+            </div>
+          </div>
+        </div>
+        <div class="table-wrap desktop-table">
+          <table id="lockedTable"></table>
+        </div>
+        <div class="mobile-list" id="lockedCards"></div>
+      </section>
 
-    // Privacy toggle:
-    // false = hide everyone's locked picks until all submissions are in
-    // true  = reveal the Locked Picks public record
-    const REVEAL_LOCKED_PICKS = false;
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <h2>Scoring Detail</h2>
+            <div class="hint">
+              Shows match profit/loss, score bonus, props, and final Cup Bucks
+              total.
+            </div>
+          </div>
+        </div>
+        <div class="table-wrap desktop-table">
+          <table id="detailTable"></table>
+        </div>
+        <div class="mobile-list" id="detailCards"></div>
+      </section>
+    </div>
 
-    const MATCHES = [
-      { id:"QF1", label:"QF1", a:"France", b:"Morocco", aOdds:-390, bOdds:300 },
-      { id:"QF2", label:"QF2", a:"Spain", b:"Belgium", aOdds:-320, bOdds:230 },
-      { id:"QF3", label:"QF3", a:"Norway", b:"England", aOdds:170, bOdds:-200 },
-      { id:"QF4", label:"QF4", a:"Argentina", b:"Switzerland", aOdds:-150, bOdds:280 }
-    ];
+    <script>
+      const LAST_UPDATED = "3 locked submissions imported — before kickoff";
+      const BUDGET = 400;
 
-    /*
+      // Privacy toggle:
+      // false = hide everyone's locked picks until all submissions are in
+      // true  = reveal the Locked Picks public record
+      const REVEAL_LOCKED_PICKS = false;
+
+      const MATCHES = [
+        {
+          id: "QF1",
+          label: "QF1",
+          a: "France",
+          b: "Morocco",
+          aOdds: -390,
+          bOdds: 300,
+        },
+        {
+          id: "QF2",
+          label: "QF2",
+          a: "Spain",
+          b: "Belgium",
+          aOdds: -320,
+          bOdds: 230,
+        },
+        {
+          id: "QF3",
+          label: "QF3",
+          a: "Norway",
+          b: "England",
+          aOdds: 170,
+          bOdds: -200,
+        },
+        {
+          id: "QF4",
+          label: "QF4",
+          a: "Argentina",
+          b: "Switzerland",
+          aOdds: -150,
+          bOdds: 280,
+        },
+      ];
+
+      /*
       LOCKED PLAYER SUBMISSIONS
 
       This block controls who appears on the scoreboard.
@@ -468,58 +820,117 @@
       4. Use the odds from the player's copied/CSV submission.
 
       To clear the scoreboard before real picks are locked:
-      const PLAYERS = [
-      {
-        name:"Mongoose",
-        submittedAt:"2026-07-08T02:03:10.000Z",
-        picks:{
-          QF1:{ pick:"France", aScore:2, bScore:0, wager:150, odds:-390 },
-          QF2:{ pick:"Belgium", aScore:1, bScore:2, wager:100, odds:230 },
-          QF3:{ pick:"Norway", aScore:3, bScore:2, wager:100, odds:170 },
-          QF4:{ pick:"Argentina", aScore:2, bScore:1, wager:50, odds:-150 }
-        },
-        props:{
-          topScorer:"Erling Haaland — Norway",
-          teamGoals:"Norway",
-          shootouts:1
-        }
-      }
-    ];
+      const PLAYERS = [];
     */
-    const PLAYERS = [
-      {
-        name:"Bam Bam HT",
-        submittedAt:"2026-07-08T00:30:46.799Z",
-        picks:{
-          QF1:{ pick:"Morocco", aScore:2, bScore:3, wager:150, odds:300 },
-          QF2:{ pick:"Spain", aScore:2, bScore:1, wager:50, odds:-320 },
-          QF3:{ pick:"England", aScore:1, bScore:2, wager:150, odds:-200 },
-          QF4:{ pick:"Argentina", aScore:2, bScore:0, wager:50, odds:-150 }
+      const PLAYERS = [
+        {
+          name: "Bam Bam HT",
+          submittedAt: "2026-07-08T00:30:46.799Z",
+          picks: {
+            QF1: {
+              pick: "Morocco",
+              aScore: 2,
+              bScore: 3,
+              wager: 150,
+              odds: 300,
+            },
+            QF2: { pick: "Spain", aScore: 2, bScore: 1, wager: 50, odds: -320 },
+            QF3: {
+              pick: "England",
+              aScore: 1,
+              bScore: 2,
+              wager: 150,
+              odds: -200,
+            },
+            QF4: {
+              pick: "Argentina",
+              aScore: 2,
+              bScore: 0,
+              wager: 50,
+              odds: -150,
+            },
+          },
+          props: {
+            topScorer: "Jude Bellingham — England",
+            teamGoals: "England",
+            shootouts: 0,
+          },
         },
-        props:{
-          topScorer:"Jude Bellingham — England",
-          teamGoals:"England",
-          shootouts:0
-        }
-      },
-      {
-        name:"Bam Bam",
-        submittedAt:"2026-07-08T00:34:19.403Z",
-        picks:{
-          QF1:{ pick:"France", aScore:3, bScore:1, wager:150, odds:-390 },
-          QF2:{ pick:"Spain", aScore:2, bScore:1, wager:150, odds:-320 },
-          QF3:{ pick:"Norway", aScore:2, bScore:1, wager:50, odds:170 },
-          QF4:{ pick:"Argentina", aScore:2, bScore:1, wager:50, odds:-150 }
+        {
+          name: "Bam Bam",
+          submittedAt: "2026-07-08T00:34:19.403Z",
+          picks: {
+            QF1: {
+              pick: "France",
+              aScore: 3,
+              bScore: 1,
+              wager: 150,
+              odds: -390,
+            },
+            QF2: {
+              pick: "Spain",
+              aScore: 2,
+              bScore: 1,
+              wager: 150,
+              odds: -320,
+            },
+            QF3: { pick: "Norway", aScore: 2, bScore: 1, wager: 50, odds: 170 },
+            QF4: {
+              pick: "Argentina",
+              aScore: 2,
+              bScore: 1,
+              wager: 50,
+              odds: -150,
+            },
+          },
+          props: {
+            topScorer: "Kylian Mbappé — France",
+            teamGoals: "France",
+            shootouts: 1,
+          },
         },
-        props:{
-          topScorer:"Kylian Mbappé — France",
-          teamGoals:"France",
-          shootouts:1
+        {
+          name: "Mongoose",
+          submittedAt: "2026-07-08T02:03:10.000Z",
+          picks: {
+            QF1: {
+              pick: "France",
+              aScore: 2,
+              bScore: 0,
+              wager: 150,
+              odds: -390,
+            },
+            QF2: {
+              pick: "Belgium",
+              aScore: 1,
+              bScore: 2,
+              wager: 100,
+              odds: 230,
+            },
+            QF3: {
+              pick: "Norway",
+              aScore: 3,
+              bScore: 2,
+              wager: 100,
+              odds: 170,
+            },
+            QF4: {
+              pick: "Argentina",
+              aScore: 2,
+              bScore: 1,
+              wager: 50,
+              odds: -150,
+            },
+          },
+          props: {
+            topScorer: "Erling Haaland — Norway",
+            teamGoals: "Norway",
+            shootouts: 1,
+          },
         }
-      }
-    ];
+      ];
 
-    /*
+      /*
       MATCH RESULTS
 
       This block controls whether the scoreboard calculates wins, losses,
@@ -540,14 +951,38 @@
         Optional per-match recordkeeping. Proper Stars scoring is controlled
         by FINAL_PROPS below.
     */
-    const RESULTS = {
-      QF1:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
-      QF2:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
-      QF3:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] },
-      QF4:{ complete:false, aScore:null, bScore:null, winner:"", topScorers:[] }
-    };
+      const RESULTS = {
+        QF1: {
+          complete: false,
+          aScore: null,
+          bScore: null,
+          winner: "",
+          topScorers: [],
+        },
+        QF2: {
+          complete: false,
+          aScore: null,
+          bScore: null,
+          winner: "",
+          topScorers: [],
+        },
+        QF3: {
+          complete: false,
+          aScore: null,
+          bScore: null,
+          winner: "",
+          topScorers: [],
+        },
+        QF4: {
+          complete: false,
+          aScore: null,
+          bScore: null,
+          winner: "",
+          topScorers: [],
+        },
+      };
 
-    /*
+      /*
       FINAL PROPER STARS RESULTS
 
       complete:
@@ -567,88 +1002,136 @@
       shootouts:
         Total number of quarterfinal penalty shootouts.
     */
-    const FINAL_PROPS = {
-      complete:false,
-      topScorers:[],
-      teamMostGoals:"",
-      shootouts:null
-    };
+      const FINAL_PROPS = {
+        complete: false,
+        topScorers: [],
+        teamMostGoals: "",
+        shootouts: null,
+      };
 
-    const $ = (id) => document.getElementById(id);
-    const money = (n) => `${n < 0 ? "-" : ""}$${Math.abs(Math.round(Number(n)||0)).toLocaleString()}`;
-    const profitLabel = (n) => `${n >= 0 ? "+" : "-"}$${Math.abs(Math.round(Number(n)||0)).toLocaleString()}`;
-    const fmtOdds = (o) => o > 0 ? `+${o}` : `${o}`;
-    function profitFor(wager, odds){
-      wager = Number(wager)||0;
-      odds = Number(odds)||0;
-      if(!wager || !odds) return 0;
-      return odds > 0 ? wager * odds / 100 : wager * 100 / Math.abs(odds);
-    }
-    function getMatch(id){ return MATCHES.find(m => m.id === id); }
-    function getOdds(match, team){ return team === match.a ? match.aOdds : match.bOdds; }
-    function lockedOdds(match, pick){
-      return Number(pick?.odds ?? getOdds(match, pick?.pick));
-    }
-    function predictedMargin(p, m){ return p.aScore - p.bScore; }
-    function actualMargin(r){ return r.aScore - r.bScore; }
-    function predictedTotal(p){ return Number(p.aScore||0) + Number(p.bScore||0); }
-    function actualTotal(r){ return Number(r.aScore||0) + Number(r.bScore||0); }
-
-    function scoreBonus(p, r, m){
-      if(!r.complete || p.pick !== r.winner) return 0;
-      const exact = Number(p.aScore) === Number(r.aScore) && Number(p.bScore) === Number(r.bScore);
-      if(exact) return 50;
-      if(predictedMargin(p,m) === actualMargin(r)) return 25;
-      if(predictedTotal(p) === actualTotal(r)) return 15;
-      if(Number(p.aScore) === Number(r.aScore) || Number(p.bScore) === Number(r.bScore)) return 10;
-      return 0;
-    }
-
-    function matchScore(player, match){
-      const p = player.picks[match.id];
-      const r = RESULTS[match.id];
-      if(!p || !r.complete) return { profit:0, bonus:0, total:0, status:"Pending" };
-      const odds = lockedOdds(match, p);
-      const win = p.pick === r.winner;
-      const profit = win ? profitFor(p.wager, odds) : -Number(p.wager||0);
-      const bonus = scoreBonus(p, r, match);
-      return { profit, bonus, total:profit + bonus, status: win ? "Win" : "Loss" };
-    }
-
-    function propsScore(player){
-      if(!FINAL_PROPS.complete) return 0;
-      let score = 0;
-      const pickedScorer = player.props.topScorer || "";
-      if(pickedScorer && FINAL_PROPS.topScorers.includes(pickedScorer)){
-        score += FINAL_PROPS.topScorers.length > 1 ? 50 : 75;
+      const $ = (id) => document.getElementById(id);
+      const money = (n) =>
+        `${n < 0 ? "-" : ""}$${Math.abs(Math.round(Number(n) || 0)).toLocaleString()}`;
+      const profitLabel = (n) =>
+        `${n >= 0 ? "+" : "-"}$${Math.abs(Math.round(Number(n) || 0)).toLocaleString()}`;
+      const fmtOdds = (o) => (o > 0 ? `+${o}` : `${o}`);
+      function profitFor(wager, odds) {
+        wager = Number(wager) || 0;
+        odds = Number(odds) || 0;
+        if (!wager || !odds) return 0;
+        return odds > 0 ? (wager * odds) / 100 : (wager * 100) / Math.abs(odds);
       }
-      if(player.props.teamGoals && player.props.teamGoals === FINAL_PROPS.teamMostGoals) score += 50;
-      if(String(player.props.shootouts) !== "" && Number(player.props.shootouts) === Number(FINAL_PROPS.shootouts)) score += 50;
-      return score;
-    }
+      function getMatch(id) {
+        return MATCHES.find((m) => m.id === id);
+      }
+      function getOdds(match, team) {
+        return team === match.a ? match.aOdds : match.bOdds;
+      }
+      function lockedOdds(match, pick) {
+        return Number(pick?.odds ?? getOdds(match, pick?.pick));
+      }
+      function predictedMargin(p, m) {
+        return p.aScore - p.bScore;
+      }
+      function actualMargin(r) {
+        return r.aScore - r.bScore;
+      }
+      function predictedTotal(p) {
+        return Number(p.aScore || 0) + Number(p.bScore || 0);
+      }
+      function actualTotal(r) {
+        return Number(r.aScore || 0) + Number(r.bScore || 0);
+      }
 
-    function totalFor(player){
-      const matchTotals = MATCHES.reduce((sum,m)=>sum + matchScore(player,m).total,0);
-      return BUDGET + matchTotals + propsScore(player);
-    }
+      function scoreBonus(p, r, m) {
+        if (!r.complete || p.pick !== r.winner) return 0;
+        const exact =
+          Number(p.aScore) === Number(r.aScore) &&
+          Number(p.bScore) === Number(r.bScore);
+        if (exact) return 50;
+        if (predictedMargin(p, m) === actualMargin(r)) return 25;
+        if (predictedTotal(p) === actualTotal(r)) return 15;
+        if (
+          Number(p.aScore) === Number(r.aScore) ||
+          Number(p.bScore) === Number(r.bScore)
+        )
+          return 10;
+        return 0;
+      }
 
-    function totalWagered(player){
-      return MATCHES.reduce((sum,m)=>sum + Number(player.picks[m.id]?.wager || 0),0);
-    }
+      function matchScore(player, match) {
+        const p = player.picks[match.id];
+        const r = RESULTS[match.id];
+        if (!p || !r.complete)
+          return { profit: 0, bonus: 0, total: 0, status: "Pending" };
+        const odds = lockedOdds(match, p);
+        const win = p.pick === r.winner;
+        const profit = win ? profitFor(p.wager, odds) : -Number(p.wager || 0);
+        const bonus = scoreBonus(p, r, match);
+        return {
+          profit,
+          bonus,
+          total: profit + bonus,
+          status: win ? "Win" : "Loss",
+        };
+      }
 
-    function renderStandings(){
-      const ranked = [...PLAYERS].map(p => ({
-        player:p,
-        total:totalFor(p),
-        props:propsScore(p),
-        wagered:totalWagered(p),
-        matchNet:MATCHES.reduce((sum,m)=>sum + matchScore(p,m).profit,0),
-        bonus:MATCHES.reduce((sum,m)=>sum + matchScore(p,m).bonus,0)
-      })).sort((a,b)=>b.total-a.total);
+      function propsScore(player) {
+        if (!FINAL_PROPS.complete) return 0;
+        let score = 0;
+        const pickedScorer = player.props.topScorer || "";
+        if (pickedScorer && FINAL_PROPS.topScorers.includes(pickedScorer)) {
+          score += FINAL_PROPS.topScorers.length > 1 ? 50 : 75;
+        }
+        if (
+          player.props.teamGoals &&
+          player.props.teamGoals === FINAL_PROPS.teamMostGoals
+        )
+          score += 50;
+        if (
+          String(player.props.shootouts) !== "" &&
+          Number(player.props.shootouts) === Number(FINAL_PROPS.shootouts)
+        )
+          score += 50;
+        return score;
+      }
 
-      $("standings").innerHTML = ranked.length ? ranked.map((row,i)=>`
+      function totalFor(player) {
+        const matchTotals = MATCHES.reduce(
+          (sum, m) => sum + matchScore(player, m).total,
+          0,
+        );
+        return BUDGET + matchTotals + propsScore(player);
+      }
+
+      function totalWagered(player) {
+        return MATCHES.reduce(
+          (sum, m) => sum + Number(player.picks[m.id]?.wager || 0),
+          0,
+        );
+      }
+
+      function renderStandings() {
+        const ranked = [...PLAYERS]
+          .map((p) => ({
+            player: p,
+            total: totalFor(p),
+            props: propsScore(p),
+            wagered: totalWagered(p),
+            matchNet: MATCHES.reduce(
+              (sum, m) => sum + matchScore(p, m).profit,
+              0,
+            ),
+            bonus: MATCHES.reduce((sum, m) => sum + matchScore(p, m).bonus, 0),
+          }))
+          .sort((a, b) => b.total - a.total);
+
+        $("standings").innerHTML = ranked.length
+          ? ranked
+              .map(
+                (row, i) => `
         <div class="rank-card">
-          <div class="rank">${i+1}</div>
+          <div class="rank">${i + 1}</div>
           <div>
             <div class="player-name">${row.player.name}</div>
             <div class="player-sub">
@@ -657,76 +1140,86 @@
           </div>
           <div class="score">${money(row.total)}<span>Cup Bucks</span></div>
         </div>
-      `).join("") : `<div class="fine">No players entered yet.</div>`;
+      `,
+              )
+              .join("")
+          : `<div class="fine">No players entered yet.</div>`;
 
-      $("playerCount").textContent = PLAYERS.length;
-      $("leaderName").textContent = ranked[0]?.player.name || "—";
-      $("properStarsCount").textContent = FINAL_PROPS.complete ? "Final" : "Pending";
-    }
+        $("playerCount").textContent = PLAYERS.length;
+        $("leaderName").textContent = ranked[0]?.player.name || "—";
+        $("properStarsCount").textContent = FINAL_PROPS.complete
+          ? "Final"
+          : "Pending";
+      }
 
-    function renderResults(){
-      const completed = MATCHES.filter(m => RESULTS[m.id].complete).length;
-      $("matchCount").textContent = `${completed} / ${MATCHES.length}`;
-      $("updatedText").innerHTML = `Last updated<br>${LAST_UPDATED}`;
+      function renderResults() {
+        const completed = MATCHES.filter((m) => RESULTS[m.id].complete).length;
+        $("matchCount").textContent = `${completed} / ${MATCHES.length}`;
+        $("updatedText").innerHTML = `Last updated<br>${LAST_UPDATED}`;
 
-      $("resultsGrid").innerHTML = MATCHES.map(m => {
-        const r = RESULTS[m.id];
-        const score = r.complete ? `${m.a} ${r.aScore} - ${r.bScore} ${m.b}` : "Pending";
-        const winner = r.complete ? `Winner: ${r.winner}` : "Winner: —";
-        return `<div class="match">
+        $("resultsGrid").innerHTML = MATCHES.map((m) => {
+          const r = RESULTS[m.id];
+          const score = r.complete
+            ? `${m.a} ${r.aScore} - ${r.bScore} ${m.b}`
+            : "Pending";
+          const winner = r.complete ? `Winner: ${r.winner}` : "Winner: —";
+          return `<div class="match">
           <div class="match-title">${m.label} ${m.a} vs ${m.b}</div>
           <div class="match-meta">${fmtOdds(m.aOdds)} / ${fmtOdds(m.bOdds)} to advance</div>
           <div class="result">${score}</div>
           <div class="match-meta">${winner}</div>
         </div>`;
-      }).join("");
-    }
+        }).join("");
+      }
 
-    function renderLocked(){
-      if(!REVEAL_LOCKED_PICKS){
-        const hiddenHtml = `<div class="locked-hidden-card">
+      function renderLocked() {
+        if (!REVEAL_LOCKED_PICKS) {
+          const hiddenHtml = `<div class="locked-hidden-card">
           <strong>Locked until all submissions are in.</strong>
           <div class="fine">Picks are saved by the commissioner, but hidden here so nobody can copy another player before the deadline.</div>
         </div>`;
-        $("lockedTable").innerHTML = "";
-        $("lockedCards").innerHTML = hiddenHtml;
-        const desktopWrap = document.querySelector("#locked .desktop-table");
-        if(desktopWrap) desktopWrap.style.display = "none";
-        return;
-      }
+          $("lockedTable").innerHTML = "";
+          $("lockedCards").innerHTML = hiddenHtml;
+          const desktopWrap = document.querySelector("#locked .desktop-table");
+          if (desktopWrap) desktopWrap.style.display = "none";
+          return;
+        }
 
-      $("lockedTable").innerHTML = `
+        $("lockedTable").innerHTML = `
         <thead><tr>
           <th>Player</th>
-          ${MATCHES.map(m=>`<th>${m.label}</th>`).join("")}
+          ${MATCHES.map((m) => `<th>${m.label}</th>`).join("")}
           <th>Proper Stars</th>
           <th>Tiebreaker</th>
         </tr></thead>
         <tbody>
-          ${PLAYERS.map(p=>`
+          ${PLAYERS.map(
+            (p) => `
             <tr>
               <td><strong>${p.name}</strong><br><span class="fine">Wagered ${money(totalWagered(p))}</span></td>
-              ${MATCHES.map(m=>{
+              ${MATCHES.map((m) => {
                 const pick = p.picks[m.id];
                 return `<td><span class="pill">${pick.pick}</span><br>${m.a} ${pick.aScore} - ${pick.bScore} ${m.b}<br><span class="fine">${money(pick.wager)} at ${fmtOdds(lockedOdds(m, pick))}</span></td>`;
               }).join("")}
               <td>${p.props.topScorer || "—"}<br><span class="fine">${p.props.teamGoals || "—"} · Shootouts ${p.props.shootouts ?? "—"}</span></td>
-              <td>${MATCHES.reduce((sum,m)=>sum + predictedTotal(p.picks[m.id]),0)} goals</td>
+              <td>${MATCHES.reduce((sum, m) => sum + predictedTotal(p.picks[m.id]), 0)} goals</td>
             </tr>
-          `).join("")}
+          `,
+          ).join("")}
         </tbody>`;
 
-      $("lockedCards").innerHTML = PLAYERS.map(p=>`
+        $("lockedCards").innerHTML = PLAYERS.map(
+          (p) => `
         <article class="locked-card">
           <div class="mobile-card-head">
             <div>
               <div class="mobile-card-name">${p.name}</div>
               <div class="pick-sub">Wagered ${money(totalWagered(p))}</div>
             </div>
-            <div class="mobile-card-total">${MATCHES.reduce((sum,m)=>sum + predictedTotal(p.picks[m.id]),0)}<span>Total goals</span></div>
+            <div class="mobile-card-total">${MATCHES.reduce((sum, m) => sum + predictedTotal(p.picks[m.id]), 0)}<span>Total goals</span></div>
           </div>
           <div class="pick-list">
-            ${MATCHES.map(m=>{
+            ${MATCHES.map((m) => {
               const pick = p.picks[m.id];
               return `<div class="pick-item">
                 <div class="pick-item-top"><span>${m.label}</span><span>${money(pick.wager)} @ ${fmtOdds(lockedOdds(m, pick))}</span></div>
@@ -740,26 +1233,35 @@
             <strong>Team goals:</strong> ${p.props.teamGoals || "—"} · <strong>Shootouts:</strong> ${p.props.shootouts ?? "—"}
           </div>
         </article>
-      `).join("");
-    }
+      `,
+        ).join("");
+      }
 
-    function renderDetail(){
-      $("detailTable").innerHTML = `
+      function renderDetail() {
+        $("detailTable").innerHTML = `
         <thead><tr>
           <th>Player</th>
-          ${MATCHES.map(m=>`<th>${m.label}</th>`).join("")}
+          ${MATCHES.map((m) => `<th>${m.label}</th>`).join("")}
           <th>Score Bonus</th>
           <th>Props</th>
           <th>Total</th>
         </tr></thead>
         <tbody>
-          ${PLAYERS.map(p=>{
-            const bonus = MATCHES.reduce((sum,m)=>sum + matchScore(p,m).bonus,0);
+          ${PLAYERS.map((p) => {
+            const bonus = MATCHES.reduce(
+              (sum, m) => sum + matchScore(p, m).bonus,
+              0,
+            );
             return `<tr>
               <td><strong>${p.name}</strong></td>
-              ${MATCHES.map(m=>{
-                const s = matchScore(p,m);
-                const cls = s.status === "Win" ? "win" : s.status === "Loss" ? "loss" : "";
+              ${MATCHES.map((m) => {
+                const s = matchScore(p, m);
+                const cls =
+                  s.status === "Win"
+                    ? "win"
+                    : s.status === "Loss"
+                      ? "loss"
+                      : "";
                 return `<td><span class="pill ${cls}">${s.status}</span><br>${profitLabel(s.profit)} net<br><span class="fine">Bonus ${profitLabel(s.bonus)}</span></td>`;
               }).join("")}
               <td>${profitLabel(bonus)}</td>
@@ -769,10 +1271,13 @@
           }).join("")}
         </tbody>`;
 
-      $("detailCards").innerHTML = PLAYERS.map(p=>{
-        const bonus = MATCHES.reduce((sum,m)=>sum + matchScore(p,m).bonus,0);
-        const props = propsScore(p);
-        return `<article class="detail-card">
+        $("detailCards").innerHTML = PLAYERS.map((p) => {
+          const bonus = MATCHES.reduce(
+            (sum, m) => sum + matchScore(p, m).bonus,
+            0,
+          );
+          const props = propsScore(p);
+          return `<article class="detail-card">
           <div class="mobile-card-head">
             <div>
               <div class="mobile-card-name">${p.name}</div>
@@ -781,9 +1286,10 @@
             <div class="mobile-card-total">${money(totalFor(p))}<span>Cup Bucks</span></div>
           </div>
           <div class="score-list">
-            ${MATCHES.map(m=>{
-              const s = matchScore(p,m);
-              const cls = s.status === "Win" ? "win" : s.status === "Loss" ? "loss" : "";
+            ${MATCHES.map((m) => {
+              const s = matchScore(p, m);
+              const cls =
+                s.status === "Win" ? "win" : s.status === "Loss" ? "loss" : "";
               return `<div class="score-item">
                 <div class="score-item-top"><span>${m.label}</span><span class="pill ${cls}">${s.status}</span></div>
                 <div class="pick-main">${profitLabel(s.profit)} net</div>
@@ -796,13 +1302,13 @@
             <div class="summary-mini"><small>Props</small><strong>${profitLabel(props)}</strong></div>
           </div>
         </article>`;
-      }).join("");
-    }
+        }).join("");
+      }
 
-    renderResults();
-    renderStandings();
-    renderLocked();
-    renderDetail();
-  </script>
-</body>
+      renderResults();
+      renderStandings();
+      renderLocked();
+      renderDetail();
+    </script>
+  </body>
 </html>
