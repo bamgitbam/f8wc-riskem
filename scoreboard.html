@@ -568,7 +568,7 @@
             <div class="hint">
               Reference only. Official F8WC Risk'em scoring is updated manually by the commissioner.
             </div>
-            <div class="hint" id="liveScoresUpdated">Last refreshed: —</div>
+            <div class="hint" id="liveScoresUpdated">Last refreshed: — PT</div>
           </div>
         </div>
         <div id="liveScores" class="match-grid"></div>
@@ -604,14 +604,14 @@
           const stamp = document.getElementById("liveScoresUpdated");
           if (!stamp) return;
 
-          stamp.textContent = `Last refreshed: ${new Date().toLocaleTimeString(
-            [],
-            {
-              hour: "numeric",
-              minute: "2-digit",
-              second: "2-digit",
-            },
-          )}`;
+          const pacificTime = new Intl.DateTimeFormat("en-US", {
+            timeZone: "America/Los_Angeles",
+            hour: "numeric",
+            minute: "2-digit",
+            second: "2-digit",
+          }).format(new Date());
+
+          stamp.textContent = `Last refreshed: ${pacificTime} PT`;
         }
 
         async function loadLiveScores() {
