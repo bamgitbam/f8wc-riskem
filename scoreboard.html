@@ -544,6 +544,53 @@
         color: #061b33;
         margin-bottom: 7px;
       }
+
+      .entry-read-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .entry-read-card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 13px 14px;
+        box-shadow: 0 8px 20px rgba(6, 27, 51, 0.05);
+      }
+
+      .entry-read-card small {
+        display: block;
+        color: #5c6c80;
+        font-size: 11px;
+        font-weight: 1000;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 5px;
+      }
+
+      .entry-read-card strong {
+        display: block;
+        color: #061b33;
+        font-size: 16px;
+        line-height: 1.2;
+        font-weight: 1000;
+      }
+
+      .entry-read-card span {
+        display: block;
+        margin-top: 4px;
+        color: #5c6c80;
+        font-size: 12.5px;
+        font-weight: 750;
+        line-height: 1.35;
+      }
+
+      @media (max-width: 860px) {
+        .entry-read-grid {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
@@ -566,12 +613,76 @@
           <div>
             <h2>Unofficial Live Scores</h2>
             <div class="hint">
-              Reference only. Official F8WC Risk'em scoring is updated manually by the commissioner.
+              Reference only. Official F8WC Risk'em scoring is updated manually
+              by the commissioner.
             </div>
             <div class="hint" id="liveScoresUpdated">Last refreshed: — PT</div>
           </div>
         </div>
         <div id="liveScores" class="match-grid"></div>
+      </section>
+
+      <section class="panel" id="entry-read">
+        <div class="section-head">
+          <div>
+            <h2>Scouting Report</h2>
+          </div>
+        </div>
+
+        <div class="entry-read-grid">
+          <div class="entry-read-card">
+            <small>Highest Ceiling</small>
+            <strong>Bam Bam HT</strong>
+            <span
+              >Big Morocco and England leverage gives this entry the top
+              single-entry upside.</span
+            >
+          </div>
+
+          <div class="entry-read-card">
+            <small>Biggest Solo Swing</small>
+            <strong>Mongoose</strong>
+            <span
+              >The only Belgium picker. If Belgium hits, this entry changes the
+              whole table.</span
+            >
+          </div>
+
+          <div class="entry-read-card">
+            <small>Chaos Upside</small>
+            <strong>Doug the Head</strong>
+            <span
+              >Morocco plus England plus Messi/Argentina props creates a
+              boom-or-bust path.</span
+            >
+          </div>
+
+          <div class="entry-read-card">
+            <small>Best Chalk Path</small>
+            <strong>Bam Bam</strong>
+            <span
+              >The cleanest favorite-heavy card if France, Spain, and Argentina
+              hold.</span
+            >
+          </div>
+
+          <div class="entry-read-card">
+            <small>Norway Hammer</small>
+            <strong>Rob Ingham 1</strong>
+            <span
+              >Heavy Norway position. If Norway wins, this entry gets dangerous
+              fast.</span
+            >
+          </div>
+
+          <div class="entry-read-card">
+            <small>Balanced High-Upside</small>
+            <strong>Raaab</strong>
+            <span
+              >Morocco upside with Spain support and England protection.</span
+            >
+          </div>
+        </div>
       </section>
 
       <script>
@@ -1044,7 +1155,7 @@
             teamGoals: "England",
             shootouts: 1,
           },
-        }
+        },
       ];
 
       /*
@@ -1214,7 +1325,9 @@
       function propsScore(player) {
         if (!FINAL_PROPS.complete) return 0;
         let score = 0;
-        const pickedScorer = canonicalTopScorerName(player.props.topScorer || "");
+        const pickedScorer = canonicalTopScorerName(
+          player.props.topScorer || "",
+        );
         const finalScorers = FINAL_PROPS.topScorers.map(canonicalTopScorerName);
         if (pickedScorer && finalScorers.includes(pickedScorer)) {
           score += FINAL_PROPS.topScorers.length > 1 ? 50 : 75;
