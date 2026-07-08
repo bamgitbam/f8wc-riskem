@@ -344,6 +344,24 @@
       .match-grid .match{padding:13px}
     }
 
+  
+    .locked-hidden-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 8px 20px rgba(6,27,51,.06);
+    }
+    .locked-hidden-card strong{
+      display:block;
+      font-size:20px;
+      line-height:1.15;
+      font-weight:1000;
+      letter-spacing:-.03em;
+      color:#061b33;
+      margin-bottom:7px;
+    }
+
   </style>
 </head>
 <body>
@@ -392,7 +410,7 @@
       <div class="section-head">
         <div>
           <h2>Locked Picks</h2>
-          <div class="hint">Use this as the official public record once all four submissions are in.</div>
+          <div class="hint">Hidden until all submissions are in. This becomes the official public record after the deadline.</div>
         </div>
       </div>
       <div class="table-wrap desktop-table">
@@ -644,6 +662,18 @@
     }
 
     function renderLocked(){
+      if(!REVEAL_LOCKED_PICKS){
+        const hiddenHtml = `<div class="locked-hidden-card">
+          <strong>Locked until all submissions are in.</strong>
+          <div class="fine">Picks are saved by the commissioner, but hidden here so nobody can copy another player before the deadline.</div>
+        </div>`;
+        $("lockedTable").innerHTML = "";
+        $("lockedCards").innerHTML = hiddenHtml;
+        const desktopWrap = document.querySelector("#locked .desktop-table");
+        if(desktopWrap) desktopWrap.style.display = "none";
+        return;
+      }
+
       $("lockedTable").innerHTML = `
         <thead><tr>
           <th>Player</th>
