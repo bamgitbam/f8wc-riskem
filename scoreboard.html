@@ -435,8 +435,13 @@
   </div>
 
   <script>
-    const LAST_UPDATED = "2 locked submissions imported — before kickoff";
+    const LAST_UPDATED = "3 locked submissions imported — before kickoff";
     const BUDGET = 400;
+
+    // Privacy toggle:
+    // false = hide everyone's locked picks until all submissions are in
+    // true  = reveal the Locked Picks public record
+    const REVEAL_LOCKED_PICKS = false;
 
     const MATCHES = [
       { id:"QF1", label:"QF1", a:"France", b:"Morocco", aOdds:-390, bOdds:300 },
@@ -463,7 +468,23 @@
       4. Use the odds from the player's copied/CSV submission.
 
       To clear the scoreboard before real picks are locked:
-      const PLAYERS = [];
+      const PLAYERS = [
+      {
+        name:"Mongoose",
+        submittedAt:"2026-07-08T02:03:10.000Z",
+        picks:{
+          QF1:{ pick:"France", aScore:2, bScore:0, wager:150, odds:-390 },
+          QF2:{ pick:"Belgium", aScore:1, bScore:2, wager:100, odds:230 },
+          QF3:{ pick:"Norway", aScore:3, bScore:2, wager:100, odds:170 },
+          QF4:{ pick:"Argentina", aScore:2, bScore:1, wager:50, odds:-150 }
+        },
+        props:{
+          topScorer:"Erling Haaland — Norway",
+          teamGoals:"Norway",
+          shootouts:1
+        }
+      }
+    ];
     */
     const PLAYERS = [
       {
