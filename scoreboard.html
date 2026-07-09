@@ -159,7 +159,7 @@
         text-align: right;
         line-height: 1.35;
       }
-.cards {
+      .cards {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 14px;
@@ -658,7 +658,6 @@
           font-size: 15px;
         }
       }
-
     </style>
   </head>
   <body>
@@ -694,7 +693,8 @@
             <small>Shootouts</small><strong id="liveShootouts">0</strong>
           </div>
           <div class="stat">
-            <small>Live Stats</small><strong id="livePropsStatus">Tracking</strong>
+            <small>Live Stats</small
+            ><strong id="livePropsStatus">Tracking</strong>
           </div>
         </div>
       </section>
@@ -879,7 +879,7 @@
         loadLiveScores();
         setInterval(loadLiveScores, 60000);
       </script>
-<section class="panel">
+      <section class="panel">
         <div class="section-head">
           <div>
             <h2>Standings</h2>
@@ -951,7 +951,8 @@
     </div>
 
     <script>
-      const LAST_UPDATED = "7 locked submissions imported — France 2-0 Morocco live stats";
+      const LAST_UPDATED =
+        "7 locked submissions imported — France 2-0 Morocco live stats";
       const BUDGET = 400;
 
       // Privacy toggle:
@@ -1301,14 +1302,11 @@
     */
       const RESULTS = {
         QF1: {
-          complete: false,
+          complete: true,
           aScore: 2,
           bScore: 0,
-          winner: "",
-          topScorers: [
-            "Mbappe — France",
-            "Dembele — France",
-          ],
+          winner: "France",
+          topScorers: ["Kylian Mbappé — France", "Ousmane Dembélé — France"],
         },
         QF2: {
           complete: false,
@@ -1334,10 +1332,7 @@
       };
 
       const LIVE_PROPS = {
-        topScorers: [
-          "Mbappe — France",
-          "Dembele — France",
-        ],
+        topScorers: ["Kylian Mbappé — France", "Ousmane Dembélé — France"],
         teamMostGoals: "France",
         shootouts: 0,
       };
