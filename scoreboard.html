@@ -845,7 +845,8 @@
             <small>Leader</small><strong id="leaderName">—</strong>
           </div>
           <div class="stat">
-            <small>Live Stats</small><strong id="properStarsCount">0</strong>
+            <small>Proper Stars</small
+            ><strong id="properStarsCount">Open</strong>
           </div>
         </div>
       </section>
@@ -857,22 +858,6 @@
           </div>
         </div>
         <div class="match-grid" id="resultsGrid"></div>
-      </section>
-
-      <section class="panel" id="locked">
-        <div class="section-head">
-          <div>
-            <h2>Locked Picks</h2>
-            <div class="hint">
-              Hidden until all submissions are in. This becomes the official
-              public record after the deadline.
-            </div>
-          </div>
-        </div>
-        <div class="table-wrap desktop-table">
-          <table id="lockedTable"></table>
-        </div>
-        <div class="mobile-list" id="lockedCards"></div>
       </section>
 
       <section class="panel">
@@ -889,6 +874,22 @@
           <table id="detailTable"></table>
         </div>
         <div class="mobile-list" id="detailCards"></div>
+      </section>
+
+      <section class="panel" id="locked">
+        <div class="section-head">
+          <div>
+            <h2>Locked Picks</h2>
+            <div class="hint">
+              Hidden until all submissions are in. This becomes the official
+              public record after the deadline.
+            </div>
+          </div>
+        </div>
+        <div class="table-wrap desktop-table">
+          <table id="lockedTable"></table>
+        </div>
+        <div class="mobile-list" id="lockedCards"></div>
       </section>
     </div>
 
@@ -1493,7 +1494,7 @@
         $("leaderName").textContent = ranked[0]?.player.name || "—";
         $("properStarsCount").textContent = FINAL_PROPS.complete
           ? "Final"
-          : "Pending";
+          : "Open";
       }
 
       function renderResults() {
