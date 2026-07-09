@@ -159,7 +159,7 @@
         text-align: right;
         line-height: 1.35;
       }
-      .cards {
+.cards {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 14px;
@@ -591,6 +591,74 @@
           grid-template-columns: 1fr;
         }
       }
+      .live-track-cards {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .live-track-cards .stat {
+        padding: 12px 14px;
+        border-radius: 18px;
+      }
+
+      .live-track-cards .stat strong {
+        font-size: 16px;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+      }
+
+      @media (max-width: 860px) {
+        .live-track-cards {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+          margin-top: 9px;
+        }
+
+        .live-track-cards .stat {
+          padding: 9px 10px;
+          border-radius: 14px;
+          min-height: 70px;
+        }
+
+        .live-track-cards .stat small {
+          font-size: 9px;
+          letter-spacing: 0.04em;
+          line-height: 1.1;
+        }
+
+        .live-track-cards .stat strong {
+          margin-top: 4px;
+          font-size: 13px;
+          line-height: 1.08;
+          letter-spacing: -0.03em;
+          overflow-wrap: anywhere;
+        }
+
+        #liveScores.match-grid {
+          gap: 8px;
+        }
+
+        #liveScores .match {
+          padding: 11px 12px;
+          border-radius: 16px;
+        }
+
+        #liveScores .match-title {
+          font-size: 15px;
+        }
+
+        #liveScores .match-meta {
+          font-size: 12px;
+        }
+
+        #liveScores .result {
+          margin-top: 7px;
+          font-size: 15px;
+        }
+      }
+
     </style>
   </head>
   <body>
@@ -599,8 +667,7 @@
         <div class="kicker">Quarterfinal Scoreboard</div>
         <h1>F8WC <span class="gold">Risk'em</span></h1>
         <p class="sub">
-          Locked picks, Cup Bucks standings, Proper Stars, and live commissioner
-          updates.
+          Locked picks, Cup Bucks standings, Proper Stars, and live updates.
         </p>
         <div class="top-actions">
           <a class="mini-link" href="./">Submit picks</a>
@@ -612,14 +679,24 @@
         <div class="section-head">
           <div>
             <h2>Unofficial Live Scores</h2>
-            <div class="hint">
-              Official F8WC Risk'em scoring is updated manually
-              by the commissioner.
-            </div>
             <div class="hint" id="liveScoresUpdated">Last refreshed: — PT</div>
           </div>
         </div>
         <div id="liveScores" class="match-grid"></div>
+        <div class="cards live-track-cards">
+          <div class="stat">
+            <small>Top scorers</small><strong id="liveTopScorers">—</strong>
+          </div>
+          <div class="stat">
+            <small>Team goals</small><strong id="liveTeamGoals">—</strong>
+          </div>
+          <div class="stat">
+            <small>Shootouts</small><strong id="liveShootouts">0</strong>
+          </div>
+          <div class="stat">
+            <small>Live Stats</small><strong id="livePropsStatus">Tracking</strong>
+          </div>
+        </div>
       </section>
 
       <section class="panel" id="entry-read">
@@ -633,43 +710,63 @@
           <div class="entry-read-card">
             <small>Highest Ceiling</small>
             <strong>Bam Bam HT</strong>
-            <span>Big Morocco and England leverage gives this entry the top single-entry upside.</span>
+            <span
+              >Big Morocco and England leverage gives this entry the top
+              single-entry upside.</span
+            >
           </div>
 
           <div class="entry-read-card">
             <small>Red Devil Swing</small>
             <strong>Mongoose</strong>
-            <span>Belgium and Norway both live here, with France as the anchor.</span>
+            <span
+              >Belgium and Norway both live here, with France as the
+              anchor.</span
+            >
           </div>
 
           <div class="entry-read-card">
             <small>Chaos Upside</small>
             <strong>Doug the Head</strong>
-            <span>Morocco plus England plus Messi/Argentina props creates a boom-or-bust path.</span>
+            <span
+              >Morocco plus England plus Messi/Argentina props creates a
+              boom-or-bust path.</span
+            >
           </div>
 
           <div class="entry-read-card">
             <small>Best Chalk Path</small>
             <strong>Bam Bam</strong>
-            <span>The cleanest favorite-heavy card if France, Spain, and Argentina hold.</span>
+            <span
+              >The cleanest favorite-heavy card if France, Spain, and Argentina
+              hold.</span
+            >
           </div>
 
           <div class="entry-read-card">
             <small>Norway Hammer</small>
             <strong>Rob Ingham 1</strong>
-            <span>Heavy Norway position. If Norway wins, this entry gets dangerous fast.</span>
+            <span
+              >Heavy Norway position. If Norway wins, this entry gets dangerous
+              fast.</span
+            >
           </div>
 
           <div class="entry-read-card">
             <small>Balanced High-Upside</small>
             <strong>Raaab</strong>
-            <span>Morocco upside with Spain support and England protection.</span>
+            <span
+              >Morocco upside with Spain support and England protection.</span
+            >
           </div>
 
           <div class="entry-read-card">
             <small>Red Devil Hammer</small>
             <strong>Livinfree</strong>
-            <span>Belgium plus Norway at $100 each. If both underdogs hit, this card jumps hard.</span>
+            <span
+              >Belgium plus Norway at $100 each. If both underdogs hit, this
+              card jumps hard.</span
+            >
           </div>
         </div>
       </section>
@@ -782,8 +879,7 @@
         loadLiveScores();
         setInterval(loadLiveScores, 60000);
       </script>
-
-      <section class="panel">
+<section class="panel">
         <div class="section-head">
           <div>
             <h2>Standings</h2>
@@ -807,7 +903,7 @@
             <small>Leader</small><strong id="leaderName">—</strong>
           </div>
           <div class="stat">
-            <small>Proper Stars</small><strong id="properStarsCount">0</strong>
+            <small>Live Stats</small><strong id="properStarsCount">0</strong>
           </div>
         </div>
       </section>
@@ -816,9 +912,6 @@
         <div class="section-head">
           <div>
             <h2>Match Results</h2>
-            <div class="hint">
-              After each game, edit RESULTS in this file, then commit and push.
-            </div>
           </div>
         </div>
         <div class="match-grid" id="resultsGrid"></div>
@@ -858,7 +951,7 @@
     </div>
 
     <script>
-      const LAST_UPDATED = "7 locked submissions imported — before kickoff";
+      const LAST_UPDATED = "7 locked submissions imported — France 2-0 Morocco live stats";
       const BUDGET = 400;
 
       // Privacy toggle:
@@ -1182,7 +1275,7 @@
             teamGoals: "Norway",
             shootouts: 0,
           },
-        }
+        },
       ];
 
       /*
@@ -1210,9 +1303,12 @@
         QF1: {
           complete: false,
           aScore: 2,
-          bScore: null,
+          bScore: 0,
           winner: "",
-          topScorers: [],
+          topScorers: [
+            "Mbappe — France",
+            "Dembele — France",
+          ],
         },
         QF2: {
           complete: false,
@@ -1235,6 +1331,15 @@
           winner: "",
           topScorers: [],
         },
+      };
+
+      const LIVE_PROPS = {
+        topScorers: [
+          "Mbappe — France",
+          "Dembele — France",
+        ],
+        teamMostGoals: "France",
+        shootouts: 0,
       };
 
       /*
@@ -1385,6 +1490,32 @@
           (sum, m) => sum + Number(player.picks[m.id]?.wager || 0),
           0,
         );
+      }
+
+      function liveScorerShortName(name) {
+        const player = String(name || "")
+          .replace(/\s+—\s+.*$/, "")
+          .trim();
+        const parts = player.split(/\s+/).filter(Boolean);
+        return parts.length ? parts[parts.length - 1] : player || "—";
+      }
+
+      function renderLiveProps() {
+        if (!$("liveTopScorers")) return;
+        const scorers = LIVE_PROPS.topScorers || [];
+        const visibleScorers = scorers.slice(0, 2).map(liveScorerShortName);
+        const extra = scorers.length > 2 ? ` +${scorers.length - 2}` : "";
+        $("liveTopScorers").innerHTML = visibleScorers.length
+          ? visibleScorers.join("<br>") + extra
+          : "—";
+        $("liveTeamGoals").textContent = LIVE_PROPS.teamMostGoals || "—";
+        $("liveShootouts").textContent =
+          LIVE_PROPS.shootouts === null || LIVE_PROPS.shootouts === undefined
+            ? "—"
+            : LIVE_PROPS.shootouts;
+        $("livePropsStatus").textContent = FINAL_PROPS.complete
+          ? "Final"
+          : "Tracking";
       }
 
       function renderStandings() {
@@ -1582,6 +1713,7 @@
       }
 
       renderResults();
+      renderLiveProps();
       renderStandings();
       renderLocked();
       renderDetail();
