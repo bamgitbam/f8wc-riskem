@@ -1452,6 +1452,34 @@
         }, {});
       }
 
+      function liveTeamGoalLeaders() {
+        const counts = {};
+
+        MATCHES.forEach((match) => {
+          const result = RESULTS[match.id];
+          if (!result) return;
+
+          const aGoals = Number(result.aScore);
+          const bGoals = Number(result.bScore);
+
+          if (Number.isFinite(aGoals)) {
+            counts[match.a] = (counts[match.a] || 0) + aGoals;
+          }
+
+          if (Number.isFinite(bGoals)) {
+            counts[match.b] = (counts[match.b] || 0) + bGoals;
+          }
+        });
+
+        const maxGoals = Math.max(0, ...Object.values(counts));
+        if (!maxGoals) return "—";
+
+        return Object.entries(counts)
+          .filter(([, goals]) => goals === maxGoals)
+          .map(([team, goals]) => `${team} (${goals})`)
+          .join("<br>");
+      }
+
       function renderLiveProps() {
         if (!$("liveTopScorers")) return;
 
@@ -1464,7 +1492,7 @@
           ? scorerLines.join("<br>")
           : "—";
 
-        $("liveTeamGoals").textContent = LIVE_PROPS.teamMostGoals || "—";
+        $("liveTeamGoals").innerHTML = liveTeamGoalLeaders();
 
         $("liveShootouts").textContent =
           LIVE_PROPS.shootouts === null || LIVE_PROPS.shootouts === undefined
