@@ -1275,7 +1275,12 @@
       };
 
       const LIVE_PROPS = {
-        topScorers: ["Kylian Mbappé — France", "Ousmane Dembélé — France"],
+        topScorers: [
+          "Kylian Mbappé — France",
+          "Ousmane Dembélé — France",
+          "Fabián Ruiz — Spain",
+          "Charles De Ketelaere — Belgium",
+        ],
         teamMostGoals: "France",
         shootouts: 0,
       };
@@ -1432,25 +1437,40 @@
 
       function liveScorerShortName(name) {
         const player = String(name || "")
-          .replace(/\s+—\s+.*$/, "")
+          .replace(/\s+[—-]\s+.*$/, "")
           .trim();
+
         const parts = player.split(/\s+/).filter(Boolean);
         return parts.length ? parts[parts.length - 1] : player || "—";
       }
 
+      function scorerGoalCounts(scorers) {
+        return (scorers || []).reduce((counts, name) => {
+          const shortName = liveScorerShortName(name);
+          counts[shortName] = (counts[shortName] || 0) + 1;
+          return counts;
+        }, {});
+      }
+
       function renderLiveProps() {
         if (!$("liveTopScorers")) return;
-        const scorers = LIVE_PROPS.topScorers || [];
-        const visibleScorers = scorers.slice(0, 2).map(liveScorerShortName);
-        const extra = scorers.length > 2 ? ` +${scorers.length - 2}` : "";
-        $("liveTopScorers").innerHTML = visibleScorers.length
-          ? visibleScorers.join("<br>") + extra
+
+        const counts = scorerGoalCounts(LIVE_PROPS.topScorers);
+        const scorerLines = Object.entries(counts).map(
+          ([name, goals]) => `${name} (${goals})`,
+        );
+
+        $("liveTopScorers").innerHTML = scorerLines.length
+          ? scorerLines.join("<br>")
           : "—";
+
         $("liveTeamGoals").textContent = LIVE_PROPS.teamMostGoals || "—";
+
         $("liveShootouts").textContent =
           LIVE_PROPS.shootouts === null || LIVE_PROPS.shootouts === undefined
             ? "—"
             : LIVE_PROPS.shootouts;
+
         $("livePropsStatus").textContent = FINAL_PROPS.complete
           ? "Final"
           : "Tracking";
