@@ -927,6 +927,7 @@
       <div class="section-head">
         <div>
           <h2>Match Results</h2>
+          <div class="hint">Final results score standings. Live scores display for reference until marked final.</div>
         </div>
       </div>
       <div class="match-grid" id="resultsGrid"></div>
@@ -966,8 +967,7 @@
   </div>
 
   <script>
-    const LAST_UPDATED =
-      "7 locked submissions imported — France 2-0 Morocco live stats";
+    const LAST_UPDATED = "Auto";
     const BUDGET = 400;
 
     // Privacy toggle:
@@ -1011,25 +1011,25 @@
     ];
 
     /*
-    LOCKED PLAYER SUBMISSIONS
+  LOCKED PLAYER SUBMISSIONS
 
-    This block controls who appears on the scoreboard.
+  This block controls who appears on the scoreboard.
 
-    Current state:
-    - These entries were imported from the uploaded CSV submissions.
-    - Each pick includes its own locked odds from the player's submission.
-    - The scoreboard calculates profit/loss using the locked odds on that pick,
-      not only the display odds in MATCHES.
+  Current state:
+  - These entries were imported from the uploaded CSV submissions.
+  - Each pick includes its own locked odds from the player's submission.
+  - The scoreboard calculates profit/loss using the locked odds on that pick,
+    not only the display odds in MATCHES.
 
-    For more submissions:
-    1. Add another player object below.
-    2. Keep team names exactly the same as MATCHES.
-    3. Keep QF1-QF4 keys exactly the same.
-    4. Use the odds from the player's copied/CSV submission.
+  For more submissions:
+  1. Add another player object below.
+  2. Keep team names exactly the same as MATCHES.
+  3. Keep QF1-QF4 keys exactly the same.
+  4. Use the odds from the player's copied/CSV submission.
 
-    To clear the scoreboard before real picks are locked:
-    const PLAYERS = [];
-  */
+  To clear the scoreboard before real picks are locked:
+  const PLAYERS = [];
+*/
     const PLAYERS = [
       {
         name: "Bam Bam HT",
@@ -1295,26 +1295,26 @@
     ];
 
     /*
-    MATCH RESULTS
+  MATCH RESULTS
 
-    This block controls whether the scoreboard calculates wins, losses,
-    score bonuses, and updated Cup Bucks totals.
+  This block controls whether the scoreboard calculates wins, losses,
+  score bonuses, and updated Cup Bucks totals.
 
-    complete:
-      false = match is pending and no scoring is applied yet
-      true  = scoreboard calculates match profit/loss and score bonus
+  complete:
+    false = match is pending and no scoring is applied yet
+    true  = scoreboard calculates match profit/loss and score bonus
 
-    aScore / bScore:
-      Final match score after extra time, BEFORE penalty shootout goals.
-      If the game goes to penalties, keep the tied match score here.
+  aScore / bScore:
+    Final match score after extra time, BEFORE penalty shootout goals.
+    If the game goes to penalties, keep the tied match score here.
 
-    winner:
-      Team that advances. Must exactly match the team name in MATCHES.
+  winner:
+    Team that advances. Must exactly match the team name in MATCHES.
 
-    topScorers:
-      Optional per-match recordkeeping. Proper Stars scoring is controlled
-      by FINAL_PROPS below.
-  */
+  topScorers:
+    Optional per-match recordkeeping. Proper Stars scoring is controlled
+    by FINAL_PROPS below.
+*/
     const RESULTS = {
       QF1: {
         complete: true,
@@ -1329,17 +1329,20 @@
         bScore: 1,
         winner: "Spain",
         topScorers: [
-          "Fabian Ruiz - Spain",
-          "Charles De Ketalaere - Belgium",
-          "Mikel Marino - Spain",
+          "Fabián Ruiz — Spain",
+          "Charles De Ketelaere — Belgium",
+          "Mikel Merino — Spain",
         ],
       },
       QF3: {
         complete: false,
-        aScore: null,
-        bScore: null,
+        aScore: 1,
+        bScore: 1,
         winner: "",
-        topScorers: [],
+        topScorers: [
+          "Jude Bellingham — England",
+          "Andreas Schjelderup — Norway",
+        ],
       },
       QF4: {
         complete: false,
@@ -1356,31 +1359,34 @@
         "Ousmane Dembélé — France",
         "Fabián Ruiz — Spain",
         "Charles De Ketelaere — Belgium",
+        "Mikel Merino — Spain",
+        "Jude Bellingham — England",
+        "Andreas Schjelderup — Norway",
       ],
-      teamMostGoals: "France",
+      teamMostGoals: "France / Spain",
       shootouts: 0,
     };
 
     /*
-    FINAL PROPER STARS RESULTS
+  FINAL PROPER STARS RESULTS
 
-    complete:
-      false = props are pending and no prop points are applied
-      true  = scoreboard applies Proper Stars prop points
+  complete:
+    false = props are pending and no prop points are applied
+    true  = scoreboard applies Proper Stars prop points
 
-    topScorers:
-      Use one player for a solo top scorer.
-      Use multiple players for a tied top scorer.
-      Scoring:
-        solo correct top scorer = +75
-        tied correct top scorer = +50
+  topScorers:
+    Use one player for a solo top scorer.
+    Use multiple players for a tied top scorer.
+    Scoring:
+      solo correct top scorer = +75
+      tied correct top scorer = +50
 
-    teamMostGoals:
-      Team with the most quarterfinal goals.
+  teamMostGoals:
+    Team with the most quarterfinal goals.
 
-    shootouts:
-      Total number of quarterfinal penalty shootouts.
-  */
+  shootouts:
+    Total number of quarterfinal penalty shootouts.
+*/
     const FINAL_PROPS = {
       complete: false,
       topScorers: [],
@@ -1494,6 +1500,20 @@
       )
         score += 50;
       return score;
+    }
+    function scoreboardStatusText() {
+      const parts = MATCHES.map((m) => {
+        const r = RESULTS[m.id];
+        if (!r) return null;
+
+        const hasScore = r.aScore !== null && r.bScore !== null;
+        if (!hasScore) return null;
+
+        const tag = r.complete ? "F" : "Live";
+        return `${m.label}: ${m.a} ${r.aScore}-${r.bScore} ${m.b} ${tag}`;
+      }).filter(Boolean);
+
+      return parts.length ? parts.join("<br>") : "Before kickoff";
     }
 
     function totalFor(player) {
@@ -1624,18 +1644,20 @@
     function renderResults() {
       const completed = MATCHES.filter((m) => RESULTS[m.id].complete).length;
       $("matchCount").textContent = `${completed} / ${MATCHES.length}`;
-      $("updatedText").innerHTML = `Last updated<br>${LAST_UPDATED}`;
+      $("updatedText").innerHTML = `Status<br>${scoreboardStatusText()}`;
 
       $("resultsGrid").innerHTML = MATCHES.map((m) => {
-        const r = RESULTS[m.id];
-        const score = r.complete
+        const r = RESULTS[m.id] || {};
+        const hasScore = r.aScore !== null && r.aScore !== undefined && r.bScore !== null && r.bScore !== undefined;
+        const score = hasScore
           ? `${m.a} ${r.aScore} - ${r.bScore} ${m.b}`
           : "Pending";
+        const status = r.complete ? "Final" : hasScore ? "Live" : "Pending";
         const winner = r.complete ? `Winner: ${r.winner}` : "Winner: —";
         return `<div class="match">
   <div class="match-title">${m.label} ${m.a} vs ${m.b}</div>
   <div class="result">${score}</div>
-  <div class="match-meta">${winner}</div>
+  <div class="match-meta">${status} · ${winner}</div>
 </div>`;
       }).join("");
     }
