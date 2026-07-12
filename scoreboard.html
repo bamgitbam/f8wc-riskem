@@ -934,7 +934,7 @@
     <section class="panel">
       <div class="section-head">
         <div>
-          <h2>Unofficial Live Scores</h2>
+          <h2>Final Scores</h2>
           <div class="hint" id="liveScoresUpdated">Last refreshed: — PT</div>
         </div>
       </div>
@@ -1088,26 +1088,6 @@
       <div class="rankings" id="standings"></div>
     </section>
 
-
-    <section class="panel" id="one-game-left">
-      <div class="section-head">
-        <div>
-          <h2>One Game Left</h2>
-        </div>
-      </div>
-      <div class="one-left-grid" id="oneGameLeftCards"></div>
-    </section>
-
-    <section class="panel" id="road">
-      <div class="section-head">
-        <div>
-          <h2>Road to Win</h2>
-        </div>
-      </div>
-      <div class="road-grid" id="roadCards"></div>
-    </section>
-
-
     <section class="panel">
       <div class="cards">
         <div class="stat">
@@ -1117,7 +1097,7 @@
           <small>Matches Complete</small><strong id="matchCount">0 / 4</strong>
         </div>
         <div class="stat">
-          <small>Leader</small><strong id="leaderName">—</strong>
+          <small>Winner</small><strong id="leaderName">—</strong>
         </div>
         <div class="stat">
           <small>Proper Stars</small><strong id="properStarsCount">Open</strong>
@@ -1548,11 +1528,13 @@
         ],
       },
       QF4: {
-        complete: false,
-        aScore: null,
-        bScore: null,
-        winner: "",
-        topScorers: [],
+        complete: true,
+        aScore: 3,
+        bScore: 1,
+        winner: "Argentina",
+        topScorers: [
+          "Julian Alverez - Argentina",
+        ],
       },
     };
 
@@ -1588,10 +1570,10 @@
     Total number of quarterfinal penalty shootouts.
 */
     const FINAL_PROPS = {
-      complete: false,
-      topScorers: [],
-      teamMostGoals: "",
-      shootouts: null,
+      complete: true,
+      topScorers: ["Jude Bellingham",],
+      teamMostGoals: "Argentina",
+      shootouts: 0,
     };
 
     const $ = (id) => document.getElementById(id);
@@ -1810,73 +1792,6 @@
         ? "Final"
         : "Tracking";
     }
-
-
-    const ROAD_TO_WIN_NOTES = {
-      "Bam Bam": {
-        status: "Live",
-        tone: "control",
-        metricLabel: "Worst",
-        metricValue: "$458",
-        result: "Win/tie alive",
-        note:
-          "Worst: Switzerland advances + no props = $458",
-      },
-      "Bam Bam HT": {
-        status: "Live",
-        tone: "control",
-        metricLabel: "Worst",
-        metricValue: "$380",
-        result: "Win/tie alive",
-        note:
-          "Worst: Switzerland advances + Messi 3+ + QF4 pens = $380",
-      },
-      Mongoose: {
-        status: "No path",
-        tone: "prayer",
-        metricLabel: "Best",
-        metricValue: "$381",
-        result: "No win/tie path",
-        note:
-          "Best: Argentina advances on pens + 1 shootout = $381",
-      },
-      "Doug the Head": {
-        status: "No path",
-        tone: "prayer",
-        metricLabel: "Best",
-        metricValue: "$559",
-        result: "No win/tie path",
-        note:
-          "Best: Argentina 3-2 + Messi 3+ + Argentina team goals = $559; Bam same score = $566",
-      },
-      "Rob Ingham 1": {
-        status: "No path",
-        tone: "prayer",
-        metricLabel: "Best",
-        metricValue: "$470",
-        result: "No win/tie path",
-        note:
-          "Best: Argentina advances on pens + France team goals + 1 shootout = $470",
-      },
-      Raaab: {
-        status: "No path",
-        tone: "prayer",
-        metricLabel: "Best",
-        metricValue: "$554",
-        result: "No win/tie path",
-        note:
-          "Best: Argentina advances on pens + Bellingham + England team goals + 1 shootout = $554",
-      },
-      Livinfree: {
-        status: "No path",
-        tone: "prayer",
-        metricLabel: "Best",
-        metricValue: "$382",
-        result: "No win/tie path",
-        note:
-          "Best: Argentina 2-1 + 0 shootouts = $382",
-      },
-    };
 
     function remainingMatchUpside(player) {
       return MATCHES.reduce((sum, match) => {
