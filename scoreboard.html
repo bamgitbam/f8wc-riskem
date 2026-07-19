@@ -389,6 +389,42 @@
       margin-top: 10px;
     }
 
+
+    .api-panel {
+      margin-top: 14px;
+      border: 1px dashed #b8c9da;
+      background: #507294;
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .api-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .api-status {
+      margin-top: 10px;
+      color: #415168;
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+
+    .api-select {
+      width: 100%;
+      border: 1px solid #cfdbea;
+      border-radius: 14px;
+      background: #fff;
+      padding: 10px 11px;
+      color: var(--text);
+      font: inherit;
+      font-weight: 850;
+    }
+
     .actions {
       display: flex;
       gap: 10px;
@@ -430,6 +466,7 @@
       .section-head { align-items: flex-start; flex-direction: column; }
       .updated { text-align: left; }
       .cards, .match-grid { grid-template-columns: 1fr; }
+      .api-grid { grid-template-columns: 1fr; }
       .rank-card { grid-template-columns: 42px minmax(0, 1fr); align-items: start; }
       .score { grid-column: 2; text-align: left; font-size: 24px; margin-top: 2px; }
       table { min-width: 680px; }
@@ -467,6 +504,38 @@
         <div class="updated">Odds to lift Cup<br>Spain -156 · Argentina +136</div>
       </div>
       <div class="match-grid" id="resultGrid"></div>
+
+      <div class="api-panel">
+        <div class="fine">
+          Live API test mode.
+        </div>
+        <div class="api-grid">
+          <div>
+            <label for="apiTopScorer">Top Scorer result for local test</label>
+            <select class="api-select" id="apiTopScorer">
+              <option value="">Manual / pending</option>
+              <option value="Messi">Messi</option>
+              <option value="Tie">Tie</option>
+              <option value="Mbappé">Mbappé</option>
+            </select>
+          </div>
+          <div>
+            <label for="apiShootout">Shootout result for local test</label>
+            <select class="api-select" id="apiShootout">
+              <option value="">Use API / pending</option>
+              <option value="No">No shootout</option>
+              <option value="Yes">Yes, penalties</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="fetchApiBtn">Test Live API</button>
+          <button class="btn dark" id="applyApiBtn">Apply API Score Locally</button>
+          <button class="btn" id="clearApiBtn">Clear Local API Result</button>
+        </div>
+        <div class="api-status" id="apiStatus">API ready. Nothing applied yet.</div>
+      </div>
+
     </section>
 
     <section class="panel">
@@ -573,14 +642,24 @@
       - "Yes"
       - "No"
     */
-    const RESULTS = {
+    const MANUAL_RESULTS = {
       complete: false,
+      apiPreview: false,
       aScore: null,
       bScore: null,
       winner: "",
       shootout: "",
       topScorer: "",
+      source: "manual",
+      statusText: "Pending",
     };
+
+    let RESULTS = { ...MANUAL_RESULTS };
+
+    const ESPN_SCOREBOARD_URL =
+      "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard";
+    const API_OVERRIDE_STORAGE_KEY = "f8wc-final-live-api-result-v1";
+    let lastApiResult = null;
 
     const $ = (id) => document.getElementById(id);
     const money = (n) => `${n < 0 ? "-" : ""}$${Math.abs(Math.round(Number(n) || 0)).toLocaleString()}`;
@@ -656,7 +735,7 @@
     }
 
     function propsScore(player) {
-      if (!RESULTS.complete) return 0;
+      if (!RESULTS.complete || RESULTS.apiPreview) return 0;
       let score = 0;
       const pickedTopScorer = player.props.topScorer || player.props.goldenBoot || "";
       if (pickedTopScorer === RESULTS.topScorer) score += 100;
@@ -692,7 +771,7 @@
     }
 
     function renderResult() {
-      $("statusText").textContent = RESULTS.complete ? "Final" : "Pending";
+      $("statusText").textContent = RESULTS.apiPreview ? "Live Test" : RESULTS.complete ? "Final" : "Pending";
       $("championText").textContent = RESULTS.complete ? RESULTS.winner : "—";
 
       const score = RESULTS.complete
@@ -703,8 +782,9 @@
         <article class="match">
           <div class="match-title">${MATCH.a} vs ${MATCH.b}</div>
           <div class="color-row">${teamBadge(MATCH.a)} ${teamBadge(MATCH.b)}</div>
-          <div class="match-meta">World Cup Final</div>
+          <div class="match-meta">${RESULTS.source === "espn" ? "ESPN API local test" : "World Cup Final"}</div>
           <div class="result">${score}</div>
+          <div class="match-meta">${RESULTS.statusText || ""}</div>
         </article>
         <article class="match">
           <div class="match-title">Top Scorer</div>
@@ -883,6 +963,163 @@
       $("playersBlock").textContent = "const PLAYERS = " + JSON.stringify(players, null, 2) + ";";
     }
 
+
+    function apiSetStatus(message) {
+      const el = $("apiStatus");
+      if (el) el.textContent = message;
+    }
+
+    function competitorName(competitor) {
+      return competitor?.team?.displayName || competitor?.team?.shortDisplayName || competitor?.team?.name || "";
+    }
+
+    function isFinalMatchEvent(event) {
+      const competitors = event?.competitions?.[0]?.competitors || [];
+      const names = competitors.map(competitorName);
+      return names.includes(MATCH.a) && names.includes(MATCH.b);
+    }
+
+    function parseEspnFinalResult(data) {
+      const event = (data?.events || []).find(isFinalMatchEvent);
+      if (!event) throw new Error("Spain vs Argentina final was not found in the ESPN scoreboard payload.");
+
+      const competition = event.competitions?.[0] || {};
+      const status = competition.status || event.status || {};
+      const type = status.type || {};
+      const competitors = competition.competitors || [];
+
+      const spain = competitors.find((c) => competitorName(c) === MATCH.a);
+      const argentina = competitors.find((c) => competitorName(c) === MATCH.b);
+      if (!spain || !argentina) throw new Error("Could not read both final teams from ESPN payload.");
+
+      const aScore = Number(spain.score || 0);
+      const bScore = Number(argentina.score || 0);
+      const apiCompleted = Boolean(type.completed || type.state === "post");
+      const isLive = type.state === "in";
+
+      let winner = "";
+      const winnerCompetitor = competitors.find((c) => c.winner);
+      if (winnerCompetitor) {
+        winner = competitorName(winnerCompetitor);
+      } else if (aScore > bScore) {
+        winner = MATCH.a;
+      } else if (bScore > aScore) {
+        winner = MATCH.b;
+      }
+
+      const autoShootout = apiCompleted ? (aScore === bScore ? "Yes" : "No") : "";
+      const detail = type.detail || type.shortDetail || type.description || "No detail";
+
+      return {
+        complete: apiCompleted,
+        apiPreview: !apiCompleted && isLive,
+        aScore,
+        bScore,
+        winner,
+        shootout: autoShootout,
+        topScorer: RESULTS.topScorer || "",
+        source: "espn",
+        statusText: detail,
+        fetchedAt: new Date().toISOString(),
+      };
+    }
+
+    async function fetchEspnFinalResult() {
+      apiSetStatus("Fetching ESPN scoreboard…");
+      const url = `${ESPN_SCOREBOARD_URL}?_=${Date.now()}`;
+      const response = await fetch(url, { cache: "no-store" });
+      if (!response.ok) throw new Error(`ESPN request failed: ${response.status}`);
+      const data = await response.json();
+      const parsed = parseEspnFinalResult(data);
+      lastApiResult = parsed;
+
+      const stateText = parsed.complete
+        ? "Final"
+        : parsed.apiPreview
+          ? "Live preview available"
+          : "Pregame / not scoring yet";
+
+      apiSetStatus(
+        `${stateText}\n` +
+        `${MATCH.a} ${parsed.aScore} - ${parsed.bScore} ${MATCH.b}\n` +
+        `Winner read: ${parsed.winner || "None yet"}\n` +
+        `Status: ${parsed.statusText}\n` +
+        `Fetched: ${new Date(parsed.fetchedAt).toLocaleString()}`
+      );
+
+      return parsed;
+    }
+
+    function applyApiResultLocally() {
+      if (!lastApiResult) {
+        apiSetStatus("Fetch the API first, then apply.");
+        return;
+      }
+
+      const topScorer = $("apiTopScorer")?.value || "";
+      const shootoutOverride = $("apiShootout")?.value || "";
+      const result = {
+        ...lastApiResult,
+        complete: lastApiResult.complete || Boolean(lastApiResult.winner),
+        apiPreview: !lastApiResult.complete,
+        topScorer,
+        shootout: shootoutOverride || lastApiResult.shootout || "",
+      };
+
+      if (!result.winner) {
+        apiSetStatus("API score is tied or has no winner yet. Local scoring was not applied.");
+        return;
+      }
+
+      RESULTS = result;
+      localStorage.setItem(API_OVERRIDE_STORAGE_KEY, JSON.stringify(result));
+      renderAll();
+
+      apiSetStatus(
+        `Applied locally: ${result.apiPreview ? "LIVE TEST" : "FINAL"}\n` +
+        `${MATCH.a} ${result.aScore} - ${result.bScore} ${MATCH.b}\n` +
+        `Winner: ${result.winner}\n` +
+        `Top Scorer: ${result.topScorer || "manual pending"}\n` +
+        `Shootout: ${result.shootout || "manual pending"}\n` +
+        `This only changes scoring in this browser until cleared.`
+      );
+    }
+
+    function clearApiResultLocally() {
+      RESULTS = { ...MANUAL_RESULTS };
+      lastApiResult = null;
+      localStorage.removeItem(API_OVERRIDE_STORAGE_KEY);
+      renderAll();
+      apiSetStatus("Local API result cleared. Back to manual scoreboard state.");
+    }
+
+    function loadResultOverride() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(API_OVERRIDE_STORAGE_KEY) || "null");
+        if (saved && typeof saved === "object") {
+          RESULTS = { ...MANUAL_RESULTS, ...saved };
+          apiSetStatus(
+            `Loaded local API result: ${MATCH.a} ${RESULTS.aScore} - ${RESULTS.bScore} ${MATCH.b}\n` +
+            `Winner: ${RESULTS.winner || "None"}\n` +
+            `Clear local API result to return to manual mode.`
+          );
+        }
+      } catch (e) {}
+    }
+
+    function setupLiveApi() {
+      $("fetchApiBtn")?.addEventListener("click", async () => {
+        try {
+          await fetchEspnFinalResult();
+        } catch (err) {
+          apiSetStatus(`API test failed: ${err.message}`);
+        }
+      });
+
+      $("applyApiBtn")?.addEventListener("click", applyApiResultLocally);
+      $("clearApiBtn")?.addEventListener("click", clearApiResultLocally);
+    }
+
     function setupCommissioner() {
       if (!isCommissionerMode()) return;
       $("commissionerPanel").style.display = "block";
@@ -917,6 +1154,8 @@
       refreshPlayersBlock();
     }
 
+    loadResultOverride();
+    setupLiveApi();
     setupCommissioner();
     renderAll();
   </script>

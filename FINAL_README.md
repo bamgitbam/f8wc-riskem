@@ -58,3 +58,14 @@ Included in `scoreboard.html`:
 ## Locked picks reveal
 
 `scoreboard.html` now has `REVEAL_LOCKED_PICKS = true`, so public users can see all submitted cards.
+
+
+## Live API test mode
+
+`scoreboard.html` now includes a browser-side ESPN live API test panel.
+
+- Test Live API: fetches the ESPN FIFA World Cup scoreboard.
+- Apply API Score Locally: applies Spain/Argentina score and winner in this browser only.
+- Clear Local API Result: removes the browser override and returns to the manual scoreboard state.
+- Top Scorer and Shootout can still be set manually in the test panel before applying.
+- Live in-progress scoring is labeled as `Live Test`; final props do not score during live preview mode.
