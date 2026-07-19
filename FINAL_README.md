@@ -42,4 +42,19 @@ The final prop is labeled **Top Scorer** in the app. CSV import also accepts old
 - Team-color kit cards added for Spain and Argentina.
 - Spain uses red/yellow kit styling.
 - Argentina uses sky-blue/white striped kit styling.
-- Bruce's submitted card is included in `scoreboard.html`.
+- Bam Bam's submitted card and Mongoose's submitted card are included in `scoreboard.html`.
+
+
+## Seeded final entries
+
+Included in `scoreboard.html`:
+
+- Bam Bam: Spain 2-1 Argentina, Spain -156, Top Scorer Mbappé, Shootout No.
+- Mongoose: Argentina 2-1 over Spain, Argentina +136, Top Scorer Messi, Shootout No.
+
+- K9Beach: Argentina 3-1 over Spain, Argentina +136, Top Scorer Tie, Shootout No.
+
+
+## Locked picks reveal
+
+`scoreboard.html` now has `REVEAL_LOCKED_PICKS = true`, so public users can see all submitted cards.
