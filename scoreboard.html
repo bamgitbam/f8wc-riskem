@@ -392,7 +392,7 @@
     <header class="hero">
       <div class="kicker">World Cup Final Scoreboard</div>
       <h1>F8WC <span class="gold">Final Risk’em</span></h1>
-      <p class="sub">Spain vs Argentina. Team pick, final score, Golden Boot outcome, and shootout prop.</p>
+      <p class="sub">Spain vs Argentina. Team pick, final score, Top Scorer, and shootout prop.</p>
       <div class="top-actions">
         <a class="mini-link" href="./">Submit Picks</a>
         <a class="mini-link" href="#locked">Locked Picks</a>
@@ -488,7 +488,7 @@
         name: "Player",
         submittedAt: "2026-07-19T18:00:00.000Z",
         pick: { team: "Spain", aScore: 1, bScore: 0, wager: 400, odds: -156 },
-        props: { goldenBoot: "Messi", shootout: "No" }
+        props: { topScorer: "Messi", shootout: "No" }
       }
     */
     const PLAYERS = [];
@@ -496,7 +496,7 @@
     /*
       Final result controls scoring.
 
-      Golden Boot options:
+      Top Scorer options:
       - "Messi"
       - "Tie"
       - "Mbappé"
@@ -511,7 +511,7 @@
       bScore: null,
       winner: "",
       shootout: "",
-      goldenBoot: "",
+      topScorer: "",
     };
 
     const $ = (id) => document.getElementById(id);
@@ -581,7 +581,8 @@
     function propsScore(player) {
       if (!RESULTS.complete) return 0;
       let score = 0;
-      if (player.props.goldenBoot === RESULTS.goldenBoot) score += 100;
+      const pickedTopScorer = player.props.topScorer || player.props.goldenBoot || "";
+      if (pickedTopScorer === RESULTS.topScorer) score += 100;
       if (player.props.shootout === RESULTS.shootout) score += 50;
       return score;
     }
@@ -628,9 +629,9 @@
           <div class="result">${score}</div>
         </article>
         <article class="match">
-          <div class="match-title">Golden Boot</div>
+          <div class="match-title">Top Scorer</div>
           <div class="match-meta">Messi / Tie / Mbappé</div>
-          <div class="result">${RESULTS.complete ? RESULTS.goldenBoot : "Pending"}</div>
+          <div class="result">${RESULTS.complete ? RESULTS.topScorer : "Pending"}</div>
         </article>
         <article class="match">
           <div class="match-title">Shootout</div>
@@ -681,7 +682,7 @@
             <th>Final Score</th>
             <th>Team Net</th>
             <th>Score Bonus</th>
-            <th>Golden Boot</th>
+            <th>Top Scorer</th>
             <th>Shootout</th>
             <th>Total</th>
           </tr>
@@ -699,7 +700,7 @@
                 <td>${MATCH.a} ${p.pick.aScore} - ${p.pick.bScore} ${MATCH.b}</td>
                 <td>${profitLabel(team)}</td>
                 <td>${profitLabel(bonus)}</td>
-                <td>${p.props.goldenBoot}<br><span class="fine">${RESULTS.complete && p.props.goldenBoot === RESULTS.goldenBoot ? "+$100" : "$0"}</span></td>
+                <td>${p.props.topScorer || p.props.goldenBoot || "—"}<br><span class="fine">${RESULTS.complete && (p.props.topScorer || p.props.goldenBoot) === RESULTS.topScorer ? "+$100" : "$0"}</span></td>
                 <td>${p.props.shootout}<br><span class="fine">${RESULTS.complete && p.props.shootout === RESULTS.shootout ? "+$50" : "$0"}</span></td>
                 <td><strong>${money(totalFor(p))}</strong></td>
               </tr>
@@ -726,7 +727,7 @@
             <th>Player</th>
             <th>Pick</th>
             <th>Score</th>
-            <th>Golden Boot</th>
+            <th>Top Scorer</th>
             <th>Shootout</th>
             <th>Tiebreaker</th>
           </tr>
@@ -737,7 +738,7 @@
               <td><strong>${p.name}</strong></td>
               <td>${p.pick.team}<br><span class="fine">$${p.pick.wager} @ ${fmtOdds(p.pick.odds)}</span></td>
               <td>${MATCH.a} ${p.pick.aScore} - ${p.pick.bScore} ${MATCH.b}</td>
-              <td>${p.props.goldenBoot}</td>
+              <td>${p.props.topScorer || p.props.goldenBoot || "—"}</td>
               <td>${p.props.shootout}</td>
               <td>${predictedTotal(p)} goals</td>
             </tr>
@@ -791,7 +792,7 @@
             odds: Number(odds || (pick === MATCH.a ? MATCH.aOdds : MATCH.bOdds)),
           },
           props: {
-            goldenBoot: String(obj["Golden Boot"] || "").trim(),
+            topScorer: String(obj["Top Scorer"] || obj["Golden Boot"] || "").trim(),
             shootout: String(obj["Shootout"] || "").trim(),
           },
         });

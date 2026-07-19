@@ -7,7 +7,7 @@ This package updates the app for the World Cup Final:
 - Team odds to lift the Cup: Spain -156 / Argentina +136
 - Final score prediction
 - Shootout prop: Yes / No
-- Golden Boot outcome: Messi / Tie / Mbappé
+- Top Scorer prop: Messi / Tie / Mbappé
 - Entry export by copy/text/email/CSV
 - Scoreboard with optional commissioner CSV import using `scoreboard.html?commissioner=1`
 
@@ -26,7 +26,12 @@ Score bonus, only if champion pick is correct:
 - One team score exact: +$15
 
 Props:
-- Golden Boot outcome: +$100
+- Top Scorer: +$100
 - Shootout exact: +$50
 
 Final score is after extra time, before penalty shootout kicks.
+
+
+## Top Scorer note
+
+The final prop is labeled **Top Scorer** in the app. CSV import also accepts older exports that used the header `Golden Boot`.

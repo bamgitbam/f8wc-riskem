@@ -526,9 +526,9 @@
 
       <div class="prop-grid">
         <div class="prop-card">
-          <label for="goldenBoot">Golden Boot outcome</label>
-          <select id="goldenBoot">
-            <option value="">Choose Golden Boot result</option>
+          <label for="topScorer">Top Scorer</label>
+          <select id="topScorer">
+            <option value="">Choose top scorer result</option>
             <option value="Messi">Messi</option>
             <option value="Tie">Tie</option>
             <option value="Mbappé">Mbappé</option>
@@ -555,7 +555,7 @@
       <div class="fine">
         Starting budget: $400. Team pick wager is locked at $400. Correct champion earns American-odds profit; wrong champion loses $400.
         Score bonus only applies if the champion pick is correct: exact score +$100, correct margin +$50, correct total goals +$25, one team score exact +$15.
-        Golden Boot outcome +$100. Shootout exact +$50. Final score is after extra time and before penalty shootout kicks.
+        Top Scorer +$100. Shootout exact +$50. Final score is after extra time and before penalty shootout kicks.
       </div>
     </section>
 
@@ -654,7 +654,7 @@
       if (!Number.isFinite(s.a) || !Number.isFinite(s.b) || s.a < 0 || s.b < 0) {
         return fail("Enter a valid final score.");
       }
-      if (!$("goldenBoot").value) return fail("Choose Golden Boot outcome.");
+      if (!$("topScorer").value) return fail("Choose top scorer result.");
       if (!$("shootout").value) return fail("Choose whether the final goes to a shootout.");
 
       const scoreWinner = predictedWinnerFromScore();
@@ -689,7 +689,7 @@
           odds: selectedOdds(),
         },
         props: {
-          goldenBoot: $("goldenBoot").value,
+          topScorer: $("topScorer").value,
           shootout: $("shootout").value,
         },
       };
@@ -710,7 +710,7 @@
       lines.push(`Wager: ${money(WAGER)} at ${fmtOdds(entry.pick.odds)}; win profit +${money(profit)}, loss -${money(WAGER)}`);
       lines.push("");
       lines.push("PROPS");
-      lines.push(`Golden Boot Outcome: ${entry.props.goldenBoot}`);
+      lines.push(`Top Scorer: ${entry.props.topScorer}`);
       lines.push(`Shootout: ${entry.props.shootout}`);
       lines.push("");
       lines.push(`TIEBREAKER: Total predicted goals ${totalGoals()}`);
@@ -735,7 +735,7 @@
         "Final Wager",
         "Final Odds",
         "Final Win Profit",
-        "Golden Boot",
+        "Top Scorer",
         "Shootout",
         "Total Predicted Goals",
       ];
@@ -749,7 +749,7 @@
         WAGER,
         fmtOdds(e.pick.odds),
         Math.round(profitFor(WAGER, e.pick.odds) * 100) / 100,
-        e.props.goldenBoot,
+        e.props.topScorer,
         e.props.shootout,
         totalGoals(),
       ];
@@ -771,7 +771,7 @@
         pick: state.pick,
         spainScore: $("spainScore").value,
         argentinaScore: $("argentinaScore").value,
-        goldenBoot: $("goldenBoot").value,
+        topScorer: $("topScorer").value,
         shootout: $("shootout").value,
       };
       localStorage.setItem("f8wc-final-riskem-draft-v1", JSON.stringify(data));
@@ -785,7 +785,8 @@
         if (d.pick) state.pick = d.pick;
         if (d.spainScore != null) $("spainScore").value = d.spainScore;
         if (d.argentinaScore != null) $("argentinaScore").value = d.argentinaScore;
-        if (d.goldenBoot) $("goldenBoot").value = d.goldenBoot;
+        if (d.topScorer) $("topScorer").value = d.topScorer;
+        if (d.goldenBoot) $("topScorer").value = d.goldenBoot;
         if (d.shootout) $("shootout").value = d.shootout;
       } catch (e) {}
       updatePayout();
@@ -811,7 +812,7 @@
       }),
     );
 
-    ["playerName", "commissionerContact", "spainScore", "argentinaScore", "goldenBoot", "shootout"].forEach((id) => {
+    ["playerName", "commissionerContact", "spainScore", "argentinaScore", "topScorer", "shootout"].forEach((id) => {
       $(id).addEventListener("input", saveSilent);
       $(id).addEventListener("change", saveSilent);
     });
