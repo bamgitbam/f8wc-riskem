@@ -641,11 +641,6 @@
 
     let RESULTS = { ...MANUAL_RESULTS };
 
-    const ESPN_SCOREBOARD_URL =
-      "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard";
-    const API_OVERRIDE_STORAGE_KEY = "f8wc-final-live-api-result-v1";
-    let lastApiResult = null;
-
     const $ = (id) => document.getElementById(id);
     const money = (n) => `${n < 0 ? "-" : ""}$${Math.abs(Math.round(Number(n) || 0)).toLocaleString()}`;
     const profitLabel = (n) => `${n >= 0 ? "+" : "-"}$${Math.abs(Math.round(Number(n) || 0)).toLocaleString()}`;
