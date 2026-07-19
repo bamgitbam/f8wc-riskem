@@ -7,7 +7,7 @@ This package updates the app for the World Cup Final:
 - Team odds to lift the Cup: Spain -156 / Argentina +136
 - Final score prediction
 - Shootout prop: Yes / No
-- Top Scorer prop: Messi / Tie / Mbappé
+- Golden Boot prop: Messi / Tie / Mbappé
 - Entry export by copy/text/email/CSV
 - Scoreboard with optional commissioner CSV import using `scoreboard.html?commissioner=1`
 
@@ -26,15 +26,15 @@ Score bonus, only if champion pick is correct:
 - One team score exact: +$15
 
 Props:
-- Top Scorer: +$100
+- Golden Boot: +$100
 - Shootout exact: +$50
 
 Final score is after extra time, before penalty shootout kicks.
 
 
-## Top Scorer note
+## Golden Boot note
 
-The final prop is labeled **Top Scorer** in the app. CSV import also accepts older exports that used the header `Golden Boot`.
+The final prop is labeled **Golden Boot** in the app. CSV import also accepts older exports that used the header `Golden Boot`.
 
 
 ## Visual update
@@ -49,10 +49,10 @@ The final prop is labeled **Top Scorer** in the app. CSV import also accepts old
 
 Included in `scoreboard.html`:
 
-- Bam Bam: Spain 2-1 Argentina, Spain -156, Top Scorer Mbappé, Shootout No.
-- Mongoose: Argentina 2-1 over Spain, Argentina +136, Top Scorer Messi, Shootout No.
+- Bam Bam: Spain 2-1 Argentina, Spain -156, Golden Boot Mbappé, Shootout No.
+- Mongoose: Argentina 2-1 over Spain, Argentina +136, Golden Boot Messi, Shootout No.
 
-- K9Beach: Argentina 3-1 over Spain, Argentina +136, Top Scorer Tie, Shootout No.
+- K9Beach: Argentina 3-1 over Spain, Argentina +136, Golden Boot Tie, Shootout No.
 
 
 ## Locked picks reveal
@@ -67,5 +67,25 @@ Included in `scoreboard.html`:
 - Test Live API: fetches the ESPN FIFA World Cup scoreboard.
 - Apply API Score Locally: applies Spain/Argentina score and winner in this browser only.
 - Clear Local API Result: removes the browser override and returns to the manual scoreboard state.
-- Top Scorer and Shootout can still be set manually in the test panel before applying.
+- Golden Boot and Shootout can still be set manually in the test panel before applying.
 - Live in-progress scoring is labeled as `Live Test`; final props do not score during live preview mode.
+
+
+## Spain 1-0 final state
+
+`scoreboard.html` is set to:
+
+```js
+complete: true
+aScore: 1
+bScore: 0
+winner: "Spain"
+shootout: "No"
+goldenBoot: "Mbappé"
+```
+
+Golden Boot final:
+- Kylian Mbappé — 10 goals, 4 assists
+- Lionel Messi — 8 goals, 4 assists
+- Jude Bellingham — 7 goals, 1 assist
+- Erling Haaland — 7 goals

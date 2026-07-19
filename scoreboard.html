@@ -393,7 +393,7 @@
     .api-panel {
       margin-top: 14px;
       border: 1px dashed #b8c9da;
-      background: #507294;
+      background: #f8fbfe;
       border-radius: 18px;
       padding: 14px;
     }
@@ -478,7 +478,7 @@
     <header class="hero">
       <div class="kicker">World Cup Final Scoreboard</div>
       <h1>F8WC <span class="gold">Final Risk’em</span></h1>
-      <p class="sub">Spain vs Argentina. Team pick, final score, Top Scorer, and shootout prop.</p>
+      <p class="sub">Spain vs Argentina. Team pick, final score, Golden Boot, and shootout prop.</p>
       <div class="top-actions">
         <a class="mini-link" href="./">Submit Picks</a>
         <a class="mini-link" href="#locked">Locked Picks</a>
@@ -507,12 +507,12 @@
 
       <div class="api-panel">
         <div class="fine">
-          Live API test mode.
+          Live API test mode. Fetches the ESPN FIFA World Cup scoreboard, finds Spain vs Argentina, and can apply the current score locally for scoreboard testing.
         </div>
         <div class="api-grid">
           <div>
-            <label for="apiTopScorer">Top Scorer result for local test</label>
-            <select class="api-select" id="apiTopScorer">
+            <label for="apiTopScorer">Golden Boot result for local test</label>
+            <select class="api-select" id="apiGoldenBoot">
               <option value="">Manual / pending</option>
               <option value="Messi">Messi</option>
               <option value="Tie">Tie</option>
@@ -606,7 +606,7 @@
         name: "Player",
         submittedAt: "2026-07-19T18:00:00.000Z",
         pick: { team: "Spain", aScore: 1, bScore: 0, wager: 400, odds: -156 },
-        props: { topScorer: "Messi", shootout: "No" }
+        props: { goldenBoot: "Messi", shootout: "No" }
       }
     */
     const PLAYERS = [
@@ -614,26 +614,26 @@
       name: "Bam Bam",
       submittedAt: "2026-07-19T18:56:40.000Z",
       pick: { team: "Spain", aScore: 2, bScore: 1, wager: 400, odds: -156 },
-      props: { topScorer: "Mbappé", shootout: "No" },
+      props: { goldenBoot: "Mbappé", shootout: "No" },
     },
     {
       name: "Mongoose",
       submittedAt: "2026-07-19T18:59:58.000Z",
       pick: { team: "Argentina", aScore: 1, bScore: 2, wager: 400, odds: 136 },
-      props: { topScorer: "Messi", shootout: "No" },
+      props: { goldenBoot: "Messi", shootout: "No" },
     },
     {
       name: "K9Beach",
       submittedAt: "2026-07-19T19:02:00.000Z",
       pick: { team: "Argentina", aScore: 1, bScore: 3, wager: 400, odds: 136 },
-      props: { topScorer: "Tie", shootout: "No" },
+      props: { goldenBoot: "Tie", shootout: "No" },
     },
   ];
 
     /*
       Final result controls scoring.
 
-      Top Scorer options:
+      Golden Boot options:
       - "Messi"
       - "Tie"
       - "Mbappé"
@@ -648,10 +648,10 @@
       aScore: 1,
       bScore: 0,
       winner: "Spain",
-      shootout: "0",
-      topScorer: "Mbappé",
+      shootout: "No",
+      goldenBoot: "Mbappé",
       source: "manual",
-      statusText: "Final",
+      statusText: "Final · Spain 1-0 Argentina · Golden Boot: Mbappé",
     };
 
     let RESULTS = { ...MANUAL_RESULTS };
@@ -737,8 +737,8 @@
     function propsScore(player) {
       if (!RESULTS.complete || RESULTS.apiPreview) return 0;
       let score = 0;
-      const pickedTopScorer = player.props.topScorer || player.props.goldenBoot || "";
-      if (pickedTopScorer === RESULTS.topScorer) score += 100;
+      const pickedGoldenBoot = player.props.goldenBoot || player.props.topScorer || "";
+      if (pickedGoldenBoot === RESULTS.goldenBoot) score += 100;
       if (player.props.shootout === RESULTS.shootout) score += 50;
       return score;
     }
@@ -787,9 +787,9 @@
           <div class="match-meta">${RESULTS.statusText || ""}</div>
         </article>
         <article class="match">
-          <div class="match-title">Top Scorer</div>
+          <div class="match-title">Golden Boot</div>
           <div class="match-meta">Messi / Tie / Mbappé</div>
-          <div class="result">${RESULTS.complete ? RESULTS.topScorer : "Pending"}</div>
+          <div class="result">${RESULTS.complete ? RESULTS.goldenBoot : "Pending"}</div>
         </article>
         <article class="match">
           <div class="match-title">Shootout</div>
@@ -840,7 +840,7 @@
             <th>Final Score</th>
             <th>Team Net</th>
             <th>Score Bonus</th>
-            <th>Top Scorer</th>
+            <th>Golden Boot</th>
             <th>Shootout</th>
             <th>Total</th>
           </tr>
@@ -858,7 +858,7 @@
                 <td>${MATCH.a} ${p.pick.aScore} - ${p.pick.bScore} ${MATCH.b}</td>
                 <td>${profitLabel(team)}</td>
                 <td>${profitLabel(bonus)}</td>
-                <td>${p.props.topScorer || p.props.goldenBoot || "—"}<br><span class="fine">${RESULTS.complete && (p.props.topScorer || p.props.goldenBoot) === RESULTS.topScorer ? "+$100" : "$0"}</span></td>
+                <td>${p.props.goldenBoot || p.props.goldenBoot || "—"}<br><span class="fine">${RESULTS.complete && (p.props.goldenBoot || p.props.goldenBoot) === RESULTS.goldenBoot ? "+$100" : "$0"}</span></td>
                 <td>${p.props.shootout}<br><span class="fine">${RESULTS.complete && p.props.shootout === RESULTS.shootout ? "+$50" : "$0"}</span></td>
                 <td><strong>${money(totalFor(p))}</strong></td>
               </tr>
@@ -885,7 +885,7 @@
             <th>Player</th>
             <th>Pick</th>
             <th>Score</th>
-            <th>Top Scorer</th>
+            <th>Golden Boot</th>
             <th>Shootout</th>
             <th>Tiebreaker</th>
           </tr>
@@ -896,7 +896,7 @@
               <td><strong>${p.name}</strong></td>
               <td>${teamBadge(p.pick.team)}<br><span class="fine">$${p.pick.wager} @ ${fmtOdds(p.pick.odds)}</span></td>
               <td>${MATCH.a} ${p.pick.aScore} - ${p.pick.bScore} ${MATCH.b}</td>
-              <td>${p.props.topScorer || p.props.goldenBoot || "—"}</td>
+              <td>${p.props.goldenBoot || p.props.goldenBoot || "—"}</td>
               <td>${p.props.shootout}</td>
               <td>${predictedTotal(p)} goals</td>
             </tr>
@@ -950,7 +950,7 @@
             odds: Number(odds || (pick === MATCH.a ? MATCH.aOdds : MATCH.bOdds)),
           },
           props: {
-            topScorer: String(obj["Top Scorer"] || obj["Golden Boot"] || "").trim(),
+            goldenBoot: String(obj["Golden Boot"] || obj["Top Scorer"] || "").trim(),
             shootout: String(obj["Shootout"] || "").trim(),
           },
         });
@@ -1017,7 +1017,7 @@
         bScore,
         winner,
         shootout: autoShootout,
-        topScorer: RESULTS.topScorer || "",
+        goldenBoot: RESULTS.goldenBoot || "",
         source: "espn",
         statusText: detail,
         fetchedAt: new Date().toISOString(),
@@ -1056,13 +1056,13 @@
         return;
       }
 
-      const topScorer = $("apiTopScorer")?.value || "";
+      const goldenBoot = $("apiGoldenBoot")?.value || "";
       const shootoutOverride = $("apiShootout")?.value || "";
       const result = {
         ...lastApiResult,
         complete: lastApiResult.complete || Boolean(lastApiResult.winner),
         apiPreview: !lastApiResult.complete,
-        topScorer,
+        goldenBoot,
         shootout: shootoutOverride || lastApiResult.shootout || "",
       };
 
@@ -1079,7 +1079,7 @@
         `Applied locally: ${result.apiPreview ? "LIVE TEST" : "FINAL"}\n` +
         `${MATCH.a} ${result.aScore} - ${result.bScore} ${MATCH.b}\n` +
         `Winner: ${result.winner}\n` +
-        `Top Scorer: ${result.topScorer || "manual pending"}\n` +
+        `Golden Boot: ${result.goldenBoot || "manual pending"}\n` +
         `Shootout: ${result.shootout || "manual pending"}\n` +
         `This only changes scoring in this browser until cleared.`
       );

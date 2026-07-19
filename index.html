@@ -566,7 +566,7 @@
     <header class="hero">
       <div class="kicker">World Cup Final</div>
       <h1>F8WC <span class="gold">Final Risk’em</span></h1>
-      <p class="sub">Spain vs Argentina. Team-color final card with one locked $400 Cup Bucks pick, final score, shootout prop, and Top Scorer outcome.</p>
+      <p class="sub">Spain vs Argentina. Team-color final card with one locked $400 Cup Bucks pick, final score, shootout prop, and Golden Boot outcome.</p>
       <div class="top-actions">
         <a class="mini-link" href="./scoreboard.html">Scoreboard</a>
         <a class="mini-link" href="#rules">Rules</a>
@@ -670,9 +670,9 @@
 
       <div class="prop-grid">
         <div class="prop-card">
-          <label for="topScorer">Top Scorer</label>
+          <label for="topScorer">Golden Boot</label>
           <select id="topScorer">
-            <option value="">Choose top scorer result</option>
+            <option value="">Choose Golden Boot result</option>
             <option value="Messi">Messi</option>
             <option value="Tie">Tie</option>
             <option value="Mbappé">Mbappé</option>
@@ -699,7 +699,7 @@
       <div class="fine">
         Starting budget: $400. Team pick wager is locked at $400. Correct champion earns American-odds profit; wrong champion loses $400.
         Score bonus only applies if the champion pick is correct: exact score +$100, correct margin +$50, correct total goals +$25, one team score exact +$15.
-        Top Scorer +$100. Shootout exact +$50. Final score is after extra time and before penalty shootout kicks.
+        Golden Boot +$100. Shootout exact +$50. Final score is after extra time and before penalty shootout kicks.
       </div>
     </section>
 
@@ -798,7 +798,7 @@
       if (!Number.isFinite(s.a) || !Number.isFinite(s.b) || s.a < 0 || s.b < 0) {
         return fail("Enter a valid final score.");
       }
-      if (!$("topScorer").value) return fail("Choose top scorer result.");
+      if (!$("topScorer").value) return fail("Choose Golden Boot result.");
       if (!$("shootout").value) return fail("Choose whether the final goes to a shootout.");
 
       const scoreWinner = predictedWinnerFromScore();
@@ -854,7 +854,7 @@
       lines.push(`Wager: ${money(WAGER)} at ${fmtOdds(entry.pick.odds)}; win profit +${money(profit)}, loss -${money(WAGER)}`);
       lines.push("");
       lines.push("PROPS");
-      lines.push(`Top Scorer: ${entry.props.topScorer}`);
+      lines.push(`Golden Boot: ${entry.props.topScorer}`);
       lines.push(`Shootout: ${entry.props.shootout}`);
       lines.push("");
       lines.push(`TIEBREAKER: Total predicted goals ${totalGoals()}`);
@@ -879,7 +879,7 @@
         "Final Wager",
         "Final Odds",
         "Final Win Profit",
-        "Top Scorer",
+        "Golden Boot",
         "Shootout",
         "Total Predicted Goals",
       ];
