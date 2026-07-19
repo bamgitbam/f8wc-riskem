@@ -35,3 +35,11 @@ Final score is after extra time, before penalty shootout kicks.
 ## Top Scorer note
 
 The final prop is labeled **Top Scorer** in the app. CSV import also accepts older exports that used the header `Golden Boot`.
+
+
+## Visual update
+
+- Team-color kit cards added for Spain and Argentina.
+- Spain uses red/yellow kit styling.
+- Argentina uses sky-blue/white striped kit styling.
+- Bruce's submitted card is included in `scoreboard.html`.

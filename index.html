@@ -237,6 +237,142 @@
 
     .team.right { text-align: right; }
 
+    .team {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .team.spain {
+      border-color: rgba(196, 30, 58, 0.30);
+      background:
+        linear-gradient(90deg, rgba(196, 30, 58, 0.13), rgba(255, 205, 0, 0.16)),
+        #fff;
+    }
+
+    .team.argentina {
+      border-color: rgba(108, 172, 228, 0.38);
+      background:
+        linear-gradient(90deg, rgba(108, 172, 228, 0.15), rgba(255, 255, 255, 0.88), rgba(108, 172, 228, 0.15)),
+        #fff;
+    }
+
+    .team-strip {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 8px;
+      background: var(--team-primary, #061b33);
+    }
+
+    .team.right .team-strip {
+      left: auto;
+      right: 0;
+    }
+
+    .team-kit {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .team.right .team-kit {
+      justify-content: flex-end;
+    }
+
+    .jersey {
+      position: relative;
+      width: 36px;
+      height: 34px;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 6px 10px rgba(6, 27, 51, 0.12));
+    }
+
+    .jersey::before {
+      content: "";
+      position: absolute;
+      inset: 6px 7px 0;
+      border-radius: 7px 7px 9px 9px;
+      background: var(--kit-body, #ddd);
+      border: 2px solid rgba(6, 27, 51, 0.16);
+    }
+
+    .jersey::after {
+      content: "";
+      position: absolute;
+      top: 7px;
+      left: 50%;
+      width: 12px;
+      height: 8px;
+      transform: translateX(-50%);
+      border-radius: 0 0 9px 9px;
+      background: #fff;
+      border: 2px solid rgba(6, 27, 51, 0.12);
+      border-top: 0;
+    }
+
+    .sleeve {
+      position: absolute;
+      top: 8px;
+      width: 12px;
+      height: 15px;
+      background: var(--kit-sleeve, var(--kit-body, #ddd));
+      border: 2px solid rgba(6, 27, 51, 0.14);
+      z-index: 0;
+    }
+
+    .sleeve.left {
+      left: 0;
+      transform: rotate(20deg);
+      border-radius: 7px 3px 5px 7px;
+    }
+
+    .sleeve.right {
+      right: 0;
+      transform: rotate(-20deg);
+      border-radius: 3px 7px 7px 5px;
+    }
+
+    .jersey.argentina::before {
+      background:
+        linear-gradient(90deg,
+          #6cace4 0 22%,
+          #fff 22% 39%,
+          #6cace4 39% 61%,
+          #fff 61% 78%,
+          #6cace4 78% 100%);
+    }
+
+    .jersey.spain::before {
+      background:
+        linear-gradient(180deg,
+          #c41e3a 0 72%,
+          #ffcd00 72% 86%,
+          #c41e3a 86% 100%);
+    }
+
+    .color-dots {
+      display: inline-flex;
+      gap: 5px;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 1px solid rgba(6, 27, 51, 0.18);
+      background: var(--dot, #ddd);
+    }
+
+    .team-color-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+
     .team-name {
       font-size: 26px;
       line-height: 1;
@@ -430,7 +566,7 @@
     <header class="hero">
       <div class="kicker">World Cup Final</div>
       <h1>F8WC <span class="gold">Final Risk’em</span></h1>
-      <p class="sub">Spain vs Argentina. One locked $400 Cup Bucks pick, final score, shootout prop, and Golden Boot outcome.</p>
+      <p class="sub">Spain vs Argentina. Team-color final card with one locked $400 Cup Bucks pick, final score, shootout prop, and Top Scorer outcome.</p>
       <div class="top-actions">
         <a class="mini-link" href="./scoreboard.html">Scoreboard</a>
         <a class="mini-link" href="#rules">Rules</a>
@@ -475,14 +611,22 @@
 
       <article class="match-card" id="matchCard">
         <div class="teams">
-          <div class="team">
-            <div class="team-name">Spain</div>
-            <div class="odds">-156 to lift the Cup</div>
+          <div class="team spain" style="--team-primary:#c41e3a; --kit-body:#c41e3a; --kit-sleeve:#c41e3a;">
+            <div class="team-strip"></div>
+            <div class="team-kit">
+              <span class="jersey spain"><span class="sleeve left"></span><span class="sleeve right"></span></span>
+              <div class="team-name">Spain</div>
+            </div>
+            <div class="odds">-156 to lift the Cup · red / yellow kit colors</div>
           </div>
           <div class="vs">VS</div>
-          <div class="team right">
-            <div class="team-name">Argentina</div>
-            <div class="odds">+136 to lift the Cup</div>
+          <div class="team right argentina" style="--team-primary:#6cace4; --kit-body:#6cace4; --kit-sleeve:#6cace4;">
+            <div class="team-strip"></div>
+            <div class="team-kit">
+              <div class="team-name">Argentina</div>
+              <span class="jersey argentina"><span class="sleeve left"></span><span class="sleeve right"></span></span>
+            </div>
+            <div class="odds">+136 to lift the Cup · sky blue / white kit colors</div>
           </div>
         </div>
 

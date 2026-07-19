@@ -181,6 +181,55 @@
       box-shadow: 0 8px 20px rgba(6, 27, 51, 0.06);
     }
 
+
+    .team-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 999px;
+      padding: 5px 9px;
+      border: 1px solid #e1eaf4;
+      background: #fff;
+      font-weight: 1000;
+      white-space: nowrap;
+    }
+
+    .kit-mini {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 1px solid rgba(6, 27, 51, 0.20);
+      display: inline-block;
+      background: var(--kit, #ddd);
+      box-shadow: 0 4px 8px rgba(6, 27, 51, 0.08);
+    }
+
+    .kit-mini.spain {
+      background:
+        linear-gradient(180deg,
+          #c41e3a 0 72%,
+          #ffcd00 72% 86%,
+          #c41e3a 86% 100%);
+    }
+
+    .kit-mini.argentina {
+      background:
+        linear-gradient(90deg,
+          #6cace4 0 22%,
+          #fff 22% 39%,
+          #6cace4 39% 61%,
+          #fff 61% 78%,
+          #6cace4 78% 100%);
+    }
+
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
     .match-title {
       font-weight: 1000;
       font-size: 18px;
@@ -491,7 +540,14 @@
         props: { topScorer: "Messi", shootout: "No" }
       }
     */
-    const PLAYERS = [];
+    const PLAYERS = [
+    {
+      name: "Bam Bam",
+      submittedAt: "2026-07-19T18:56:40.000Z",
+      pick: { team: "Spain", aScore: 2, bScore: 1, wager: 400, odds: -156 },
+      props: { topScorer: "Mbappé", shootout: "No" },
+    }
+    ];
 
     /*
       Final result controls scoring.
@@ -518,6 +574,15 @@
     const money = (n) => `${n < 0 ? "-" : ""}$${Math.abs(Math.round(Number(n) || 0)).toLocaleString()}`;
     const profitLabel = (n) => `${n >= 0 ? "+" : "-"}$${Math.abs(Math.round(Number(n) || 0)).toLocaleString()}`;
     const fmtOdds = (o) => (o > 0 ? `+${o}` : `${o}`);
+
+    function teamClass(team) {
+      return String(team || "").toLowerCase().includes("argentina") ? "argentina" : "spain";
+    }
+
+    function teamBadge(team) {
+      return `<span class="team-badge"><span class="kit-mini ${teamClass(team)}"></span>${team}</span>`;
+    }
+
 
     function isCommissionerMode() {
       return new URLSearchParams(window.location.search).get("commissioner") === "1";
@@ -625,6 +690,7 @@
       $("resultGrid").innerHTML = `
         <article class="match">
           <div class="match-title">${MATCH.a} vs ${MATCH.b}</div>
+          <div class="color-row">${teamBadge(MATCH.a)} ${teamBadge(MATCH.b)}</div>
           <div class="match-meta">World Cup Final</div>
           <div class="result">${score}</div>
         </article>
@@ -663,7 +729,7 @@
             <div>
               <div class="player-name">${row.player.name}</div>
               <div class="player-sub">
-                Pick ${row.player.pick.team} · Team ${profitLabel(row.team)} · Score bonus ${profitLabel(row.bonus)} · Props ${profitLabel(row.props)}
+                ${teamBadge(row.player.pick.team)} · Team ${profitLabel(row.team)} · Score bonus ${profitLabel(row.bonus)} · Props ${profitLabel(row.props)}
               </div>
             </div>
             <div class="score">${money(row.total)}<span>Cup Bucks</span></div>
@@ -696,7 +762,7 @@
             return `
               <tr>
                 <td><strong>${p.name}</strong></td>
-                <td><span class="pill ${status}">${p.pick.team}</span><br><span class="fine">$${p.pick.wager} @ ${fmtOdds(p.pick.odds)}</span></td>
+                <td>${teamBadge(p.pick.team)}<br><span class="fine">$${p.pick.wager} @ ${fmtOdds(p.pick.odds)}</span></td>
                 <td>${MATCH.a} ${p.pick.aScore} - ${p.pick.bScore} ${MATCH.b}</td>
                 <td>${profitLabel(team)}</td>
                 <td>${profitLabel(bonus)}</td>
@@ -736,7 +802,7 @@
           ${players.map((p) => `
             <tr>
               <td><strong>${p.name}</strong></td>
-              <td>${p.pick.team}<br><span class="fine">$${p.pick.wager} @ ${fmtOdds(p.pick.odds)}</span></td>
+              <td>${teamBadge(p.pick.team)}<br><span class="fine">$${p.pick.wager} @ ${fmtOdds(p.pick.odds)}</span></td>
               <td>${MATCH.a} ${p.pick.aScore} - ${p.pick.bScore} ${MATCH.b}</td>
               <td>${p.props.topScorer || p.props.goldenBoot || "—"}</td>
               <td>${p.props.shootout}</td>
