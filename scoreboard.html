@@ -1,15 +1,13 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="noindex,nofollow" />
-  <title>F8WC Risk'em Scoreboard</title>
+  <title>F8WC Final Risk'em Scoreboard</title>
   <style>
     :root {
       --navy: #061b33;
-      --navy2: #0b2e53;
       --gold: #f4bd49;
       --gold2: #ff9f1c;
       --paper: #f7f9fc;
@@ -22,32 +20,19 @@
       --shadow: 0 18px 45px rgba(0, 0, 0, 0.14);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      background: linear-gradient(135deg,
-          #f4efe4 0%,
-          #eef6fb 38%,
-          #f7f9fc 100%);
-      font-family:
-        Inter,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
+      background: linear-gradient(135deg, #f4efe4 0%, #eef6fb 38%, #f7f9fc 100%);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       color: var(--text);
     }
 
     .wrap {
       max-width: 1120px;
       margin: 0 auto;
-      padding: 22px 16px 40px;
+      padding: 22px 16px 44px;
     }
 
     .hero {
@@ -60,17 +45,6 @@
       box-shadow: var(--shadow);
     }
 
-    .hero:after {
-      content: "";
-      position: absolute;
-      right: 24px;
-      bottom: -28px;
-      width: 130px;
-      height: 130px;
-      opacity: 0.08;
-      background: center/contain no-repeat url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop stop-color='%23ffe6a8'/><stop offset='.45' stop-color='%23f4bd49'/><stop offset='1' stop-color='%23e49a10'/></linearGradient></defs><circle cx='32' cy='18' r='12' fill='url(%23g)' stroke='%23c88408' stroke-width='2.6'/><path d='M24 34h16v6H24z' fill='%23333'/><path d='M20 42h24v6H20z' rx='2' fill='%23444'/><path d='M32 6a12 12 0 0 1 0 24a12 12 0 0 1 0-24' fill='none' stroke='%23061b33' stroke-width='1.5'/><path d='M32 14.6 L35.5 17.2 L34.2 21.2 L29.8 21.2 L28.5 17.2 Z' fill='%23061b33' opacity='.62'/><path d='M32 14.6 L32 8 M35.5 17.2 L40.4 13.6 M34.2 21.2 L38 26.2 M29.8 21.2 L26 26.2 M28.5 17.2 L23.6 13.6' fill='none' stroke='%23061b33' stroke-width='1.05' stroke-linecap='round' stroke-linejoin='round' opacity='.42'/><rect x='27' y='44' width='10' height='2.5' fill='%23f4bd49'/></svg>");
-    }
-
     .kicker {
       display: inline-flex;
       color: #ffe6a8;
@@ -79,8 +53,6 @@
       text-transform: uppercase;
       font-size: 13px;
       margin-bottom: 14px;
-      position: relative;
-      z-index: 1;
     }
 
     h1 {
@@ -90,23 +62,17 @@
       font-weight: 1000;
       letter-spacing: -0.05em;
       text-transform: uppercase;
-      position: relative;
-      z-index: 1;
     }
 
-    .gold {
-      color: var(--gold);
-    }
+    .gold { color: var(--gold); }
 
     .sub {
       margin: 12px 0 0;
-      max-width: 780px;
+      max-width: 820px;
       font-size: clamp(15px, 2.3vw, 20px);
       line-height: 1.35;
       color: #f5fbff;
       font-weight: 750;
-      position: relative;
-      z-index: 1;
     }
 
     .top-actions {
@@ -114,8 +80,6 @@
       gap: 10px;
       flex-wrap: wrap;
       margin-top: 18px;
-      position: relative;
-      z-index: 1;
     }
 
     .mini-link {
@@ -160,7 +124,7 @@
       font-weight: 650;
       line-height: 1.4;
       margin-top: 8px;
-      max-width: 680px;
+      max-width: 780px;
     }
 
     .updated {
@@ -200,6 +164,41 @@
       font-size: 28px;
       line-height: 1;
       letter-spacing: -0.04em;
+      overflow-wrap: anywhere;
+    }
+
+    .match-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .match {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(6, 27, 51, 0.06);
+    }
+
+    .match-title {
+      font-weight: 1000;
+      font-size: 18px;
+      line-height: 1.15;
+    }
+
+    .match-meta {
+      color: #5c6c80;
+      font-weight: 800;
+      font-size: 12.5px;
+      margin-top: 5px;
+    }
+
+    .result {
+      margin-top: 10px;
+      font-weight: 1000;
+      color: #062f55;
+      font-size: 20px;
     }
 
     .rankings {
@@ -278,8 +277,7 @@
       min-width: 760px;
     }
 
-    th,
-    td {
+    th, td {
       padding: 12px 12px;
       border-bottom: 1px solid #edf2f7;
       text-align: left;
@@ -298,13 +296,7 @@
       top: 0;
     }
 
-    tr:last-child td {
-      border-bottom: 0;
-    }
-
-    td strong {
-      font-weight: 1000;
-    }
+    tr:last-child td { border-bottom: 0; }
 
     .pill {
       display: inline-flex;
@@ -318,54 +310,57 @@
       white-space: nowrap;
     }
 
-    .pill.win {
-      background: #e7fff4;
-      color: #0f6b49;
-    }
-
-    .pill.loss {
-      background: #fff0ee;
-      color: #b42318;
-    }
-
-    .match-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-    }
-
-    .match {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 14px;
-      box-shadow: 0 8px 20px rgba(6, 27, 51, 0.06);
-    }
-
-    .match-title {
-      font-weight: 1000;
-      font-size: 16px;
-      line-height: 1.15;
-    }
-
-    .match-meta {
-      color: #5c6c80;
-      font-weight: 800;
-      font-size: 12.5px;
-      margin-top: 5px;
-    }
-
-    .result {
-      margin-top: 10px;
-      font-weight: 1000;
-      color: #062f55;
-    }
+    .pill.win { background: #e7fff4; color: #0f6b49; }
+    .pill.loss { background: #fff0ee; color: #b42318; }
+    .pill.pending { background: #fff4c7; color: #7b4a00; }
 
     .fine {
       font-size: 13px;
       color: #5c6c80;
       font-weight: 650;
       line-height: 1.5;
+    }
+
+    details summary {
+      cursor: pointer;
+      font-weight: 1000;
+      color: #415168;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      border: 1px solid #cfdbea;
+      border-radius: 15px;
+      background: #fff;
+      padding: 13px;
+      color: var(--text);
+      font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      outline: none;
+      margin-top: 10px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 14px;
+      cursor: pointer;
+      font-weight: 1000;
+      color: #061b33;
+      background: #fff4c7;
+      box-shadow: 0 8px 20px rgba(6, 27, 51, 0.08);
+    }
+
+    .btn.dark {
+      color: #fff;
+      background: #061b33;
     }
 
     .admin-code {
@@ -377,1227 +372,155 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 12px;
       line-height: 1.45;
-    }
-
-    details summary {
-      cursor: pointer;
-      font-weight: 1000;
-      color: #415168;
+      white-space: pre-wrap;
     }
 
     @media (max-width: 860px) {
-      .wrap {
-        padding: 14px 12px 28px;
-      }
-
-      .hero {
-        padding: 26px 20px 22px;
-        border-radius: 24px;
-      }
-
-      .section-head {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .updated {
-        text-align: left;
-      }
-
-      .cards,
-      .match-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .rank-card {
-        grid-template-columns: 42px minmax(0, 1fr);
-        align-items: start;
-      }
-
-      .score {
-        grid-column: 2;
-        text-align: left;
-        font-size: 24px;
-        margin-top: 2px;
-      }
-
-      .panel {
-        padding: 16px;
-        border-radius: 22px;
-      }
-
-      h2 {
-        font-size: 26px;
-      }
-
-      .hint {
-        font-size: 13px;
-        line-height: 1.42;
-        margin-top: 9px;
-      }
-
-      .stat strong {
-        font-size: 26px;
-      }
-
-      table {
-        min-width: 680px;
-      }
-
-  
-    .one-left-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .one-left-card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 14px;
-      box-shadow: 0 8px 20px rgba(6, 27, 51, 0.06);
-    }
-
-    .one-left-card small {
-      display: block;
-      color: #5c6c80;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-size: 10.5px;
-      line-height: 1.15;
-    }
-
-    .one-left-card strong {
-      display: block;
-      margin-top: 6px;
-      font-size: 21px;
-      line-height: 1.05;
-      font-weight: 1000;
-      letter-spacing: -0.03em;
-      color: #061b33;
-    }
-
-    .one-left-card span {
-      display: block;
-      margin-top: 6px;
-      color: #5c6c80;
-      font-size: 12.5px;
-      font-weight: 750;
-      line-height: 1.35;
-    }
-
-    .road-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .road-metrics {
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 7px;
-      }
-
-      .road-metric {
-        padding: 8px 9px;
-      }
-
-      .road-metric strong {
-        font-size: 14px;
-      }
-    }
-
-
-    .road-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .road-card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 14px;
-      box-shadow: 0 8px 20px rgba(6, 27, 51, 0.06);
-    }
-
-    .road-card.control {
-      border-color: rgba(15, 143, 98, 0.36);
-      background: linear-gradient(180deg, #ffffff, #f4fff9);
-    }
-
-    .road-card.alive {
-      border-color: rgba(244, 189, 73, 0.58);
-      background: linear-gradient(180deg, #ffffff, #fffaf0);
-    }
-
-    .road-card.prayer {
-      border-color: rgba(255, 159, 28, 0.42);
-    }
-
-    .road-card.faint {
-      opacity: 0.82;
-    }
-
-    .road-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: flex-start;
-      margin-bottom: 10px;
-    }
-
-    .road-name {
-      font-weight: 1000;
-      font-size: 20px;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-    }
-
-    .road-note {
-      color: #5c6c80;
-      font-size: 13px;
-      font-weight: 750;
-      line-height: 1.42;
-      margin: 10px 0 0;
-    }
-
-    .road-metrics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-
-    .road-metric {
-      border: 1px solid #edf2f7;
-      background: #f8fbfe;
-      border-radius: 14px;
-      padding: 9px 10px;
-    }
-
-    .road-metric small {
-      display: block;
-      color: #5c6c80;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-size: 10px;
-      line-height: 1.15;
-    }
-
-    .road-metric strong {
-      display: block;
-      margin-top: 4px;
-      font-weight: 1000;
-      font-size: 16px;
-      line-height: 1.05;
-      color: #061b33;
-      overflow-wrap: anywhere;
-    }
-
-    .road-flag {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
-      padding: 6px 9px;
-      font-weight: 1000;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      background: #eef7ff;
-      color: #062f55;
-      white-space: nowrap;
-    }
-
-    .road-flag.control {
-      background: #e7fff4;
-      color: #0f6b49;
-    }
-
-    .road-flag.alive {
-      background: #fff4c7;
-      color: #7b4a00;
-    }
-
-    .road-flag.prayer {
-      background: #fff0ee;
-      color: #b42318;
-    }
-
-    .mobile-list {
-      display: none;
-    }
-
-    .locked-card,
-    .detail-card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 14px;
-      box-shadow: 0 8px 20px rgba(6, 27, 51, 0.06);
-    }
-
-    .locked-card+.locked-card,
-    .detail-card+.detail-card {
-      margin-top: 12px;
-    }
-
-    .mobile-card-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: flex-start;
-      margin-bottom: 12px;
-    }
-
-    .mobile-card-name {
-      font-size: 20px;
-      line-height: 1.1;
-      font-weight: 1000;
-      letter-spacing: -0.03em;
-    }
-
-    .mobile-card-total {
-      font-size: 24px;
-      line-height: 1;
-      font-weight: 1000;
-      color: #062f55;
-      text-align: right;
-    }
-
-    .mobile-card-total span {
-      display: block;
-      margin-top: 4px;
-      font-size: 10.5px;
-      color: #5c6c80;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .pick-list,
-    .score-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .pick-item,
-    .score-item {
-      border: 1px solid #edf2f7;
-      background: #f8fbfe;
-      border-radius: 14px;
-      padding: 10px 11px;
-    }
-
-    .pick-item-top,
-    .score-item-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      font-size: 13px;
-      font-weight: 1000;
-      color: #415168;
-      margin-bottom: 6px;
-    }
-
-    .pick-main {
-      font-weight: 1000;
-      font-size: 16px;
-      color: #061b33;
-    }
-
-    .pick-sub,
-    .score-sub {
-      margin-top: 3px;
-      color: #5c6c80;
-      font-size: 12.5px;
-      font-weight: 750;
-      line-height: 1.35;
-    }
-
-    .props-line {
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid #edf2f7;
-      color: #5c6c80;
-      font-size: 12.75px;
-      font-weight: 750;
-      line-height: 1.4;
-    }
-
-    .summary-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .summary-mini {
-      border: 1px solid #edf2f7;
-      background: #f8fbfe;
-      border-radius: 14px;
-      padding: 10px 11px;
-    }
-
-    .summary-mini small {
-      display: block;
-      color: #5c6c80;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-size: 10.5px;
-    }
-
-    .summary-mini strong {
-      display: block;
-      margin-top: 4px;
-      font-size: 18px;
-      line-height: 1;
-      font-weight: 1000;
-    }
-
-    @media (max-width: 860px) {
-      .desktop-table {
-        display: none;
-      }
-
-      .mobile-list {
-        display: block;
-      }
-
-      .top-actions {
-        gap: 9px;
-      }
-
-      .mini-link {
-        padding: 9px 12px;
-        font-size: 13px;
-      }
-
-      .match-grid .match {
-        padding: 13px;
-      }
-    }
-
-    .locked-hidden-card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: 0 8px 20px rgba(6, 27, 51, 0.06);
-    }
-
-    .locked-hidden-card strong {
-      display: block;
-      font-size: 20px;
-      line-height: 1.15;
-      font-weight: 1000;
-      letter-spacing: -0.03em;
-      color: #061b33;
-      margin-bottom: 7px;
-    }
-
-    .entry-read-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .entry-read-card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 13px 14px;
-      box-shadow: 0 8px 20px rgba(6, 27, 51, 0.05);
-    }
-
-    .entry-read-card small {
-      display: block;
-      color: #5c6c80;
-      font-size: 11px;
-      font-weight: 1000;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 5px;
-    }
-
-    .entry-read-card strong {
-      display: block;
-      color: #061b33;
-      font-size: 16px;
-      line-height: 1.2;
-      font-weight: 1000;
-    }
-
-    .entry-read-card span {
-      display: block;
-      margin-top: 4px;
-      color: #5c6c80;
-      font-size: 12.5px;
-      font-weight: 750;
-      line-height: 1.35;
-    }
-
-    @media (max-width: 860px) {
-      .entry-read-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .live-track-cards {
-      margin-top: 12px;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .live-track-cards .stat {
-      padding: 12px 14px;
-      border-radius: 18px;
-    }
-
-    .live-track-cards .stat strong {
-      font-size: 16px;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-    }
-
-    @media (max-width: 860px) {
-      .live-track-cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
-        margin-top: 9px;
-      }
-
-      .live-track-cards .stat {
-        padding: 9px 10px;
-        border-radius: 14px;
-        min-height: 70px;
-      }
-
-      .live-track-cards .stat small {
-        font-size: 9px;
-        letter-spacing: 0.04em;
-        line-height: 1.1;
-      }
-
-      .live-track-cards .stat strong {
-        margin-top: 4px;
-        font-size: 13px;
-        line-height: 1.08;
-        letter-spacing: -0.03em;
-        overflow-wrap: anywhere;
-      }
-
-      #liveScores.match-grid {
-        gap: 8px;
-      }
-
-      #liveScores .match {
-        padding: 11px 12px;
-        border-radius: 16px;
-      }
-
-      #liveScores .match-title {
-        font-size: 15px;
-      }
-
-      #liveScores .match-meta {
-        font-size: 12px;
-      }
-
-      #liveScores .result {
-        margin-top: 7px;
-        font-size: 15px;
-      }
+      .wrap { padding: 14px 12px 30px; }
+      .hero { padding: 26px 20px 22px; border-radius: 24px; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+      .updated { text-align: left; }
+      .cards, .match-grid { grid-template-columns: 1fr; }
+      .rank-card { grid-template-columns: 42px minmax(0, 1fr); align-items: start; }
+      .score { grid-column: 2; text-align: left; font-size: 24px; margin-top: 2px; }
+      table { min-width: 680px; }
     }
   </style>
 </head>
-
 <body>
   <div class="wrap">
     <header class="hero">
-      <div class="kicker">Quarterfinal Scoreboard</div>
-      <h1>F8WC <span class="gold">Risk'em</span></h1>
-      <p class="sub">
-        Locked picks, Cup Bucks standings, Proper Stars, and live updates.
-      </p>
+      <div class="kicker">World Cup Final Scoreboard</div>
+      <h1>F8WC <span class="gold">Final Risk’em</span></h1>
+      <p class="sub">Spain vs Argentina. Team pick, final score, Golden Boot outcome, and shootout prop.</p>
       <div class="top-actions">
-        <a class="mini-link" href="./">Scoring Rules</a>
-        <a class="mini-link" href="#one-game-left">One Game Left</a>
-        <a class="mini-link" href="#road">Road to Win</a>
-        <a class="mini-link" href="#locked">Locked picks</a>
+        <a class="mini-link" href="./">Submit Picks</a>
+        <a class="mini-link" href="#locked">Locked Picks</a>
+        <a class="mini-link" href="#detail">Scoring Detail</a>
       </div>
     </header>
 
     <section class="panel">
-      <div class="section-head">
-        <div>
-          <h2>Final Scores</h2>
-          <div class="hint" id="liveScoresUpdated">Last refreshed: — PT</div>
-        </div>
-      </div>
-      <div id="liveScores" class="match-grid"></div>
-      <div class="cards live-track-cards">
-        <div class="stat">
-          <small>Top scorers</small><strong id="liveTopScorers">—</strong>
-        </div>
-        <div class="stat">
-          <small>Team goals</small><strong id="liveTeamGoals">—</strong>
-        </div>
-        <div class="stat">
-          <small>Shootouts</small><strong id="liveShootouts">0</strong>
-        </div>
-        <div class="stat">
-          <small>Live Stats</small><strong id="livePropsStatus">Tracking</strong>
-        </div>
+      <div class="cards">
+        <div class="stat"><small>Players</small><strong id="playerCount">0</strong></div>
+        <div class="stat"><small>Leader</small><strong id="leaderName">—</strong></div>
+        <div class="stat"><small>Status</small><strong id="statusText">Pending</strong></div>
+        <div class="stat"><small>Champion</small><strong id="championText">—</strong></div>
       </div>
     </section>
 
-    <!--
-<section class="panel" id="entry-read">
-  <div class="section-head">
-    <div>
-      <h2>Scouting Report</h2>
-    </div>
-  </div>
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <h2>Final Result</h2>
+          <div class="hint">Fill the RESULTS block in this file after the final. Score is after extra time, before penalty shootout kicks.</div>
+        </div>
+        <div class="updated">Odds to lift Cup<br>Spain -156 · Argentina +136</div>
+      </div>
+      <div class="match-grid" id="resultGrid"></div>
+    </section>
 
-  <div class="entry-read-grid">
-    ...
-  </div>
-</section>
--->
-
-    <script>
-      const LIVE_SCORE_MATCHUPS = [
-        ["France", "Morocco"],
-        ["Spain", "Belgium"],
-        ["Norway", "England"],
-        ["Argentina", "Switzerland"],
-      ];
-
-      function normalizeTeamName(name) {
-        return String(name || "")
-          .toLowerCase()
-          .replace(/[^a-z]/g, "");
-      }
-
-      function isPoolMatch(teamA, teamB) {
-        const a = normalizeTeamName(teamA);
-        const b = normalizeTeamName(teamB);
-
-        return LIVE_SCORE_MATCHUPS.some(([x, y]) => {
-          const xNorm = normalizeTeamName(x);
-          const yNorm = normalizeTeamName(y);
-
-          return (a === xNorm && b === yNorm) || (a === yNorm && b === xNorm);
-        });
-      }
-
-      function updateLiveScoresTimestamp() {
-        const stamp = document.getElementById("liveScoresUpdated");
-        if (!stamp) return;
-
-        const pacificTime = new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Los_Angeles",
-          hour: "numeric",
-          minute: "2-digit",
-          second: "2-digit",
-        }).format(new Date());
-
-        stamp.textContent = `Last refreshed: ${pacificTime} PT`;
-      }
-
-      async function loadLiveScores() {
-        const box = document.getElementById("liveScores");
-        if (!box) return;
-
-        try {
-          const res = await fetch(
-            "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard",
-            { cache: "no-store" },
-          );
-
-          const data = await res.json();
-          const events = data.events || [];
-
-          const poolEvents = events.filter((event) => {
-            const comp = event.competitions?.[0];
-            const teams = comp?.competitors || [];
-
-            const home = teams.find((t) => t.homeAway === "home") || teams[0];
-            const away = teams.find((t) => t.homeAway === "away") || teams[1];
-
-            const homeName = home?.team?.displayName || "";
-            const awayName = away?.team?.displayName || "";
-
-            return isPoolMatch(homeName, awayName);
-          });
-
-          box.innerHTML = poolEvents.length
-            ? poolEvents
-              .map((event) => {
-                const comp = event.competitions?.[0];
-                const status = comp?.status?.type?.shortDetail || "—";
-                const teams = comp?.competitors || [];
-
-                const home =
-                  teams.find((t) => t.homeAway === "home") || teams[0];
-                const away =
-                  teams.find((t) => t.homeAway === "away") || teams[1];
-
-                const homeName = home?.team?.displayName || "TBD";
-                const awayName = away?.team?.displayName || "TBD";
-                const homeAbbr = home?.team?.abbreviation || "—";
-                const awayAbbr = away?.team?.abbreviation || "—";
-                const homeScore = home?.score ?? "—";
-                const awayScore = away?.score ?? "—";
-
-                return `
-                <div class="match">
-                  <div class="match-title">${awayName} vs ${homeName}</div>
-                  <div class="match-meta">${status}</div>
-                  <div class="result">
-                    ${awayAbbr} ${awayScore} - ${homeScore} ${homeAbbr}
-                  </div>
-                </div>
-              `;
-              })
-              .join("")
-            : `<div class="fine">No F8WC quarterfinal matches live right now. Scores will appear here when the matches start.</div>`;
-
-          updateLiveScoresTimestamp();
-        } catch (err) {
-          box.innerHTML = `<div class="fine">Live scores unavailable. Official F8WC Risk'em scoring is still commissioner-controlled.</div>`;
-          updateLiveScoresTimestamp();
-        }
-      }
-
-      loadLiveScores();
-      setInterval(loadLiveScores, 60000);
-    </script>
     <section class="panel">
       <div class="section-head">
         <div>
           <h2>Standings</h2>
-          <div class="hint">Cup Bucks update results below.</div>
+          <div class="hint">Starting budget $400. Team pick is a locked $400 wager.</div>
         </div>
-        <div class="updated" id="updatedText"></div>
       </div>
       <div class="rankings" id="standings"></div>
     </section>
 
-    <section class="panel">
-      <div class="cards">
-        <div class="stat">
-          <small>Players</small><strong id="playerCount">0</strong>
-        </div>
-        <div class="stat">
-          <small>Matches Complete</small><strong id="matchCount">0 / 4</strong>
-        </div>
-        <div class="stat">
-          <small>Winner</small><strong id="leaderName">—</strong>
-        </div>
-        <div class="stat">
-          <small>Proper Stars</small><strong id="properStarsCount">Open</strong>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="section-head">
-        <div>
-          <h2>Match Results</h2>
-          <div class="hint">Final results score standings. Live scores display for reference until marked final.</div>
-        </div>
-      </div>
-      <div class="match-grid" id="resultsGrid"></div>
-    </section>
-
-    <section class="panel">
+    <section class="panel" id="detail">
       <div class="section-head">
         <div>
           <h2>Scoring Detail</h2>
-          <div class="hint">
-            Shows match profit/loss, score bonus, props, and final Cup Bucks
-            total.
-          </div>
+          <div class="hint">Score bonus only applies when champion pick is correct. Props score independently.</div>
         </div>
       </div>
-      <div class="table-wrap desktop-table">
-        <table id="detailTable"></table>
-      </div>
-      <div class="mobile-list" id="detailCards"></div>
+      <div class="table-wrap"><table id="detailTable"></table></div>
     </section>
 
     <section class="panel" id="locked">
       <div class="section-head">
         <div>
           <h2>Locked Picks</h2>
-          <div class="hint">
-            Hidden until all submissions are in. This becomes the official
-            public record after the deadline.
-          </div>
+          <div class="hint">Set REVEAL_LOCKED_PICKS to true after submissions close.</div>
         </div>
       </div>
-      <div class="table-wrap desktop-table">
-        <table id="lockedTable"></table>
+      <div class="table-wrap"><table id="lockedTable"></table></div>
+    </section>
+
+    <section class="panel" id="commissionerPanel" style="display:none">
+      <div class="section-head">
+        <div>
+          <h2>Commissioner Import</h2>
+          <div class="hint">Paste one or more exported CSV rows from the entry page. This imports locally for review, then you can copy the players block into this file.</div>
+        </div>
       </div>
-      <div class="mobile-list" id="lockedCards"></div>
+      <textarea id="csvInput" placeholder="Paste CSV exports here"></textarea>
+      <div class="actions">
+        <button class="btn" id="importBtn">Import CSV Locally</button>
+        <button class="btn" id="clearImportBtn">Clear Local Imports</button>
+        <button class="btn dark" id="copyPlayersBtn">Copy PLAYERS Block</button>
+      </div>
+      <pre class="admin-code" id="playersBlock"></pre>
     </section>
   </div>
 
   <script>
-    const LAST_UPDATED = "Auto";
     const BUDGET = 400;
+    const WAGER = 400;
+    const REVEAL_LOCKED_PICKS = false;
 
-    // Privacy toggle:
-    // false = hide everyone's locked picks until all submissions are in
-    // true  = reveal the Locked Picks public record
-    const REVEAL_LOCKED_PICKS = true;
-
-    const MATCHES = [
-      {
-        id: "QF1",
-        label: "QF1",
-        a: "France",
-        b: "Morocco",
-        aOdds: -390,
-        bOdds: 300,
-      },
-      {
-        id: "QF2",
-        label: "QF2",
-        a: "Spain",
-        b: "Belgium",
-        aOdds: -320,
-        bOdds: 230,
-      },
-      {
-        id: "QF3",
-        label: "QF3",
-        a: "Norway",
-        b: "England",
-        aOdds: 170,
-        bOdds: -200,
-      },
-      {
-        id: "QF4",
-        label: "QF4",
-        a: "Argentina",
-        b: "Switzerland",
-        aOdds: -150,
-        bOdds: 280,
-      },
-    ];
+    const MATCH = {
+      id: "FINAL",
+      a: "Spain",
+      b: "Argentina",
+      aOdds: -156,
+      bOdds: 136,
+    };
 
     /*
-  LOCKED PLAYER SUBMISSIONS
+      Add published entries here after submissions close.
 
-  This block controls who appears on the scoreboard.
-
-  Current state:
-  - These entries were imported from the uploaded CSV submissions.
-  - Each pick includes its own locked odds from the player's submission.
-  - The scoreboard calculates profit/loss using the locked odds on that pick,
-    not only the display odds in MATCHES.
-
-  For more submissions:
-  1. Add another player object below.
-  2. Keep team names exactly the same as MATCHES.
-  3. Keep QF1-QF4 keys exactly the same.
-  4. Use the odds from the player's copied/CSV submission.
-
-  To clear the scoreboard before real picks are locked:
-  const PLAYERS = [];
-*/
-    const PLAYERS = [
+      Shape:
       {
-        name: "Bam Bam HT",
-        submittedAt: "2026-07-08T00:30:46.799Z",
-        picks: {
-          QF1: {
-            pick: "Morocco",
-            aScore: 2,
-            bScore: 3,
-            wager: 150,
-            odds: 300,
-          },
-          QF2: { pick: "Spain", aScore: 2, bScore: 1, wager: 50, odds: -340 },
-          QF3: {
-            pick: "England",
-            aScore: 1,
-            bScore: 2,
-            wager: 150,
-            odds: -230,
-          },
-          QF4: {
-            pick: "Argentina",
-            aScore: 2,
-            bScore: 0,
-            wager: 50,
-            odds: -180,
-          },
-        },
-        props: {
-          topScorer: "Jude Bellingham — England",
-          teamGoals: "England",
-          shootouts: 0,
-        },
-      },
-      {
-        name: "Bam Bam",
-        submittedAt: "2026-07-08T00:34:19.403Z",
-        picks: {
-          QF1: {
-            pick: "France",
-            aScore: 3,
-            bScore: 1,
-            wager: 150,
-            odds: -390,
-          },
-          QF2: {
-            pick: "Spain",
-            aScore: 2,
-            bScore: 1,
-            wager: 150,
-            odds: -340,
-          },
-          QF3: { pick: "Norway", aScore: 2, bScore: 1, wager: 50, odds: 170 },
-          QF4: {
-            pick: "Argentina",
-            aScore: 2,
-            bScore: 1,
-            wager: 50,
-            odds: -150,
-          },
-        },
-        props: {
-          topScorer: "Kylian Mbappé — France",
-          teamGoals: "France",
-          shootouts: 1,
-        },
-      },
-      {
-        name: "Mongoose",
-        submittedAt: "2026-07-08T02:03:10.000Z",
-        picks: {
-          QF1: {
-            pick: "France",
-            aScore: 2,
-            bScore: 0,
-            wager: 150,
-            odds: -390,
-          },
-          QF2: {
-            pick: "Belgium",
-            aScore: 1,
-            bScore: 2,
-            wager: 100,
-            odds: 230,
-          },
-          QF3: {
-            pick: "Norway",
-            aScore: 3,
-            bScore: 2,
-            wager: 100,
-            odds: 170,
-          },
-          QF4: {
-            pick: "Argentina",
-            aScore: 2,
-            bScore: 1,
-            wager: 50,
-            odds: -150,
-          },
-        },
-        props: {
-          topScorer: "Erling Haaland — Norway",
-          teamGoals: "Norway",
-          shootouts: 1,
-        },
-      },
-      {
-        name: "Doug the Head",
-        submittedAt: "2026-07-08T02:31:26.000Z",
-        picks: {
-          QF1: {
-            pick: "Morocco",
-            aScore: 1,
-            bScore: 2,
-            wager: 150,
-            odds: 300,
-          },
-          QF2: {
-            pick: "Spain",
-            aScore: 3,
-            bScore: 1,
-            wager: 50,
-            odds: -340,
-          },
-          QF3: {
-            pick: "England",
-            aScore: 1,
-            bScore: 3,
-            wager: 100,
-            odds: -230,
-          },
-          QF4: {
-            pick: "Argentina",
-            aScore: 3,
-            bScore: 2,
-            wager: 100,
-            odds: -180,
-          },
-        },
-        props: {
-          topScorer: "Lionel Messi — Argentina",
-          teamGoals: "Argentina",
-          shootouts: 2,
-        },
-      },
-      {
-        name: "Rob Ingham 1",
-        submittedAt: "2026-07-08T04:08:11.000Z",
-        picks: {
-          QF1: {
-            pick: "France",
-            aScore: 4,
-            bScore: 3,
-            wager: 50,
-            odds: -390,
-          },
-          QF2: {
-            pick: "Spain",
-            aScore: 3,
-            bScore: 2,
-            wager: 150,
-            odds: -340,
-          },
-          QF3: {
-            pick: "Norway",
-            aScore: 4,
-            bScore: 2,
-            wager: 150,
-            odds: 165,
-          },
-          QF4: {
-            pick: "Argentina",
-            aScore: 3,
-            bScore: 2,
-            wager: 50,
-            odds: -180,
-          },
-        },
-        props: {
-          topScorer: "Erling Haaland — Norway",
-          teamGoals: "France",
-          shootouts: 1,
-        },
-      },
-      {
-        name: "Raaab",
-        submittedAt: "2026-07-08T04:09:36.000Z",
-        picks: {
-          QF1: {
-            pick: "Morocco",
-            aScore: 3,
-            bScore: 4,
-            wager: 150,
-            odds: 300,
-          },
-          QF2: {
-            pick: "Spain",
-            aScore: 3,
-            bScore: 2,
-            wager: 150,
-            odds: -340,
-          },
-          QF3: {
-            pick: "England",
-            aScore: 2,
-            bScore: 4,
-            wager: 50,
-            odds: -230,
-          },
-          QF4: {
-            pick: "Argentina",
-            aScore: 3,
-            bScore: 2,
-            wager: 50,
-            odds: -180,
-          },
-        },
-        props: {
-          topScorer: "Jude Bellingham — England",
-          teamGoals: "England",
-          shootouts: 1,
-        },
-      },
-      {
-        name: "Livinfree",
-        submittedAt: "2026-07-08T22:38:52.000Z",
-        picks: {
-          QF1: {
-            pick: "France",
-            aScore: 3,
-            bScore: 2,
-            wager: 100,
-            odds: -390,
-          },
-          QF2: {
-            pick: "Belgium",
-            aScore: 1,
-            bScore: 3,
-            wager: 100,
-            odds: 230,
-          },
-          QF3: {
-            pick: "Norway",
-            aScore: 4,
-            bScore: 1,
-            wager: 100,
-            odds: 165,
-          },
-          QF4: {
-            pick: "Argentina",
-            aScore: 2,
-            bScore: 1,
-            wager: 100,
-            odds: -180,
-          },
-        },
-        props: {
-          topScorer: "Erling Haaland — Norway",
-          teamGoals: "Norway",
-          shootouts: 0,
-        },
-      },
-    ];
+        name: "Player",
+        submittedAt: "2026-07-19T18:00:00.000Z",
+        pick: { team: "Spain", aScore: 1, bScore: 0, wager: 400, odds: -156 },
+        props: { goldenBoot: "Messi", shootout: "No" }
+      }
+    */
+    const PLAYERS = [];
 
     /*
-  MATCH RESULTS
+      Final result controls scoring.
 
-  This block controls whether the scoreboard calculates wins, losses,
-  score bonuses, and updated Cup Bucks totals.
+      Golden Boot options:
+      - "Messi"
+      - "Tie"
+      - "Mbappé"
 
-  complete:
-    false = match is pending and no scoring is applied yet
-    true  = scoreboard calculates match profit/loss and score bonus
-
-  aScore / bScore:
-    Final match score after extra time, BEFORE penalty shootout goals.
-    If the game goes to penalties, keep the tied match score here.
-
-  winner:
-    Team that advances. Must exactly match the team name in MATCHES.
-
-  topScorers:
-    Optional per-match recordkeeping. Proper Stars scoring is controlled
-    by FINAL_PROPS below.
-*/
+      Shootout:
+      - "Yes"
+      - "No"
+    */
     const RESULTS = {
-      QF1: {
-        complete: true,
-        aScore: 2,
-        bScore: 0,
-        winner: "France",
-        topScorers: ["Kylian Mbappé — France", "Ousmane Dembélé — France"],
-      },
-      QF2: {
-        complete: true,
-        aScore: 2,
-        bScore: 1,
-        winner: "Spain",
-        topScorers: [
-          "Fabián Ruiz — Spain",
-          "Charles De Ketelaere — Belgium",
-          "Mikel Merino — Spain",
-        ],
-      },
-      QF3: {
-        complete: true,
-        aScore: 1,
-        bScore: 2,
-        winner: "England",
-        topScorers: [
-          "Jude Bellingham — England",
-          "Andreas Schjelderup — Norway",
-          "Jude Bellingham — England",
-        ],
-      },
-      QF4: {
-        complete: true,
-        aScore: 3,
-        bScore: 1,
-        winner: "Argentina",
-        topScorers: [
-          "Julian Alverez - Argentina",
-        ],
-      },
-    };
-
-    const LIVE_PROPS = {
-      topScorers: [
-        "Jude Bellingham — England",
-        "Jude Bellingham — England",
-        "Kylian Mbappé — France",
-        "Ousmane Dembélé — France",
-      ],
-      teamMostGoals: "France / Spain / England",
-      shootouts: 0,
-    };
-
-    /*
-  FINAL PROPER STARS RESULTS
-
-  complete:
-    false = props are pending and no prop points are applied
-    true  = scoreboard applies Proper Stars prop points
-
-  topScorers:
-    Use one player for a solo top scorer.
-    Use multiple players for a tied top scorer.
-    Scoring:
-      solo correct top scorer = +75
-      tied correct top scorer = +50
-
-  teamMostGoals:
-    Team with the most quarterfinal goals.
-
-  shootouts:
-    Total number of quarterfinal penalty shootouts.
-*/
-    const FINAL_PROPS = {
-      complete: true,
-      topScorers: ["Jude Bellingham",],
-      teamMostGoals: "Argentina",
-      shootouts: 0,
+      complete: false,
+      aScore: null,
+      bScore: null,
+      winner: "",
+      shootout: "",
+      goldenBoot: "",
     };
 
     const $ = (id) => document.getElementById(id);
-    const money = (n) =>
-      `${n < 0 ? "-" : ""}$${Math.abs(Math.round(Number(n) || 0)).toLocaleString()}`;
-    const profitLabel = (n) =>
-      `${n >= 0 ? "+" : "-"}$${Math.abs(Math.round(Number(n) || 0)).toLocaleString()}`;
+    const money = (n) => `${n < 0 ? "-" : ""}$${Math.abs(Math.round(Number(n) || 0)).toLocaleString()}`;
+    const profitLabel = (n) => `${n >= 0 ? "+" : "-"}$${Math.abs(Math.round(Number(n) || 0)).toLocaleString()}`;
     const fmtOdds = (o) => (o > 0 ? `+${o}` : `${o}`);
-    function scorerKey(name) {
-      return String(name || "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, " ")
-        .trim();
-    }
 
-    function canonicalTopScorerName(name) {
-      const raw = String(name || "").trim();
-      const key = scorerKey(raw);
-      if (key.includes("yamal") && key.includes("spain")) {
-        return "Lamine Yamal — Spain";
-      }
-      return raw;
+    function isCommissionerMode() {
+      return new URLSearchParams(window.location.search).get("commissioner") === "1";
     }
 
     function profitFor(wager, odds) {
@@ -1606,550 +529,317 @@
       if (!wager || !odds) return 0;
       return odds > 0 ? (wager * odds) / 100 : (wager * 100) / Math.abs(odds);
     }
-    function getMatch(id) {
-      return MATCHES.find((m) => m.id === id);
-    }
-    function getOdds(match, team) {
-      return team === match.a ? match.aOdds : match.bOdds;
-    }
-    function lockedOdds(match, pick) {
-      return Number(pick?.odds ?? getOdds(match, pick?.pick));
-    }
-    function predictedMargin(p, m) {
-      return p.aScore - p.bScore;
-    }
-    function actualMargin(r) {
-      return r.aScore - r.bScore;
-    }
-    function predictedTotal(p) {
-      return Number(p.aScore || 0) + Number(p.bScore || 0);
-    }
-    function actualTotal(r) {
-      return Number(r.aScore || 0) + Number(r.bScore || 0);
+
+    function predictedWinnerFromScore(player) {
+      const a = Number(player.pick.aScore);
+      const b = Number(player.pick.bScore);
+      if (a > b) return MATCH.a;
+      if (b > a) return MATCH.b;
+      return "Tie";
     }
 
-    function scoreBonus(p, r, m) {
-      if (!r.complete || p.pick !== r.winner) return 0;
+    function actualMargin() {
+      if (!RESULTS.complete) return null;
+      return Number(RESULTS.aScore) - Number(RESULTS.bScore);
+    }
+
+    function predictedMargin(player) {
+      return Number(player.pick.aScore) - Number(player.pick.bScore);
+    }
+
+    function actualTotal() {
+      if (!RESULTS.complete) return null;
+      return Number(RESULTS.aScore) + Number(RESULTS.bScore);
+    }
+
+    function predictedTotal(player) {
+      return Number(player.pick.aScore) + Number(player.pick.bScore);
+    }
+
+    function teamProfit(player) {
+      if (!RESULTS.complete) return 0;
+      return player.pick.team === RESULTS.winner
+        ? profitFor(player.pick.wager, player.pick.odds)
+        : -Number(player.pick.wager || 0);
+    }
+
+    function scoreBonus(player) {
+      if (!RESULTS.complete || player.pick.team !== RESULTS.winner) return 0;
       const exact =
-        Number(p.aScore) === Number(r.aScore) &&
-        Number(p.bScore) === Number(r.bScore);
-      if (exact) return 50;
-      if (predictedMargin(p, m) === actualMargin(r)) return 25;
-      if (predictedTotal(p) === actualTotal(r)) return 15;
+        Number(player.pick.aScore) === Number(RESULTS.aScore) &&
+        Number(player.pick.bScore) === Number(RESULTS.bScore);
+      if (exact) return 100;
+      if (predictedMargin(player) === actualMargin()) return 50;
+      if (predictedTotal(player) === actualTotal()) return 25;
       if (
-        Number(p.aScore) === Number(r.aScore) ||
-        Number(p.bScore) === Number(r.bScore)
-      )
-        return 10;
+        Number(player.pick.aScore) === Number(RESULTS.aScore) ||
+        Number(player.pick.bScore) === Number(RESULTS.bScore)
+      ) return 15;
       return 0;
     }
 
-    function matchScore(player, match) {
-      const p = player.picks[match.id];
-      const r = RESULTS[match.id];
-      if (!p || !r.complete)
-        return { profit: 0, bonus: 0, total: 0, status: "Pending" };
-      const odds = lockedOdds(match, p);
-      const win = p.pick === r.winner;
-      const profit = win ? profitFor(p.wager, odds) : -Number(p.wager || 0);
-      const bonus = scoreBonus(p, r, match);
-      return {
-        profit,
-        bonus,
-        total: profit + bonus,
-        status: win ? "Win" : "Loss",
-      };
-    }
-
-    function teamGoalWinners(value) {
-      if (Array.isArray(value)) return value.map((v) => String(v).trim()).filter(Boolean);
-      return String(value || "")
-        .split("/")
-        .map((v) => v.trim())
-        .filter(Boolean);
-    }
-
     function propsScore(player) {
-      if (!FINAL_PROPS.complete) return 0;
+      if (!RESULTS.complete) return 0;
       let score = 0;
-      const pickedScorer = canonicalTopScorerName(
-        player.props.topScorer || "",
-      );
-      const finalScorers = FINAL_PROPS.topScorers.map(canonicalTopScorerName);
-      if (pickedScorer && finalScorers.includes(pickedScorer)) {
-        score += FINAL_PROPS.topScorers.length > 1 ? 50 : 75;
-      }
-
-      const finalTeamWinners = teamGoalWinners(FINAL_PROPS.teamMostGoals);
-      if (
-        player.props.teamGoals &&
-        finalTeamWinners.includes(player.props.teamGoals)
-      )
-        score += 50;
-
-      if (
-        String(player.props.shootouts) !== "" &&
-        Number(player.props.shootouts) === Number(FINAL_PROPS.shootouts)
-      )
-        score += 50;
+      if (player.props.goldenBoot === RESULTS.goldenBoot) score += 100;
+      if (player.props.shootout === RESULTS.shootout) score += 50;
       return score;
-    }
-    function scoreboardStatusText() {
-      const parts = MATCHES.map((m) => {
-        const r = RESULTS[m.id];
-        if (!r) return null;
-
-        const hasScore = r.aScore !== null && r.bScore !== null;
-        if (!hasScore) return null;
-
-        const tag = r.complete ? "F" : "Live";
-        return `${m.label}: ${m.a} ${r.aScore}-${r.bScore} ${m.b} ${tag}`;
-      }).filter(Boolean);
-
-      return parts.length ? parts.join("<br>") : "Before kickoff";
     }
 
     function totalFor(player) {
-      const matchTotals = MATCHES.reduce(
-        (sum, m) => sum + matchScore(player, m).total,
-        0,
-      );
-      return BUDGET + matchTotals + propsScore(player);
+      return BUDGET + teamProfit(player) + scoreBonus(player) + propsScore(player);
     }
 
-    function totalWagered(player) {
-      return MATCHES.reduce(
-        (sum, m) => sum + Number(player.picks[m.id]?.wager || 0),
-        0,
-      );
+    function loadLocalImports() {
+      try {
+        return JSON.parse(localStorage.getItem("f8wc-final-riskem-imports-v1") || "[]");
+      } catch (e) {
+        return [];
+      }
     }
 
-    function liveScorerShortName(name) {
-      const player = String(name || "")
-        .replace(/\s+[—-]\s+.*$/, "")
-        .trim();
-
-      const parts = player.split(/\s+/).filter(Boolean);
-      return parts.length ? parts[parts.length - 1] : player || "—";
+    function saveLocalImports(players) {
+      localStorage.setItem("f8wc-final-riskem-imports-v1", JSON.stringify(players));
     }
 
-    function scorerGoalCounts(scorers) {
-      return (scorers || []).reduce((counts, name) => {
-        const shortName = liveScorerShortName(name);
-        counts[shortName] = (counts[shortName] || 0) + 1;
-        return counts;
-      }, {});
-    }
-
-    function liveTeamGoalLeaders() {
-      const counts = {};
-
-      MATCHES.forEach((match) => {
-        const result = RESULTS[match.id];
-        if (!result) return;
-
-        const aGoals = Number(result.aScore);
-        const bGoals = Number(result.bScore);
-
-        if (Number.isFinite(aGoals)) {
-          counts[match.a] = (counts[match.a] || 0) + aGoals;
-        }
-
-        if (Number.isFinite(bGoals)) {
-          counts[match.b] = (counts[match.b] || 0) + bGoals;
-        }
+    function allPlayers() {
+      const merged = [...PLAYERS, ...loadLocalImports()];
+      const seen = new Set();
+      return merged.filter((p) => {
+        const key = `${p.name}|${p.submittedAt}|${p.pick?.team}|${p.pick?.aScore}-${p.pick?.bScore}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
       });
-
-      const maxGoals = Math.max(0, ...Object.values(counts));
-      if (!maxGoals) return "—";
-
-      return Object.entries(counts)
-        .filter(([, goals]) => goals === maxGoals)
-        .map(([team, goals]) => `${team} (${goals})`)
-        .join("<br>");
     }
 
-    function renderLiveProps() {
-      if (!$("liveTopScorers")) return;
+    function renderResult() {
+      $("statusText").textContent = RESULTS.complete ? "Final" : "Pending";
+      $("championText").textContent = RESULTS.complete ? RESULTS.winner : "—";
 
-      const counts = scorerGoalCounts(LIVE_PROPS.topScorers);
-      const scorerLines = Object.entries(counts).map(
-        ([name, goals]) => `${name} (${goals})`,
-      );
+      const score = RESULTS.complete
+        ? `${MATCH.a} ${RESULTS.aScore} - ${RESULTS.bScore} ${MATCH.b}`
+        : "Pending";
 
-      $("liveTopScorers").innerHTML = scorerLines.length
-        ? scorerLines.join("<br>")
-        : "—";
-
-      $("liveTeamGoals").innerHTML = liveTeamGoalLeaders();
-
-      $("liveShootouts").textContent =
-        LIVE_PROPS.shootouts === null || LIVE_PROPS.shootouts === undefined
-          ? "—"
-          : LIVE_PROPS.shootouts;
-
-      $("livePropsStatus").textContent = FINAL_PROPS.complete
-        ? "Final"
-        : "Tracking";
-    }
-
-    function remainingMatchUpside(player) {
-      return MATCHES.reduce((sum, match) => {
-        const result = RESULTS[match.id];
-        if (result?.complete) return sum;
-
-        const pick = player.picks[match.id];
-        if (!pick) return sum;
-
-        const odds = lockedOdds(match, pick);
-        return sum + profitFor(pick.wager, odds) + 50;
-      }, 0);
-    }
-
-    function topScorerStillPossible(player) {
-      const pick = canonicalTopScorerName(player.props.topScorer || "");
-      if (!pick) return false;
-
-      const counts = scorerGoalCounts(LIVE_PROPS.topScorers);
-      const shortPick = liveScorerShortName(pick);
-      const current = Number(counts[shortPick] || 0);
-      const leader = Math.max(0, ...Object.values(counts));
-
-      if (current >= leader) return true;
-
-      if (scorerKey(pick).includes("messi") && scorerKey(pick).includes("argentina")) return true;
-
-      return false;
-    }
-
-    function teamGoalsStillPossible(player) {
-      const team = player.props.teamGoals;
-      if (!team) return false;
-
-      const liveTeams = liveTeamGoalLeaders()
-        .split("<br>")
-        .map((line) => line.replace(/\s+\(\d+\).*$/, "").trim())
-        .filter(Boolean);
-
-      if (liveTeams.includes(team)) return true;
-      if (team === "Argentina" || team === "Switzerland") return true;
-
-      return false;
-    }
-
-    function shootoutsStillPossible(player) {
-      const current = Number(LIVE_PROPS.shootouts || 0);
-      const remaining = MATCHES.filter((m) => !RESULTS[m.id]?.complete).length;
-      const target = Number(player.props.shootouts);
-      return Number.isFinite(target) && target >= current && target <= current + remaining;
-    }
-
-    function remainingPropsUpside(player) {
-      if (FINAL_PROPS.complete) return 0;
-
-      let upside = 0;
-      if (topScorerStillPossible(player)) upside += 75;
-      if (teamGoalsStillPossible(player)) upside += 50;
-      if (shootoutsStillPossible(player)) upside += 50;
-      return upside;
-    }
-
-
-    function totalKnownGoals() {
-      return MATCHES.reduce((sum, match) => {
-        const result = RESULTS[match.id];
-        if (!result) return sum;
-        const a = Number(result.aScore);
-        const b = Number(result.bScore);
-        return sum + (Number.isFinite(a) ? a : 0) + (Number.isFinite(b) ? b : 0);
-      }, 0);
-    }
-
-    function currentTopScorerLabel() {
-      const counts = scorerGoalCounts(LIVE_PROPS.topScorers);
-      const maxGoals = Math.max(0, ...Object.values(counts));
-      if (!maxGoals) return "—";
-
-      return Object.entries(counts)
-        .filter(([, goals]) => goals === maxGoals)
-        .map(([name, goals]) => `${name} (${goals})`)
-        .join("<br>");
-    }
-
-    function remainingMatchCount() {
-      return MATCHES.filter((m) => !RESULTS[m.id]?.complete).length;
-    }
-
-    function renderOneGameLeft() {
-      const box = $("oneGameLeftCards");
-      if (!box) return;
-
-      const currentShootouts = Number(LIVE_PROPS.shootouts || 0);
-      const maxShootouts = currentShootouts + remainingMatchCount();
-
-      box.innerHTML = `
-        <article class="one-left-card">
-          <small>Total goals so far</small>
-          <strong>${totalKnownGoals()}</strong>
-          <span>Through QF3. Penalty shootout kicks do not count.</span>
+      $("resultGrid").innerHTML = `
+        <article class="match">
+          <div class="match-title">${MATCH.a} vs ${MATCH.b}</div>
+          <div class="match-meta">World Cup Final</div>
+          <div class="result">${score}</div>
         </article>
-        <article class="one-left-card">
-          <small>Top scorer race</small>
-          <strong>${currentTopScorerLabel()}</strong>
-          <span>Messi is the only remaining top-scorer threat from QF4 picks.</span>
+        <article class="match">
+          <div class="match-title">Golden Boot</div>
+          <div class="match-meta">Messi / Tie / Mbappé</div>
+          <div class="result">${RESULTS.complete ? RESULTS.goldenBoot : "Pending"}</div>
         </article>
-        <article class="one-left-card">
-          <small>Shootout count</small>
-          <strong>${currentShootouts} · max ${maxShootouts}</strong>
-        </article>
-        <article class="one-left-card">
-          <strong>Argentina goals</strong>
-          <span>Argentina can move team-goals props and gives Doug the Head / Livinfree their clearest field-gain lanes.</span>
+        <article class="match">
+          <div class="match-title">Shootout</div>
+          <div class="match-meta">Penalty shootout prop</div>
+          <div class="result">${RESULTS.complete ? RESULTS.shootout : "Pending"}</div>
         </article>
       `;
     }
 
-    function renderRoadToWin() {
-      const box = $("roadCards");
-      if (!box) return;
-
-      const ranked = [...PLAYERS]
+    function renderStandings() {
+      const players = allPlayers();
+      const ranked = players
         .map((player) => ({
           player,
+          team: teamProfit(player),
+          bonus: scoreBonus(player),
+          props: propsScore(player),
           total: totalFor(player),
         }))
         .sort((a, b) => b.total - a.total);
 
-      box.innerHTML = ranked
-        .map((row) => {
-          const note = ROAD_TO_WIN_NOTES[row.player.name] || {
-            status: "Review",
-            tone: "prayer",
-            metricLabel: "Best",
-            metricValue: "—",
-            result: "Review path",
-            note: "Review remaining path",
-          };
-
-          return `<article class="road-card ${note.tone}">
-            <div class="road-top">
-              <div class="road-name">${row.player.name}</div>
-              <span class="road-flag ${note.tone}">${note.status}</span>
-            </div>
-            <div class="road-metrics">
-              <div class="road-metric"><small>Current</small><strong>${money(row.total)}</strong></div>
-              <div class="road-metric"><small>${note.metricLabel}</small><strong>${note.metricValue}</strong></div>
-              <div class="road-metric"><small>Result</small><strong>${note.result}</strong></div>
-            </div>
-            <p class="road-note">${note.note}</p>
-          </article>`;
-        })
-        .join("");
-    }
-
-    function renderStandings() {
-      const ranked = [...PLAYERS]
-        .map((p) => ({
-          player: p,
-          total: totalFor(p),
-          props: propsScore(p),
-          wagered: totalWagered(p),
-          matchNet: MATCHES.reduce(
-            (sum, m) => sum + matchScore(p, m).profit,
-            0,
-          ),
-          bonus: MATCHES.reduce((sum, m) => sum + matchScore(p, m).bonus, 0),
-        }))
-        .sort((a, b) => b.total - a.total);
+      $("playerCount").textContent = players.length;
+      $("leaderName").textContent = ranked[0]?.player.name || "—";
 
       $("standings").innerHTML = ranked.length
-        ? ranked
-          .map(
-            (row, i) => `
-        <div class="rank-card">
-          <div class="rank">${i + 1}</div>
-          <div>
-            <div class="player-name">${row.player.name}</div>
-            <div class="player-sub">
-              Wagered ${money(row.wagered)} · Match net ${profitLabel(row.matchNet)} · Score bonus ${profitLabel(row.bonus)} · Props ${profitLabel(row.props)}
+        ? ranked.map((row, i) => `
+          <div class="rank-card">
+            <div class="rank">${i + 1}</div>
+            <div>
+              <div class="player-name">${row.player.name}</div>
+              <div class="player-sub">
+                Pick ${row.player.pick.team} · Team ${profitLabel(row.team)} · Score bonus ${profitLabel(row.bonus)} · Props ${profitLabel(row.props)}
+              </div>
             </div>
+            <div class="score">${money(row.total)}<span>Cup Bucks</span></div>
           </div>
-          <div class="score">${money(row.total)}<span>Cup Bucks</span></div>
-        </div>
-      `,
-          )
-          .join("")
+        `).join("")
         : `<div class="fine">No players entered yet.</div>`;
-
-      $("playerCount").textContent = PLAYERS.length;
-      $("leaderName").textContent = ranked[0]?.player.name || "—";
-      $("properStarsCount").textContent = FINAL_PROPS.complete
-        ? "Final"
-        : "Open";
     }
 
-    function renderResults() {
-      const completed = MATCHES.filter((m) => RESULTS[m.id].complete).length;
-      $("matchCount").textContent = `${completed} / ${MATCHES.length}`;
-      $("updatedText").innerHTML = `Status<br>${scoreboardStatusText()}`;
-
-      $("resultsGrid").innerHTML = MATCHES.map((m) => {
-        const r = RESULTS[m.id] || {};
-        const hasScore = r.aScore !== null && r.aScore !== undefined && r.bScore !== null && r.bScore !== undefined;
-        const score = hasScore
-          ? `${m.a} ${r.aScore} - ${r.bScore} ${m.b}`
-          : "Pending";
-        const status = r.complete ? "Final" : hasScore ? "Live" : "Pending";
-        const winner = r.complete ? `Winner: ${r.winner}` : "Winner: —";
-        return `<div class="match">
-  <div class="match-title">${m.label} ${m.a} vs ${m.b}</div>
-  <div class="result">${score}</div>
-  <div class="match-meta">${status} · ${winner}</div>
-</div>`;
-      }).join("");
+    function renderDetail() {
+      const players = allPlayers();
+      $("detailTable").innerHTML = `
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Champion Pick</th>
+            <th>Final Score</th>
+            <th>Team Net</th>
+            <th>Score Bonus</th>
+            <th>Golden Boot</th>
+            <th>Shootout</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${players.map((p) => {
+            const team = teamProfit(p);
+            const bonus = scoreBonus(p);
+            const props = propsScore(p);
+            const status = !RESULTS.complete ? "pending" : p.pick.team === RESULTS.winner ? "win" : "loss";
+            return `
+              <tr>
+                <td><strong>${p.name}</strong></td>
+                <td><span class="pill ${status}">${p.pick.team}</span><br><span class="fine">$${p.pick.wager} @ ${fmtOdds(p.pick.odds)}</span></td>
+                <td>${MATCH.a} ${p.pick.aScore} - ${p.pick.bScore} ${MATCH.b}</td>
+                <td>${profitLabel(team)}</td>
+                <td>${profitLabel(bonus)}</td>
+                <td>${p.props.goldenBoot}<br><span class="fine">${RESULTS.complete && p.props.goldenBoot === RESULTS.goldenBoot ? "+$100" : "$0"}</span></td>
+                <td>${p.props.shootout}<br><span class="fine">${RESULTS.complete && p.props.shootout === RESULTS.shootout ? "+$50" : "$0"}</span></td>
+                <td><strong>${money(totalFor(p))}</strong></td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      `;
     }
 
     function renderLocked() {
-      if (!REVEAL_LOCKED_PICKS) {
-        const hiddenHtml = `<div class="locked-hidden-card">
-          <strong>Locked until all submissions are in.</strong>
-          <div class="fine">Picks are saved by the commissioner, but hidden here so nobody can copy another player before the deadline.</div>
-        </div>`;
-        $("lockedTable").innerHTML = "";
-        $("lockedCards").innerHTML = hiddenHtml;
-        const desktopWrap = document.querySelector("#locked .desktop-table");
-        if (desktopWrap) desktopWrap.style.display = "none";
+      const players = allPlayers();
+      if (!REVEAL_LOCKED_PICKS && !isCommissionerMode()) {
+        $("lockedTable").innerHTML = `
+          <tbody>
+            <tr><td class="fine">Locked picks are hidden until submissions close.</td></tr>
+          </tbody>
+        `;
         return;
       }
 
       $("lockedTable").innerHTML = `
-        <thead><tr>
-          <th>Player</th>
-          ${MATCHES.map((m) => `<th>${m.label}</th>`).join("")}
-          <th>Proper Stars</th>
-          <th>Tiebreaker</th>
-        </tr></thead>
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Pick</th>
+            <th>Score</th>
+            <th>Golden Boot</th>
+            <th>Shootout</th>
+            <th>Tiebreaker</th>
+          </tr>
+        </thead>
         <tbody>
-          ${PLAYERS.map(
-        (p) => `
+          ${players.map((p) => `
             <tr>
-              <td><strong>${p.name}</strong><br><span class="fine">Wagered ${money(totalWagered(p))}</span></td>
-              ${MATCHES.map((m) => {
-          const pick = p.picks[m.id];
-          return `<td><span class="pill">${pick.pick}</span><br>${m.a} ${pick.aScore} - ${pick.bScore} ${m.b}<br><span class="fine">${money(pick.wager)} at ${fmtOdds(lockedOdds(m, pick))}</span></td>`;
-        }).join("")}
-              <td>${p.props.topScorer || "—"}<br><span class="fine">${p.props.teamGoals || "—"} · Shootouts ${p.props.shootouts ?? "—"}</span></td>
-              <td>${MATCHES.reduce((sum, m) => sum + predictedTotal(p.picks[m.id]), 0)} goals</td>
-            </tr>
-          `,
-      ).join("")}
-        </tbody>`;
-
-      $("lockedCards").innerHTML = PLAYERS.map(
-        (p) => `
-        <article class="locked-card">
-          <div class="mobile-card-head">
-            <div>
-              <div class="mobile-card-name">${p.name}</div>
-              <div class="pick-sub">Wagered ${money(totalWagered(p))}</div>
-            </div>
-            <div class="mobile-card-total">${MATCHES.reduce((sum, m) => sum + predictedTotal(p.picks[m.id]), 0)}<span>Total goals</span></div>
-          </div>
-          <div class="pick-list">
-            ${MATCHES.map((m) => {
-          const pick = p.picks[m.id];
-          return `<div class="pick-item">
-                <div class="pick-item-top"><span>${m.label}</span><span>${money(pick.wager)} @ ${fmtOdds(lockedOdds(m, pick))}</span></div>
-                <div class="pick-main">${pick.pick}</div>
-                <div class="pick-sub">${m.a} ${pick.aScore} - ${pick.bScore} ${m.b}</div>
-              </div>`;
-        }).join("")}
-          </div>
-          <div class="props-line">
-            <strong>Proper Stars:</strong> ${p.props.topScorer || "—"}<br>
-            <strong>Team goals:</strong> ${p.props.teamGoals || "—"} · <strong>Shootouts:</strong> ${p.props.shootouts ?? "—"}
-          </div>
-        </article>
-      `,
-      ).join("");
-    }
-
-    function renderDetail() {
-      $("detailTable").innerHTML = `
-        <thead><tr>
-          <th>Player</th>
-          ${MATCHES.map((m) => `<th>${m.label}</th>`).join("")}
-          <th>Score Bonus</th>
-          <th>Props</th>
-          <th>Total</th>
-        </tr></thead>
-        <tbody>
-          ${PLAYERS.map((p) => {
-        const bonus = MATCHES.reduce(
-          (sum, m) => sum + matchScore(p, m).bonus,
-          0,
-        );
-        return `<tr>
               <td><strong>${p.name}</strong></td>
-              ${MATCHES.map((m) => {
-          const s = matchScore(p, m);
-          const cls =
-            s.status === "Win"
-              ? "win"
-              : s.status === "Loss"
-                ? "loss"
-                : "";
-          return `<td><span class="pill ${cls}">${s.status}</span><br>${profitLabel(s.profit)} net<br><span class="fine">Bonus ${profitLabel(s.bonus)}</span></td>`;
-        }).join("")}
-              <td>${profitLabel(bonus)}</td>
-              <td>${profitLabel(propsScore(p))}</td>
-              <td><strong>${money(totalFor(p))}</strong></td>
-            </tr>`;
-      }).join("")}
-        </tbody>`;
-
-      $("detailCards").innerHTML = PLAYERS.map((p) => {
-        const bonus = MATCHES.reduce(
-          (sum, m) => sum + matchScore(p, m).bonus,
-          0,
-        );
-        const props = propsScore(p);
-        return `<article class="detail-card">
-          <div class="mobile-card-head">
-            <div>
-              <div class="mobile-card-name">${p.name}</div>
-              <div class="pick-sub">Scoring detail</div>
-            </div>
-            <div class="mobile-card-total">${money(totalFor(p))}<span>Cup Bucks</span></div>
-          </div>
-          <div class="score-list">
-            ${MATCHES.map((m) => {
-          const s = matchScore(p, m);
-          const cls =
-            s.status === "Win" ? "win" : s.status === "Loss" ? "loss" : "";
-          return `<div class="score-item">
-                <div class="score-item-top"><span>${m.label}</span><span class="pill ${cls}">${s.status}</span></div>
-                <div class="pick-main">${profitLabel(s.profit)} net</div>
-                <div class="score-sub">Score bonus ${profitLabel(s.bonus)}</div>
-              </div>`;
-        }).join("")}
-          </div>
-          <div class="summary-row">
-            <div class="summary-mini"><small>Score bonus</small><strong>${profitLabel(bonus)}</strong></div>
-            <div class="summary-mini"><small>Props</small><strong>${profitLabel(props)}</strong></div>
-          </div>
-        </article>`;
-      }).join("");
+              <td>${p.pick.team}<br><span class="fine">$${p.pick.wager} @ ${fmtOdds(p.pick.odds)}</span></td>
+              <td>${MATCH.a} ${p.pick.aScore} - ${p.pick.bScore} ${MATCH.b}</td>
+              <td>${p.props.goldenBoot}</td>
+              <td>${p.props.shootout}</td>
+              <td>${predictedTotal(p)} goals</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      `;
     }
 
-    renderResults();
-    renderLiveProps();
-    renderStandings();
-    renderOneGameLeft();
-    renderRoadToWin();
-    renderLocked();
-    renderDetail();
+    function parseCSV(text) {
+      const rows = [];
+      let row = [], cell = "", quote = false;
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i], n = text[i + 1];
+        if (c === '"' && quote && n === '"') { cell += '"'; i++; continue; }
+        if (c === '"') { quote = !quote; continue; }
+        if (c === "," && !quote) { row.push(cell); cell = ""; continue; }
+        if ((c === "\n" || c === "\r") && !quote) {
+          if (cell || row.length) { row.push(cell); rows.push(row); row = []; cell = ""; }
+          if (c === "\r" && n === "\n") i++;
+          continue;
+        }
+        cell += c;
+      }
+      if (cell || row.length) { row.push(cell); rows.push(row); }
+      return rows.filter((r) => r.some((v) => String(v).trim()));
+    }
+
+    function parseEntryCSV(text) {
+      const rows = parseCSV(text);
+      const out = [];
+      for (let i = 0; i < rows.length; i++) {
+        const header = rows[i].map((x) => String(x).trim());
+        if (!header.includes("Player") || !header.includes("Final Pick")) continue;
+        const row = rows[i + 1];
+        if (!row) continue;
+        const obj = {};
+        header.forEach((h, idx) => { obj[h] = row[idx]; });
+
+        const scoreMatch = String(obj["Final Score"] || "").match(/Spain\s+(\d+)-(\d+)\s+Argentina/i);
+        const pick = String(obj["Final Pick"] || "").trim();
+        const odds = String(obj["Final Odds"] || "").replace("+", "").trim();
+
+        out.push({
+          name: String(obj["Player"] || "Player").trim(),
+          submittedAt: String(obj["Submitted At"] || new Date().toISOString()).trim(),
+          pick: {
+            team: pick,
+            aScore: scoreMatch ? Number(scoreMatch[1]) : 0,
+            bScore: scoreMatch ? Number(scoreMatch[2]) : 0,
+            wager: Number(obj["Final Wager"] || WAGER),
+            odds: Number(odds || (pick === MATCH.a ? MATCH.aOdds : MATCH.bOdds)),
+          },
+          props: {
+            goldenBoot: String(obj["Golden Boot"] || "").trim(),
+            shootout: String(obj["Shootout"] || "").trim(),
+          },
+        });
+      }
+      return out;
+    }
+
+    function refreshPlayersBlock() {
+      const players = allPlayers();
+      $("playersBlock").textContent = "const PLAYERS = " + JSON.stringify(players, null, 2) + ";";
+    }
+
+    function setupCommissioner() {
+      if (!isCommissionerMode()) return;
+      $("commissionerPanel").style.display = "block";
+      refreshPlayersBlock();
+
+      $("importBtn").addEventListener("click", () => {
+        const parsed = parseEntryCSV($("csvInput").value);
+        saveLocalImports([...loadLocalImports(), ...parsed]);
+        renderAll();
+        refreshPlayersBlock();
+      });
+
+      $("clearImportBtn").addEventListener("click", () => {
+        saveLocalImports([]);
+        renderAll();
+        refreshPlayersBlock();
+      });
+
+      $("copyPlayersBtn").addEventListener("click", async () => {
+        refreshPlayersBlock();
+        try {
+          await navigator.clipboard.writeText($("playersBlock").textContent);
+        } catch (e) {}
+      });
+    }
+
+    function renderAll() {
+      renderResult();
+      renderStandings();
+      renderDetail();
+      renderLocked();
+      refreshPlayersBlock();
+    }
+
+    setupCommissioner();
+    renderAll();
   </script>
 </body>
-
 </html>
